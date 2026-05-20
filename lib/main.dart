@@ -1,25 +1,11 @@
 import 'package:flutter/material.dart';
 
-import 'pages/splash_page.dart';
+import 'app/app.dart';
+import 'core/services/hive_service.dart';
 
-void main() {
-  runApp(const ProtechCtuApp());
-}
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await HiveService.instance.init();
 
-class ProtechCtuApp extends StatelessWidget {
-  const ProtechCtuApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Protech CTU',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
-        useMaterial3: true,
-      ),
-      // A rota inicial do app e a tela de Splash.
-      home: const SplashPage(),
-    );
-  }
+  runApp(const ProTechApp());
 }
