@@ -27,14 +27,15 @@ final class QuizGamificationService {
         nickname: learner.name.split(' ').first,
         email: '',
         sex: _sex(learner.gender),
-        birthDate: DateTime.utc(learner.entryYear - 17),
+        // Data não coletada: mantém o valor sentinela esperado pelo modelo.
+        birthDate: DateTime.fromMillisecondsSinceEpoch(0, isUtc: true),
       ),
       institutional: InstitutionalData(
-        course: 'Tecnologia',
+        course: 'Não informado',
         startYear: learner.entryYear,
         currentPeriod: 1,
-        shift: StudyShift.morning,
-        campus: 'UESPI',
+        shift: StudyShift.notInformed,
+        campus: 'Não informado',
       ),
       progression: const Progression(
         level: 1,
@@ -215,7 +216,7 @@ final class QuizGamificationService {
           : level >= 5
           ? 'Programador'
           : level >= 3
-          ? 'Aprendiz Avancado'
+          ? 'Aprendiz Avançado'
           : 'Aprendiz',
     );
   }

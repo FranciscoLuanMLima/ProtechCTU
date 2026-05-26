@@ -7,8 +7,8 @@ final class QuizCatalogDataSource {
     ProgrammingQuiz(
       quizId: 'quiz-variables',
       topicId: 'variables',
-      title: 'Variaveis e tipos',
-      description: 'Teste rapido sobre dados, atribuicao e conversao.',
+      title: 'Variáveis e tipos',
+      description: 'Teste rápido sobre dados, atribuição e conversão.',
       difficulty: QuizDifficulty.beginner,
       xpRewardPerCorrectAnswer: 20,
       coinRewardPerCorrectAnswer: 5,
@@ -17,26 +17,26 @@ final class QuizCatalogDataSource {
         QuizQuestion(
           questionId: 'variables-1',
           prompt:
-              'Qual valor sera exibido por `print(idade + 1)` se `idade = 18`?',
+              'Qual valor será exibido por `print(idade + 1)` se `idade = 18`?',
           options: <String>['181', '19', 'idade + 1', 'Erro'],
           correctOptionIndex: 1,
-          explanation: 'Como `idade` e inteiro, a soma numerica resulta em 19.',
+          explanation: 'Como `idade` é inteiro, a soma numérica resulta em 19.',
         ),
         QuizQuestion(
           questionId: 'variables-2',
-          prompt: 'Qual funcao converte o texto `"42"` em numero inteiro?',
+          prompt: 'Qual função converte o texto `"42"` em número inteiro?',
           options: <String>['str()', 'bool()', 'int()', 'print()'],
           correctOptionIndex: 2,
           explanation:
-              '`int()` transforma uma representacao numerica em inteiro.',
+              '`int()` transforma uma representação numérica em inteiro.',
         ),
         QuizQuestion(
           questionId: 'variables-3',
-          prompt: 'Qual nome de variavel comunica melhor seu significado?',
+          prompt: 'Qual nome de variável comunica melhor seu significado?',
           options: <String>['x', 'a1', 'total_pontos', 'z'],
           correctOptionIndex: 2,
           explanation:
-              'Nomes descritivos tornam a regra compreensivel e manutenivel.',
+              'Nomes descritivos tornam a regra compreensível e manutenível.',
         ),
       ],
     ),
@@ -44,7 +44,7 @@ final class QuizCatalogDataSource {
       quizId: 'quiz-conditions',
       topicId: 'conditions',
       title: 'Condicionais',
-      description: 'Decisoes com comparadores, `if`, `elif` e `else`.',
+      description: 'Decisões com comparadores, `if`, `elif` e `else`.',
       difficulty: QuizDifficulty.intermediate,
       xpRewardPerCorrectAnswer: 25,
       coinRewardPerCorrectAnswer: 6,
@@ -53,11 +53,11 @@ final class QuizCatalogDataSource {
         QuizQuestion(
           questionId: 'conditions-1',
           prompt:
-              'Para aprovar apenas alunos com nota >= 7 e frequencia >= 75, use:',
+              'Para aprovar apenas alunos com nota >= 7 e frequência >= 75, use:',
           options: <String>['or', 'and', 'not', 'while'],
           correctOptionIndex: 1,
           explanation:
-              'As duas exigencias devem ser verdadeiras, portanto usa-se `and`.',
+              'As duas exigências devem ser verdadeiras, portanto usa-se `and`.',
         ),
         QuizQuestion(
           questionId: 'conditions-2',
@@ -68,7 +68,7 @@ final class QuizCatalogDataSource {
         ),
         QuizQuestion(
           questionId: 'conditions-3',
-          prompt: 'Qual ramo trata casos que nao atenderam regras anteriores?',
+          prompt: 'Qual ramo trata casos que não atenderam regras anteriores?',
           options: <String>['else', 'import', 'def', 'range'],
           correctOptionIndex: 0,
           explanation:
@@ -79,8 +79,8 @@ final class QuizCatalogDataSource {
     ProgrammingQuiz(
       quizId: 'quiz-loops-functions',
       topicId: 'loops',
-      title: 'Lacos e funcoes',
-      description: 'Consolide repeticao, acumuladores e retorno de funcoes.',
+      title: 'Laços e funções',
+      description: 'Consolide repetição, acumuladores e retorno de funções.',
       difficulty: QuizDifficulty.advanced,
       xpRewardPerCorrectAnswer: 30,
       coinRewardPerCorrectAnswer: 8,
@@ -91,23 +91,23 @@ final class QuizCatalogDataSource {
           prompt: 'Qual estrutura percorre diretamente uma lista de notas?',
           options: <String>['for', 'return', 'elif', 'class'],
           correctOptionIndex: 0,
-          explanation: '`for` percorre elementos de uma sequencia.',
+          explanation: '`for` percorre elementos de uma sequência.',
         ),
         QuizQuestion(
           questionId: 'functions-1',
-          prompt: 'O que `return` faz em uma funcao?',
+          prompt: 'O que `return` faz em uma função?',
           options: <String>[
             'Repete o bloco',
             'Entrega um resultado ao chamador',
             'Importa biblioteca',
-            'Comenta o codigo',
+            'Comenta o código',
           ],
           correctOptionIndex: 1,
           explanation: '`return` disponibiliza o resultado para uso posterior.',
         ),
         QuizQuestion(
           questionId: 'loops-2',
-          prompt: 'Qual variavel geralmente registra uma soma durante um laco?',
+          prompt: 'Qual variável geralmente registra uma soma durante um laço?',
           options: <String>[
             'acumulador',
             'decorador',
@@ -116,7 +116,7 @@ final class QuizCatalogDataSource {
           ],
           correctOptionIndex: 0,
           explanation:
-              'Um acumulador guarda o total atualizado a cada iteracao.',
+              'Um acumulador guarda o total atualizado a cada iteração.',
         ),
       ],
     ),

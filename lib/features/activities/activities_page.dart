@@ -20,12 +20,12 @@ class ActivitiesPage extends StatelessWidget {
             padding: const EdgeInsets.all(24),
             children: [
               Text(
-                'Pratica orientada',
+                'Prática orientada',
                 style: Theme.of(context).textTheme.headlineSmall,
               ),
               const SizedBox(height: 8),
               const Text(
-                'Escolha um desafio. Cada atividade possui objetivo, etapas, dicas e criterio de conclusao.',
+                'Escolha um desafio. Cada atividade possui objetivo, etapas, dicas e critério de conclusão.',
               ),
               const SizedBox(height: 16),
               for (final activity in activities) ...[

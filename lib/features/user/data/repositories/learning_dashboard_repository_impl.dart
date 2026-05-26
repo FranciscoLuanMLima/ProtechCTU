@@ -72,7 +72,7 @@ final class LearningDashboardRepositoryImpl
   }) async {
     if (userId.trim().isEmpty) {
       throw const DatabaseException(
-        'O identificador do usuario e obrigatorio.',
+        'O identificador do usuário é obrigatório.',
       );
     }
     final results = await Future.wait<Object?>(<Future<Object?>>[
@@ -124,7 +124,7 @@ final class LearningDashboardRepositoryImpl
     }
     final topicModel = await _localDataSource.findTopic(activity.topicId);
     if (topicModel == null || !topicModel.isActive) {
-      throw const DatabaseException('Assunto nao encontrado ou inativo.');
+      throw const DatabaseException('Assunto não encontrado ou inativo.');
     }
     final topic = LearningDashboardMapper.topicToEntity(topicModel);
     final allProgress = await _localDataSource.findProgress(activity.userId);
@@ -136,7 +136,7 @@ final class LearningDashboardRepositoryImpl
       (topicId) => !completedTopicIds.contains(topicId),
     )) {
       throw const DatabaseException(
-        'O assunto ainda possui pre-requisitos nao concluidos.',
+        'O assunto ainda possui pré-requisitos não concluídos.',
       );
     }
     final storedProgress = await _localDataSource.findTopicProgress(
@@ -205,7 +205,7 @@ final class LearningDashboardRepositoryImpl
         goal.description.trim().isEmpty ||
         goal.targetCompletionRate <= 0 ||
         goal.targetCompletionRate > 1) {
-      throw const DatabaseException('Meta educacional invalida.');
+      throw const DatabaseException('Meta educacional inválida.');
     }
     final model = LearningDashboardMapper.goalToModel(goal);
     await _localDataSource.putGoal(
@@ -245,7 +245,7 @@ final class LearningDashboardRepositoryImpl
           topic.name.trim().isEmpty ||
           topic.totalExercises < 0 ||
           !identifiers.add(topic.topicId)) {
-        throw const DatabaseException('Catalogo de assuntos invalido.');
+        throw const DatabaseException('Catálogo de assuntos inválido.');
       }
     }
     for (final topic in topics) {
@@ -254,7 +254,7 @@ final class LearningDashboardRepositoryImpl
             requiredId == topic.topicId || !identifiers.contains(requiredId),
       )) {
         throw const DatabaseException(
-          'Pre-requisito de assunto invalido ou inexistente.',
+          'Pré-requisito de assunto inválido ou inexistente.',
         );
       }
       _assertNoCycle(topic.topicId, topics, <String>{});
@@ -281,7 +281,7 @@ final class LearningDashboardRepositoryImpl
         activity.topicId.trim().isEmpty ||
         activity.duration.isNegative ||
         (activity.responseTime?.isNegative ?? false)) {
-      throw const DatabaseException('Evento de aprendizagem invalido.');
+      throw const DatabaseException('Evento de aprendizagem inválido.');
     }
   }
 

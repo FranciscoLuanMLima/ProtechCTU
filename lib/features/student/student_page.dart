@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../core/widgets/app_card.dart';
-import '../../core/widgets/loading.dart';
+import 'student_model.dart';
 import 'student_cubit.dart';
 
 class StudentPage extends StatelessWidget {
@@ -12,9 +12,13 @@ class StudentPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Estudante')),
-      body: BlocBuilder<StudentCubit, dynamic>(
+      body: BlocBuilder<StudentCubit, StudentModel?>(
         builder: (context, student) {
-          if (student == null) return const Loading();
+          if (student == null) {
+            return const Center(
+              child: Text('Nenhum cadastro de estudante disponível.'),
+            );
+          }
 
           return ListView(
             padding: const EdgeInsets.all(24),
@@ -28,7 +32,7 @@ class StudentPage extends StatelessWidget {
                       style: Theme.of(context).textTheme.titleLarge,
                     ),
                     const SizedBox(height: 8),
-                    Text('Matricula: ${student.registration}'),
+                    Text('Matrícula: ${student.registration}'),
                     Text('Ano de entrada: ${student.entryYear}'),
                   ],
                 ),

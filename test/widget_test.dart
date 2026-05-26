@@ -7,6 +7,7 @@ import 'package:protechctu/features/activities/activities_cubit.dart';
 import 'package:protechctu/features/activities/activities_page.dart';
 import 'package:protechctu/features/activities/activity_editor_page.dart';
 import 'package:protechctu/features/auth/auth_cubit.dart';
+import 'package:protechctu/features/auth/auth_model.dart';
 import 'package:protechctu/features/auth/auth_page.dart';
 import 'package:protechctu/features/auth/auth_repository.dart';
 import 'package:protechctu/features/concepts/concept_detail_page.dart';
@@ -17,6 +18,21 @@ import 'package:protechctu/features/quiz/data/datasources/quiz_catalog_datasourc
 import 'package:protechctu/features/quiz/domain/entities/programming_quiz.dart';
 
 void main() {
+  test('credencial persistida não contém senha em texto puro', () {
+    final user = AuthModel.register(
+      name: 'Ana Silva',
+      registration: '2026001',
+      password: 'Senha forte 123',
+      gender: 'Feminino',
+      entryYear: 2026,
+    );
+
+    expect(user.matches('2026001', 'Senha forte 123'), isTrue);
+    expect(user.matches('2026001', 'senha errada'), isFalse);
+    expect(user.toMap().containsKey('password'), isFalse);
+    expect(user.toSessionMap().containsKey('passwordHash'), isFalse);
+  });
+
   test('quiz perfeito concede recompensas gamificadas', () async {
     const gamification = QuizGamificationService();
     const learner = QuizLearner(
@@ -44,6 +60,8 @@ void main() {
     expect(result.xpEarned, 90);
     expect(result.coinsEarned, 15);
     expect(result.profile.streak.currentOffenseDays, 1);
+    expect(profile.identification.birthDate.millisecondsSinceEpoch, 0);
+    expect(profile.institutional.course, 'Não informado');
     expect(
       result.profile.achievements.unlockedAchievementIds,
       contains('quiz_perfeito_variables'),
@@ -61,12 +79,12 @@ void main() {
     );
 
     expect(find.text('Entrar'), findsWidgets);
-    expect(find.text('Matricula'), findsOneWidget);
+    expect(find.text('Matrícula'), findsOneWidget);
     expect(find.text('Senha'), findsOneWidget);
     expect(find.text('Criar cadastro'), findsOneWidget);
   });
 
-  testWidgets('abre assunto didatico e volta para lista anterior', (
+  testWidgets('abre assunto didático e volta para lista anterior', (
     tester,
   ) async {
     final router = GoRouter(
@@ -92,19 +110,19 @@ void main() {
     await tester.pumpWidget(MaterialApp.router(routerConfig: router));
     await tester.pumpAndSettle();
 
-    await tester.tap(find.text('Variaveis e tipos'));
+    await tester.tap(find.text('Variáveis e tipos'));
     await tester.pumpAndSettle();
 
-    expect(find.text('O que voce vai aprender'), findsOneWidget);
+    expect(find.text('O que você vai aprender'), findsOneWidget);
     expect(find.text('Exemplo em Python'), findsOneWidget);
 
     await tester.tap(find.byTooltip('Back'));
     await tester.pumpAndSettle();
 
-    expect(find.text('Variaveis e tipos'), findsOneWidget);
+    expect(find.text('Variáveis e tipos'), findsOneWidget);
   });
 
-  testWidgets('atividade guiada preserva retorno para lista de praticas', (
+  testWidgets('atividade guiada preserva retorno para lista de práticas', (
     tester,
   ) async {
     final router = GoRouter(
@@ -133,17 +151,21 @@ void main() {
     await tester.pumpAndSettle();
 
     await tester.tap(
-      find.widgetWithText(FilledButton, 'Iniciar pratica').first,
+      find.widgetWithText(FilledButton, 'Iniciar prática').first,
     );
     await tester.pumpAndSettle();
 
     expect(find.text('Objetivo'), findsOneWidget);
-    await tester.scrollUntilVisible(find.text('Seu codigo'), 300);
-    expect(find.text('Seu codigo'), findsOneWidget);
+    await tester.scrollUntilVisible(find.text('Seu código'), 300);
+    expect(find.text('Seu código'), findsOneWidget);
+    await tester.drag(find.byType(ListView), const Offset(0, -600));
+    await tester.pumpAndSettle();
+    expect(find.text('Autoavaliação antes de concluir:'), findsWidgets);
+    expect(find.text('Registrar conclusão'), findsWidgets);
 
     await tester.tap(find.byTooltip('Back'));
     await tester.pumpAndSettle();
 
-    expect(find.text('Pratica orientada'), findsOneWidget);
+    expect(find.text('Prática orientada'), findsOneWidget);
   });
 }

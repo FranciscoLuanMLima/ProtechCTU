@@ -79,7 +79,7 @@ class _QuizPlayPageState extends ConsumerState<QuizPlayPage> {
       body: quizAsync.when(
         data: (quiz) {
           if (quiz == null) {
-            return const Center(child: Text('Quiz nao encontrado.'));
+            return const Center(child: Text('Quiz não encontrado.'));
           }
           if (_completion != null) {
             return _ResultView(quiz: quiz, completion: _completion!);
@@ -202,14 +202,14 @@ class _ResultView extends StatelessWidget {
                 '+${completion.attempt.xpEarned} XP  |  +${completion.attempt.coinsEarned} moedas',
               ),
               Text(
-                'Nivel ${completion.newLevel}  |  XP total: ${completion.totalXp}',
+                'Nível ${completion.newLevel}  |  XP total: ${completion.totalXp}',
               ),
               Text(
-                'Saldo: ${completion.coinsBalance} moedas  |  Ofensa: ${completion.streakDays} dia(s)',
+                'Saldo: ${completion.coinsBalance} moedas  |  Sequência: ${completion.streakDays} dia(s)',
               ),
               if (completion.didLevelUp) ...[
                 const SizedBox(height: 10),
-                const Text('Novo nivel alcancado!'),
+                const Text('Novo nível alcançado!'),
               ],
               if (completion.attempt.isPerfect) ...[
                 const SizedBox(height: 10),
@@ -219,7 +219,7 @@ class _ResultView extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 16),
-        Text('Correcoes', style: Theme.of(context).textTheme.titleMedium),
+        Text('Correções', style: Theme.of(context).textTheme.titleMedium),
         const SizedBox(height: 10),
         for (var index = 0; index < quiz.questions.length; index++) ...[
           AppCard(

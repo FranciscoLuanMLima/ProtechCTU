@@ -206,7 +206,7 @@ final class IsarLearningDashboardLocalDataSource
           .findAll();
     } catch (error, stackTrace) {
       throw DatabaseException(
-        'Falha ao consultar agenda de revisao.',
+        'Falha ao consultar agenda de revisão.',
         error,
         stackTrace,
       );
@@ -222,7 +222,7 @@ final class IsarLearningDashboardLocalDataSource
           .findFirst();
     } catch (error, stackTrace) {
       throw DatabaseException(
-        'Falha ao consultar revisao do assunto.',
+        'Falha ao consultar revisão do assunto.',
         error,
         stackTrace,
       );

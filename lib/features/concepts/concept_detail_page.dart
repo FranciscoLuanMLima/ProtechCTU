@@ -15,7 +15,7 @@ class ConceptDetailPage extends StatelessWidget {
     if (concept == null) {
       return Scaffold(
         appBar: AppBar(title: Text('Assunto')),
-        body: const Center(child: Text('Assunto nao encontrado.')),
+        body: const Center(child: Text('Assunto não encontrado.')),
       );
     }
 
@@ -34,7 +34,7 @@ class ConceptDetailPage extends StatelessWidget {
           ),
           const SizedBox(height: 20),
           _SectionCard(
-            title: 'O que voce vai aprender',
+            title: 'O que você vai aprender',
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -44,7 +44,7 @@ class ConceptDetailPage extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 12),
-          _SectionCard(title: 'Explicacao', child: Text(concept.explanation)),
+          _SectionCard(title: 'Explicação', child: Text(concept.explanation)),
           const SizedBox(height: 12),
           _SectionCard(
             title: 'Exemplo em Python',
@@ -77,7 +77,7 @@ class ConceptDetailPage extends StatelessWidget {
             const SizedBox(height: 12),
             AppCard(
               child: Text(
-                'Proximo assunto recomendado: ${concept.nextTopic}',
+                'Próximo assunto recomendado: ${concept.nextTopic}',
                 style: Theme.of(context).textTheme.titleSmall,
               ),
             ),

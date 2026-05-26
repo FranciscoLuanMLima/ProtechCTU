@@ -46,7 +46,7 @@ class ActivityCard extends StatelessWidget {
           FilledButton.icon(
             onPressed: onStart,
             icon: const Icon(Icons.play_arrow),
-            label: const Text('Iniciar pratica'),
+            label: const Text('Iniciar prática'),
           ),
         ],
       ),

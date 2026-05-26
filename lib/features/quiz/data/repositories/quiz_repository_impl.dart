@@ -75,12 +75,12 @@ final class QuizRepositoryImpl implements QuizRepository {
     required DateTime startedAt,
   }) async {
     if (selectedOptionIndexes.length != quiz.questions.length) {
-      throw const DatabaseException('Responda todas as questoes do quiz.');
+      throw const DatabaseException('Responda todas as questões do quiz.');
     }
     await ensureLearnerProfile(learner);
     final profile = await _userRepository.getProfile(learner.userId);
     if (profile == null) {
-      throw const DatabaseException('Perfil gamificado indisponivel.');
+      throw const DatabaseException('Perfil gamificado indisponível.');
     }
     var correctAnswers = 0;
     for (var index = 0; index < quiz.questions.length; index++) {

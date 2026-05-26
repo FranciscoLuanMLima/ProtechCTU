@@ -173,8 +173,8 @@ final class DashboardAnalyticsService {
             topicId: topic.topic.topicId,
             title: 'Revisar ${topic.topic.name}',
             reason: review.urgency == ReviewUrgency.emergency
-                ? 'Erros recentes indicam revisao imediata.'
-                : 'A revisao espacada deste assunto venceu.',
+                ? 'Erros recentes indicam revisão imediata.'
+                : 'A revisão espaçada deste assunto venceu.',
             priority: review.urgency == ReviewUrgency.emergency ? 100 : 80,
           ),
         );
@@ -207,7 +207,7 @@ final class DashboardAnalyticsService {
         PersonalizedRecommendation(
           type: RecommendationType.beginnerReinforcement,
           topicId: item.topic.topicId,
-          title: 'Reforcar ${item.topic.name}',
+          title: 'Reforçar ${item.topic.name}',
           reason: 'A taxa de acerto esta abaixo de 50%.',
           priority: 90,
         ),
@@ -248,7 +248,7 @@ final class DashboardAnalyticsService {
     if (user != null && user.progression.nextLevelXp > 0) {
       milestones.add(
         LearningMilestone(
-          title: 'Proximo nivel',
+          title: 'Próximo nível',
           description:
               'Faltam ${(user.progression.nextLevelXp - user.progression.currentXp).clamp(0, user.progression.nextLevelXp)} XP.',
           progress: user.progression.currentXp / user.progression.nextLevelXp,

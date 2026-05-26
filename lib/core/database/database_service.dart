@@ -20,7 +20,7 @@ final class DatabaseService {
       return DatabaseService._(isar);
     } catch (error, stackTrace) {
       throw DatabaseException(
-        'Nao foi possivel abrir o banco local ISAR.',
+        'Não foi possível abrir o banco local ISAR.',
         error,
         stackTrace,
       );
@@ -32,7 +32,7 @@ final class DatabaseService {
       await isar.close(deleteFromDisk: deleteFromDisk);
     } catch (error, stackTrace) {
       throw DatabaseException(
-        'Nao foi possivel fechar o banco local ISAR.',
+        'Não foi possível fechar o banco local ISAR.',
         error,
         stackTrace,
       );

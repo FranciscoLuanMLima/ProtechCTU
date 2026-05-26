@@ -8,137 +8,137 @@ class ConceptsRepository {
   static const _concepts = <ConceptModel>[
     ConceptModel(
       id: 'logic',
-      title: 'Logica de programacao',
+      title: 'Lógica de programação',
       description: 'Fundamentos para resolver problemas com algoritmos.',
       difficulty: 'Iniciante',
       estimatedMinutes: 12,
       objectives: [
-        'Identificar entrada, processamento e saida de um problema.',
-        'Organizar uma solucao em passos antes de escrever codigo.',
+        'Identificar entrada, processamento e saída de um problema.',
+        'Organizar uma solução em passos antes de escrever código.',
       ],
       explanation:
-          'Programar comeca por decompor um problema. Um algoritmo e uma sequencia finita de instrucoes claras. Antes da linguagem, descreva o que entra, o que deve ser calculado e qual resultado deve sair.',
-      exampleCode: '''# Problema: calcular a idade no proximo ano
+          'Programar começa por decompor um problema. Um algoritmo é uma sequência finita de instruções claras. Antes da linguagem, descreva o que entra, o que deve ser calculado e qual resultado deve sair.',
+      exampleCode: '''# Problema: calcular a idade no próximo ano
 idade = 18
 idade_no_proximo_ano = idade + 1
 print(idade_no_proximo_ano)''',
       exampleExplanation:
-          'A entrada e `idade`, o processamento soma 1 e a saida e impressa. Essa estrutura aparece em quase todo programa.',
+          'A entrada é `idade`, o processamento soma 1 e a saída é impressa. Essa estrutura aparece em quase todo programa.',
       guidedSteps: [
         'Leia o enunciado e sublinhe os dados recebidos.',
-        'Escreva a transformacao necessaria em linguagem natural.',
-        'Defina a saida esperada antes de implementar.',
+        'Escreva a transformação necessária em linguagem natural.',
+        'Defina a saída esperada antes de implementar.',
       ],
       checkpointQuestion:
-          'Em um programa que calcula media de notas, quais sao entrada e saida?',
+          'Em um programa que calcula média de notas, quais são entrada e saída?',
       checkpointAnswer:
-          'As notas sao as entradas; a media calculada e a saida.',
-      nextTopic: 'Variaveis e tipos',
+          'As notas são as entradas; a média calculada é a saída.',
+      nextTopic: 'Variáveis e tipos',
     ),
     ConceptModel(
       id: 'variables',
-      title: 'Variaveis e tipos',
-      description: 'Como armazenar e transformar dados durante a execucao.',
+      title: 'Variáveis e tipos',
+      description: 'Como armazenar e transformar dados durante a execução.',
       difficulty: 'Iniciante',
       estimatedMinutes: 15,
       objectives: [
-        'Criar variaveis com nomes significativos.',
-        'Diferenciar texto, numero inteiro, decimal e booleano.',
+        'Criar variáveis com nomes significativos.',
+        'Diferenciar texto, número inteiro, decimal e booleano.',
       ],
       explanation:
-          'Variaveis guardam valores que seu algoritmo precisa consultar ou atualizar. Em Python, o tipo e inferido pelo valor atribuido. Escolha nomes que expliquem o papel do dado, como `total_pontos` em vez de `x`.',
+          'Variáveis guardam valores que seu algoritmo precisa consultar ou atualizar. Em Python, o tipo é inferido pelo valor atribuído. Escolha nomes que expliquem o papel do dado, como `total_pontos` em vez de `x`.',
       exampleCode: '''nome = "Lia"
 tentativas = 3
 taxa_acerto = 0.85
 aprovada = taxa_acerto >= 0.7
 print(nome, aprovada)''',
       exampleExplanation:
-          '`nome` e texto, `tentativas` e inteiro, `taxa_acerto` e decimal e `aprovada` recebe um booleano resultante de uma comparacao.',
+          '`nome` é texto, `tentativas` é inteiro, `taxa_acerto` é decimal e `aprovada` recebe um booleano resultante de uma comparação.',
       guidedSteps: [
-        'Crie uma variavel para seu nome e outra para sua idade.',
-        'Calcule quantos anos tera daqui a cinco anos.',
+        'Crie uma variável para seu nome e outra para sua idade.',
+        'Calcule quantos anos terá daqui a cinco anos.',
         'Imprima uma frase usando os valores armazenados.',
       ],
       checkpointQuestion:
-          'Por que `total_pontos` e melhor nome que `tp` para uma variavel?',
+          'Por que `total_pontos` é melhor nome que `tp` para uma variável?',
       checkpointAnswer:
-          'Porque comunica a intencao do valor e torna o codigo mais facil de manter.',
-      nextTopic: 'Entrada e saida',
+          'Porque comunica a intenção do valor e torna o código mais fácil de manter.',
+      nextTopic: 'Entrada e saída',
     ),
     ConceptModel(
       id: 'input-output',
-      title: 'Entrada e saida',
-      description: 'Receba dados do usuario e apresente resultados claros.',
+      title: 'Entrada e saída',
+      description: 'Receba dados do usuário e apresente resultados claros.',
       difficulty: 'Iniciante',
       estimatedMinutes: 12,
       objectives: [
         'Usar `input()` para coletar dados.',
-        'Converter texto recebido para tipos numericos.',
+        'Converter texto recebido para tipos numéricos.',
       ],
       explanation:
-          'Toda entrada digitada em Python chega inicialmente como texto. Para fazer calculos, converta com `int()` ou `float()`. Saidas devem explicar o resultado, nao apenas exibir numeros soltos.',
+          'Toda entrada digitada em Python chega inicialmente como texto. Para fazer cálculos, converta com `int()` ou `float()`. Saídas devem explicar o resultado, não apenas exibir números soltos.',
       exampleCode: '''nota1 = float(input("Nota 1: "))
 nota2 = float(input("Nota 2: "))
 media = (nota1 + nota2) / 2
-print(f"Media final: {media:.1f}")''',
+print(f"Média final: {media:.1f}")''',
       exampleExplanation:
-          'As entradas sao convertidas para decimal e a formatacao limita a exibicao a uma casa decimal.',
+          'As entradas são convertidas para decimal e a formatação limita a exibição a uma casa decimal.',
       guidedSteps: [
-        'Pergunte o nome do usuario.',
-        'Leia duas idades numericas.',
+        'Pergunte o nome do usuário.',
+        'Leia duas idades numéricas.',
         'Mostre a soma em uma frase completa.',
       ],
       checkpointQuestion:
-          'O que acontece ao somar `input("A: ")` com `input("B: ")` sem conversao?',
+          'O que acontece ao somar `input("A: ")` com `input("B: ")` sem conversão?',
       checkpointAnswer:
-          'Os textos sao concatenados em vez de somados numericamente.',
+          'Os textos são concatenados em vez de somados numericamente.',
       nextTopic: 'Condicionais',
     ),
     ConceptModel(
       id: 'conditions',
       title: 'Condicionais',
-      description: 'Como tomar decisoes usando regras booleanas.',
-      difficulty: 'Basico',
+      description: 'Como tomar decisões usando regras booleanas.',
+      difficulty: 'Básico',
       estimatedMinutes: 18,
       objectives: [
-        'Aplicar `if`, `elif` e `else` em regras de decisao.',
-        'Construir expressoes com comparadores e operadores logicos.',
+        'Aplicar `if`, `elif` e `else` em regras de decisão.',
+        'Construir expressões com comparadores e operadores lógicos.',
       ],
       explanation:
-          'Condicionais permitem que o programa siga caminhos diferentes. A ordem das regras importa: verifique primeiro os casos mais especificos ou prioritarios para que nenhuma decisao seja escondida por outra.',
+          'Condicionais permitem que o programa siga caminhos diferentes. A ordem das regras importa: verifique primeiro os casos mais específicos ou prioritários para que nenhuma decisão seja escondida por outra.',
       exampleCode: '''media = 7.5
 frequencia = 80
 
 if media >= 7 and frequencia >= 75:
     print("Aprovado")
 elif media >= 5:
-    print("Recuperacao")
+    print("Recuperação")
 else:
     print("Reprovado")''',
       exampleExplanation:
-          'O aluno so e aprovado quando satisfaz as duas regras; caso contrario a segunda decisao e avaliada.',
+          'O aluno só é aprovado quando satisfaz as duas regras; caso contrário a segunda decisão é avaliada.',
       guidedSteps: [
-        'Defina uma variavel com a pontuacao obtida.',
-        'Imprima `Nivel concluido` para pontuacao maior ou igual a 80.',
-        'Acrescente mensagens para recuperacao e nova tentativa.',
+        'Defina uma variável com a pontuação obtida.',
+        'Imprima `Nível concluído` para pontuação maior ou igual a 80.',
+        'Acrescente mensagens para recuperação e nova tentativa.',
       ],
-      checkpointQuestion: 'Quando usar `and` em uma decisao?',
+      checkpointQuestion: 'Quando usar `and` em uma decisão?',
       checkpointAnswer:
-          'Quando todas as condicoes relacionadas precisam ser verdadeiras ao mesmo tempo.',
-      nextTopic: 'Lacos de repeticao',
+          'Quando todas as condições relacionadas precisam ser verdadeiras ao mesmo tempo.',
+      nextTopic: 'Laços de repetição',
     ),
     ConceptModel(
       id: 'loops',
-      title: 'Lacos de repeticao',
+      title: 'Laços de repetição',
       description: 'Execute passos repetidos de modo controlado.',
-      difficulty: 'Basico',
+      difficulty: 'Básico',
       estimatedMinutes: 20,
       objectives: [
-        'Percorrer sequencias usando `for`.',
-        'Repetir enquanto uma condicao for verdadeira usando `while`.',
+        'Percorrer sequências usando `for`.',
+        'Repetir enquanto uma condição for verdadeira usando `while`.',
       ],
       explanation:
-          'Lacos evitam copiar a mesma instrucao diversas vezes. Use `for` quando conhece a colecao ou quantidade de repeticoes. Use `while` quando a parada depende de uma condicao que muda durante a execucao.',
+          'Laços evitam copiar a mesma instrução diversas vezes. Use `for` quando conhece a coleção ou quantidade de repetições. Use `while` quando a parada depende de uma condição que muda durante a execução.',
       exampleCode: '''acertos = [True, False, True, True]
 total = 0
 
@@ -150,44 +150,44 @@ print(f"Acertos: {total}")''',
       exampleExplanation:
           'O `for` visita cada resultado e o acumulador aumenta somente quando a resposta foi correta.',
       guidedSteps: [
-        'Use `range(1, 6)` para exibir numeros de 1 a 5.',
-        'Crie um acumulador para somar esses numeros.',
-        'Mostre o total ao terminar o laco.',
+        'Use `range(1, 6)` para exibir números de 1 a 5.',
+        'Crie um acumulador para somar esses números.',
+        'Mostre o total ao terminar o laço.',
       ],
       checkpointQuestion:
-          'Qual laco e adequado para pedir senha ate ela estar correta?',
+          'Qual laço é adequado para pedir senha até ela estar correta?',
       checkpointAnswer:
-          '`while`, porque nao sabemos antecipadamente quantas tentativas serao necessarias.',
-      nextTopic: 'Funcoes',
+          '`while`, porque não sabemos antecipadamente quantas tentativas serão necessárias.',
+      nextTopic: 'Funções',
     ),
     ConceptModel(
       id: 'functions',
-      title: 'Funcoes',
-      description: 'Organize regras reutilizaveis com parametros e retorno.',
-      difficulty: 'Intermediario',
+      title: 'Funções',
+      description: 'Organize regras reutilizáveis com parâmetros e retorno.',
+      difficulty: 'Intermediário',
       estimatedMinutes: 22,
       objectives: [
-        'Definir funcoes com parametros.',
-        'Retornar resultados para reutilizar a logica.',
+        'Definir funções com parâmetros.',
+        'Retornar resultados para reutilizar a lógica.',
       ],
       explanation:
-          'Uma funcao nomeia uma responsabilidade. Ela recebe parametros, executa uma regra e pode retornar um resultado. Funcoes curtas tornam o programa mais testavel e reduzem repeticao.',
+          'Uma função nomeia uma responsabilidade. Ela recebe parâmetros, executa uma regra e pode retornar um resultado. Funções curtas tornam o programa mais testável e reduzem repetição.',
       exampleCode: '''def calcular_media(notas):
     return sum(notas) / len(notas)
 
 media = calcular_media([8.0, 7.5, 9.0])
-print(f"Media: {media:.1f}")''',
+print(f"Média: {media:.1f}")''',
       exampleExplanation:
-          'A funcao encapsula o calculo; qualquer lista de notas pode reaproveitar a mesma regra.',
+          'A função encapsula o cálculo; qualquer lista de notas pode reaproveitar a mesma regra.',
       guidedSteps: [
         'Crie `dobro(numero)` que retorne o dobro recebido.',
-        'Chame a funcao com tres numeros diferentes.',
-        'Crie uma funcao que informe se a nota foi aprovada.',
+        'Chame a função com três números diferentes.',
+        'Crie uma função que informe se a nota foi aprovada.',
       ],
       checkpointQuestion:
-          'Qual e a diferenca entre `print()` e `return` dentro de uma funcao?',
+          'Qual é a diferença entre `print()` e `return` dentro de uma função?',
       checkpointAnswer:
-          '`print()` apenas exibe; `return` entrega o valor para ser usado em outras operacoes.',
+          '`print()` apenas exibe; `return` entrega o valor para ser usado em outras operações.',
       nextTopic: null,
     ),
   ];

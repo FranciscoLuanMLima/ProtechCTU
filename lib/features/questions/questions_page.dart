@@ -37,7 +37,7 @@ class QuestionsPage extends StatelessWidget {
                         DropdownButtonFormField<String>(
                           initialValue: answers[question.id],
                           decoration: const InputDecoration(
-                            labelText: 'Selecione uma opcao',
+                            labelText: 'Selecione uma opção',
                           ),
                           items: question.options
                               .map(
@@ -60,7 +60,9 @@ class QuestionsPage extends StatelessWidget {
                   label: 'Continuar',
                   icon: Icons.arrow_forward,
                   onPressed: completed
-                      ? () {
+                      ? () async {
+                          await cubit.save();
+                          if (!context.mounted) return;
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(content: Text('Respostas salvas.')),
                           );

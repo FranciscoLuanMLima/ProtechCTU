@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 
 class CodeEditor extends StatefulWidget {
-  const CodeEditor({required this.initialCode, super.key});
+  const CodeEditor({required this.initialCode, this.onChanged, super.key});
 
   final String initialCode;
+  final ValueChanged<String>? onChanged;
 
   @override
   State<CodeEditor> createState() => _CodeEditorState();
@@ -28,11 +29,12 @@ class _CodeEditorState extends State<CodeEditor> {
   Widget build(BuildContext context) {
     return TextFormField(
       controller: _controller,
+      onChanged: widget.onChanged,
       minLines: 14,
       maxLines: null,
       decoration: const InputDecoration(
         alignLabelWithHint: true,
-        labelText: 'Codigo',
+        labelText: 'Código',
       ),
       style: const TextStyle(fontFamily: 'monospace'),
     );

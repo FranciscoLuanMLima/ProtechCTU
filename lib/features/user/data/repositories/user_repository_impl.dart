@@ -93,7 +93,7 @@ final class UserRepositoryImpl implements UserRepository {
   Future<void> deleteProfile(String userId) async {
     if (userId.trim().isEmpty) {
       throw const DatabaseException(
-        'O identificador do usuario e obrigatorio.',
+        'O identificador do usuário é obrigatório.',
       );
     }
     final now = DateTime.now().toUtc();
@@ -166,7 +166,7 @@ final class UserRepositoryImpl implements UserRepository {
         profile.identification.registration.trim().isEmpty ||
         profile.identification.name.trim().isEmpty) {
       throw const DatabaseException(
-        'Identificacao do usuario esta incompleta.',
+        'Identificação do usuário está incompleta.',
       );
     }
     if (profile.progression.level < 1 ||
@@ -175,7 +175,7 @@ final class UserRepositoryImpl implements UserRepository {
         profile.economy.coins < 0 ||
         profile.economy.gems < 0) {
       throw const DatabaseException(
-        'Progressao ou economia contem valores invalidos.',
+        'Progressão ou economia contém valores inválidos.',
       );
     }
     if (profile.statistics.accuracyRate < 0 ||
@@ -184,7 +184,7 @@ final class UserRepositoryImpl implements UserRepository {
           (topic) => topic.progress < 0 || topic.progress > 1,
         )) {
       throw const DatabaseException(
-        'Metricas de desempenho fora do intervalo.',
+        'Métricas de desempenho fora do intervalo.',
       );
     }
   }

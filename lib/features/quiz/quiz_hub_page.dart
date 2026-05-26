@@ -32,7 +32,7 @@ class QuizHubPage extends ConsumerWidget {
     final attempts = ref.watch(quizAttemptsProvider(learner.userId));
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Quiz de Programacao')),
+      appBar: AppBar(title: const Text('Quiz de Programação')),
       body: ListView(
         padding: const EdgeInsets.all(24),
         children: [
@@ -40,7 +40,7 @@ class QuizHubPage extends ConsumerWidget {
             data: (data) => _GamificationHeader(profile: data),
             loading: () => const LinearProgressIndicator(),
             error: (_, _) =>
-                const Text('Nao foi possivel carregar suas recompensas.'),
+                const Text('Não foi possível carregar suas recompensas.'),
           ),
           const SizedBox(height: 20),
           Text(
@@ -95,7 +95,7 @@ class _GamificationHeader extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Nivel ${data.progression.level} - ${data.progression.title}',
+            'Nível ${data.progression.level} - ${data.progression.title}',
             style: Theme.of(context).textTheme.titleMedium,
           ),
           const SizedBox(height: 12),
@@ -106,7 +106,7 @@ class _GamificationHeader extends StatelessWidget {
           ),
           const SizedBox(height: 12),
           Text(
-            'XP: ${data.progression.totalXp}  |  Moedas: ${data.economy.coins}  |  Ofensa: ${data.streak.currentOffenseDays} dia(s)',
+            'XP: ${data.progression.totalXp}  |  Moedas: ${data.economy.coins}  |  Sequência: ${data.streak.currentOffenseDays} dia(s)',
           ),
         ],
       ),
@@ -146,13 +146,13 @@ class _QuizCard extends StatelessWidget {
           Text(quiz.description),
           const SizedBox(height: 10),
           Text(
-            '${quiz.questions.length} perguntas | ate ${quiz.questions.length * quiz.xpRewardPerCorrectAnswer + quiz.perfectBonusXp} XP | $attempts tentativa(s)',
+            '${quiz.questions.length} perguntas | até ${quiz.questions.length * quiz.xpRewardPerCorrectAnswer + quiz.perfectBonusXp} XP | $attempts tentativa(s)',
           ),
           const SizedBox(height: 14),
           FilledButton.icon(
             onPressed: onStart,
             icon: const Icon(Icons.quiz_outlined),
-            label: const Text('Comecar quiz'),
+            label: const Text('Começar quiz'),
           ),
         ],
       ),

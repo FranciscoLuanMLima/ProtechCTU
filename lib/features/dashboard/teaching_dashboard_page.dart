@@ -11,6 +11,7 @@ class TeachingDashboardPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final user = AuthRepository.instance.currentUser;
+    final preferences = AuthRepository.instance.learningPreferences;
 
     return Scaffold(
       appBar: AppBar(
@@ -27,7 +28,7 @@ class TeachingDashboardPage extends StatelessWidget {
         padding: const EdgeInsets.all(24),
         children: [
           Text(
-            user == null ? 'Continue seus estudos' : 'Ola, ${user.name}',
+            user == null ? 'Continue seus estudos' : 'Olá, ${user.name}',
             style: Theme.of(context).textTheme.headlineSmall,
           ),
           const SizedBox(height: 8),
@@ -36,6 +37,15 @@ class TeachingDashboardPage extends StatelessWidget {
             style: Theme.of(context).textTheme.bodyLarge,
           ),
           const SizedBox(height: 24),
+          if (preferences.isNotEmpty) ...[
+            AppCard(
+              child: Text(
+                'Sua trilha: nível ${preferences['level']} em ${preferences['language']}.',
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
+            ),
+            const SizedBox(height: 24),
+          ],
           Text(
             'Trilha de aprendizagem',
             style: Theme.of(context).textTheme.titleLarge,
@@ -43,18 +53,18 @@ class TeachingDashboardPage extends StatelessWidget {
           const SizedBox(height: 12),
           _DashboardActionCard(
             icon: Icons.menu_book_outlined,
-            title: 'Assuntos de programacao',
+            title: 'Assuntos de programação',
             description:
-                'Consulte os conceitos da trilha e avance nos conteudos.',
+                'Consulte os conceitos da trilha e avance nos conteúdos.',
             actionLabel: 'Abrir assuntos',
             onPressed: () => context.push(AppRoute.concepts.path),
           ),
           const SizedBox(height: 12),
           _DashboardActionCard(
             icon: Icons.code_outlined,
-            title: 'Atividades praticas',
+            title: 'Atividades práticas',
             description:
-                'Resolva exercicios e construa sua pratica de programacao.',
+                'Resolva exercícios e construa sua prática de programação.',
             actionLabel: 'Continuar estudo',
             onPressed: () => context.push(AppRoute.activities.path),
           ),
@@ -63,7 +73,7 @@ class TeachingDashboardPage extends StatelessWidget {
             icon: Icons.quiz_outlined,
             title: 'Quiz gamificado',
             description:
-                'Teste seu dominio, conquiste XP e moedas e mantenha sua ofensa ativa.',
+                'Teste seu domínio, conquiste XP e mantenha sua sequência ativa.',
             actionLabel: 'Responder quiz',
             onPressed: () => context.push(AppRoute.quiz.path),
           ),
@@ -71,7 +81,7 @@ class TeachingDashboardPage extends StatelessWidget {
           _DashboardActionCard(
             icon: Icons.school_outlined,
             title: 'Dados do estudante',
-            description: 'Consulte suas informacoes academicas cadastradas.',
+            description: 'Consulte suas informações acadêmicas cadastradas.',
             actionLabel: 'Ver estudante',
             onPressed: () => context.push(AppRoute.student.path),
           ),

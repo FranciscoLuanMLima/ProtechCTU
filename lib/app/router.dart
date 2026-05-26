@@ -29,6 +29,25 @@ import '../features/triage/triage_page.dart';
 
 final appRouter = GoRouter(
   initialLocation: AppRoute.splash.path,
+  redirect: (context, state) {
+    final isAuthenticated = AuthRepository.instance.currentUser != null;
+    final privateLocations = <String>[
+      AppRoute.dashboard.path,
+      AppRoute.quiz.path,
+      AppRoute.student.path,
+      AppRoute.concepts.path,
+      AppRoute.activities.path,
+      AppRoute.profile.path,
+    ];
+    final needsAuthentication = privateLocations.any(
+      (location) => state.matchedLocation.startsWith(location),
+    );
+    if (!isAuthenticated && needsAuthentication) return AppRoute.auth.path;
+    if (isAuthenticated && state.matchedLocation == AppRoute.auth.path) {
+      return AppRoute.dashboard.path;
+    }
+    return null;
+  },
   routes: [
     GoRoute(
       path: AppRoute.splash.path,

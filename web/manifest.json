@@ -1,11 +1,11 @@
 {
-    "name": "protechctu",
-    "short_name": "protechctu",
+    "name": "ProTech",
+    "short_name": "ProTech",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
     "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "description": "Ambiente de aprendizagem em programação.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [

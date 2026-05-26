@@ -42,7 +42,7 @@ class ProfilePage extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     _ProfileRow(label: 'Nome', value: user.name),
-                    _ProfileRow(label: 'Matricula', value: user.registration),
+                    _ProfileRow(label: 'Matrícula', value: user.registration),
                     _ProfileRow(label: 'Sexo', value: user.gender),
                     _ProfileRow(
                       label: 'Ano de entrada',

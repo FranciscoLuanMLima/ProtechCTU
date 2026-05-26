@@ -1,6 +1,6 @@
 enum Sex { female, male, nonBinary, notInformed }
 
-enum StudyShift { morning, afternoon, evening, fullTime }
+enum StudyShift { morning, afternoon, evening, fullTime, notInformed }
 
 enum AchievementRarity { common, uncommon, rare, epic, legendary }
 

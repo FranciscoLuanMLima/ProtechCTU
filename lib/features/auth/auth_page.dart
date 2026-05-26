@@ -46,7 +46,7 @@ class _AuthPageState extends State<AuthPage> {
     }
 
     await cubit.register(
-      AuthModel(
+      AuthModel.register(
         name: _name.text.trim(),
         registration: _registration.text.trim(),
         password: _password.text,
@@ -69,7 +69,7 @@ class _AuthPageState extends State<AuthPage> {
             context,
           ).showSnackBar(SnackBar(content: Text(state.message!)));
         }
-        if (state.user != null) context.push(AppRoute.dashboard.path);
+        if (state.user != null) context.go(AppRoute.dashboard.path);
       },
       builder: (context, state) {
         final isRegister = state.mode == AuthMode.register;
@@ -107,7 +107,7 @@ class _AuthPageState extends State<AuthPage> {
                         TextFormField(
                           controller: _registration,
                           decoration: const InputDecoration(
-                            labelText: 'Matricula',
+                            labelText: 'Matrícula',
                             prefixIcon: Icon(Icons.badge),
                           ),
                           textInputAction: TextInputAction.next,
@@ -172,7 +172,7 @@ class _AuthPageState extends State<AuthPage> {
                         TextButton(
                           onPressed: context.read<AuthCubit>().toggleMode,
                           child: Text(
-                            isRegister ? 'Ja tenho cadastro' : 'Criar cadastro',
+                            isRegister ? 'Já tenho cadastro' : 'Criar cadastro',
                           ),
                         ),
                       ],

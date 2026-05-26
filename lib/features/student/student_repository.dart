@@ -1,15 +1,21 @@
+import '../auth/auth_repository.dart';
 import 'student_model.dart';
-import 'student_service.dart';
 
 class StudentRepository {
-  StudentRepository._({StudentService? service})
-    : _service = service ?? const StudentService();
+  StudentRepository._({AuthRepository? authRepository})
+    : _authRepository = authRepository ?? AuthRepository.instance;
 
   static final instance = StudentRepository._();
 
-  final StudentService _service;
+  final AuthRepository _authRepository;
 
-  Future<StudentModel> load() async {
-    return _service.fallbackStudent();
+  Future<StudentModel?> load() async {
+    final user = _authRepository.currentUser;
+    if (user == null) return null;
+    return StudentModel(
+      name: user.name,
+      registration: user.registration,
+      entryYear: user.entryYear,
+    );
   }
 }
