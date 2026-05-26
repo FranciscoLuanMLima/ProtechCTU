@@ -6,6 +6,7 @@ import 'package:protechctu/core/services/quiz_gamification_service.dart';
 import 'package:protechctu/features/activities/activities_cubit.dart';
 import 'package:protechctu/features/activities/activities_page.dart';
 import 'package:protechctu/features/activities/activity_editor_page.dart';
+import 'package:protechctu/features/activities/python_exercise_runner.dart';
 import 'package:protechctu/features/auth/auth_cubit.dart';
 import 'package:protechctu/features/auth/auth_model.dart';
 import 'package:protechctu/features/auth/auth_page.dart';
@@ -68,6 +69,42 @@ void main() {
     );
   });
 
+  test('executor Python processa entrada, condição, laço e função', () {
+    const runner = PythonExerciseRunner();
+    const code = '''
+valor = int(input())
+minutos = [20, 0, valor]
+dias = 0
+
+for tempo in minutos:
+    if tempo > 0:
+        dias += 1
+
+def classificar(total):
+    if total >= 2:
+        return "Concluído"
+    else:
+        return "Revisar"
+
+print(f"Dias ativos: {dias}")
+print(classificar(dias))
+print("Resultado:", dias)''';
+
+    final result = runner.run(code: code, input: '15');
+
+    expect(result.succeeded, isTrue);
+    expect(result.output, 'Dias ativos: 2\nConcluído\nResultado: 2');
+  });
+
+  test('executor Python bloqueia comandos externos ao ambiente didático', () {
+    const runner = PythonExerciseRunner();
+
+    final result = runner.run(code: 'import os\nprint("teste")');
+
+    expect(result.succeeded, isFalse);
+    expect(result.error, contains('Comando não suportado'));
+  });
+
   testWidgets('exibe formulario de login', (tester) async {
     await tester.pumpWidget(
       MaterialApp(
@@ -125,6 +162,8 @@ void main() {
   testWidgets('atividade guiada preserva retorno para lista de práticas', (
     tester,
   ) async {
+    await tester.binding.setSurfaceSize(const Size(1000, 3000));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
     final router = GoRouter(
       initialLocation: '/activities',
       routes: [
@@ -156,10 +195,9 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('Objetivo'), findsOneWidget);
-    await tester.scrollUntilVisible(find.text('Seu código'), 300);
     expect(find.text('Seu código'), findsOneWidget);
-    await tester.drag(find.byType(ListView), const Offset(0, -600));
-    await tester.pumpAndSettle();
+    expect(find.text('Entrada de teste'), findsOneWidget);
+    expect(find.text('Executar código'), findsWidgets);
     expect(find.text('Autoavaliação antes de concluir:'), findsWidgets);
     expect(find.text('Registrar conclusão'), findsWidgets);
 
@@ -167,5 +205,31 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('Prática orientada'), findsOneWidget);
+  });
+
+  testWidgets('atividade executa código e apresenta a saída no editor', (
+    tester,
+  ) async {
+    await tester.binding.setSurfaceSize(const Size(1000, 3000));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+    await tester.pumpWidget(
+      const MaterialApp(home: ActivityEditorPage(activityId: 'sum')),
+    );
+    await tester.pumpAndSettle();
+
+    await tester.enterText(
+      find.byKey(const ValueKey('activity-code-editor')),
+      '''xp_atividade_1 = int(input())
+xp_atividade_2 = int(input())
+xp_total = xp_atividade_1 + xp_atividade_2
+print(f"XP total: {xp_total}")''',
+    );
+    await tester.tap(
+      find.byKey(const ValueKey('activity-execute-button')).first,
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.text('Saída do programa'), findsOneWidget);
+    expect(find.text('XP total: 65'), findsOneWidget);
   });
 }

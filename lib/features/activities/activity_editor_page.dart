@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../core/widgets/app_card.dart';
 import 'activities_repository.dart';
 import 'activity_model.dart';
+import 'python_exercise_runner.dart';
 import 'widgets/code_editor.dart';
 
 class ActivityEditorPage extends StatefulWidget {
@@ -16,10 +17,13 @@ class ActivityEditorPage extends StatefulWidget {
 
 class _ActivityEditorPageState extends State<ActivityEditorPage> {
   final _repository = const ActivitiesRepository();
+  final _runner = const PythonExerciseRunner();
   final _checkedCriteria = <int>{};
   late final ActivityModel? _activity;
   late String _code;
+  late String _input;
   late bool _completed;
+  CodeExecutionResult? _execution;
 
   @override
   void initState() {
@@ -28,7 +32,16 @@ class _ActivityEditorPageState extends State<ActivityEditorPage> {
         ? null
         : _repository.findById(widget.activityId!);
     _code = _activity?.starterCode ?? '';
+    _input = _activity?.exampleInput == 'Sem entrada.'
+        ? ''
+        : _activity?.exampleInput ?? '';
     _completed = _activity != null && _repository.isCompleted(_activity.id);
+  }
+
+  void _executeCode() {
+    setState(() {
+      _execution = _runner.run(code: _code, input: _input);
+    });
   }
 
   Future<void> _completeActivity() async {
@@ -110,7 +123,52 @@ class _ActivityEditorPageState extends State<ActivityEditorPage> {
               title: 'Seu código',
               child: CodeEditor(
                 initialCode: activity.starterCode,
-                onChanged: (value) => setState(() => _code = value),
+                onChanged: (value) => setState(() {
+                  _code = value;
+                  _execution = null;
+                }),
+              ),
+            ),
+            const SizedBox(height: 12),
+            _ActivitySection(
+              title: 'Executar código',
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'Execute Python no ambiente didático local. São aceitos os '
+                    'comandos apresentados nestas atividades, com limites de segurança.',
+                  ),
+                  const SizedBox(height: 12),
+                  TextFormField(
+                    key: const ValueKey('activity-execution-input'),
+                    initialValue: _input,
+                    onChanged: (value) => setState(() {
+                      _input = value;
+                      _execution = null;
+                    }),
+                    minLines: 2,
+                    maxLines: 5,
+                    decoration: const InputDecoration(
+                      alignLabelWithHint: true,
+                      labelText: 'Entrada de teste',
+                      hintText: 'Uma entrada por linha',
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  KeyedSubtree(
+                    key: const ValueKey('activity-execute-button'),
+                    child: FilledButton.icon(
+                      onPressed: _executeCode,
+                      icon: const Icon(Icons.play_arrow),
+                      label: const Text('Executar código'),
+                    ),
+                  ),
+                  if (_execution != null) ...[
+                    const SizedBox(height: 16),
+                    _ExecutionConsole(result: _execution!),
+                  ],
+                ],
               ),
             ),
             const SizedBox(height: 12),
@@ -132,6 +190,45 @@ class _ActivityEditorPageState extends State<ActivityEditorPage> {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class _ExecutionConsole extends StatelessWidget {
+  const _ExecutionConsole({required this.result});
+
+  final CodeExecutionResult result;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final color = result.succeeded
+        ? theme.colorScheme.surfaceContainerHighest
+        : theme.colorScheme.errorContainer;
+    final message = result.succeeded
+        ? (result.output.isEmpty ? '(sem saída)' : result.output)
+        : result.error!;
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: color,
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            result.succeeded ? 'Saída do programa' : 'Erro de execução',
+            style: theme.textTheme.titleSmall,
+          ),
+          const SizedBox(height: 8),
+          SelectableText(
+            message,
+            style: const TextStyle(fontFamily: 'monospace'),
+          ),
+        ],
       ),
     );
   }

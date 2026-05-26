@@ -28,6 +28,7 @@ class _CodeEditorState extends State<CodeEditor> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      key: const ValueKey('activity-code-editor'),
       controller: _controller,
       onChanged: widget.onChanged,
       minLines: 14,
