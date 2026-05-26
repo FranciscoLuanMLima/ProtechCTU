@@ -44,14 +44,14 @@ class TriagePage extends StatelessWidget {
                   AppButton(
                     label: 'Entrar',
                     icon: Icons.login,
-                    onPressed: () => context.go(AppRoute.auth.path),
+                    onPressed: () => context.push(AppRoute.auth.path),
                   ),
                   const SizedBox(height: 12),
                   AppButton(
                     label: 'Responder perguntas',
                     icon: Icons.quiz_outlined,
                     outlined: true,
-                    onPressed: () => context.go(AppRoute.questions.path),
+                    onPressed: () => context.push(AppRoute.questions.path),
                   ),
                 ],
               ),

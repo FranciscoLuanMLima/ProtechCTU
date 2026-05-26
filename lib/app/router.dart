@@ -11,9 +11,12 @@ import '../features/concepts/concept_detail_page.dart';
 import '../features/concepts/concepts_cubit.dart';
 import '../features/concepts/concepts_page.dart';
 import '../features/concepts/concepts_repository.dart';
+import '../features/dashboard/teaching_dashboard_page.dart';
 import '../features/profile/profile_cubit.dart';
 import '../features/profile/profile_page.dart';
 import '../features/profile/profile_repository.dart';
+import '../features/quiz/quiz_hub_page.dart';
+import '../features/quiz/quiz_play_page.dart';
 import '../features/questions/questions_cubit.dart';
 import '../features/questions/questions_page.dart';
 import '../features/splash/splash_cubit.dart';
@@ -46,6 +49,24 @@ final appRouter = GoRouter(
         create: (_) => AuthCubit(AuthRepository.instance),
         child: const AuthPage(),
       ),
+    ),
+    GoRoute(
+      path: AppRoute.dashboard.path,
+      name: AppRoute.dashboard.name,
+      builder: (context, state) => const TeachingDashboardPage(),
+    ),
+    GoRoute(
+      path: AppRoute.quiz.path,
+      name: AppRoute.quiz.name,
+      builder: (context, state) => const QuizHubPage(),
+      routes: [
+        GoRoute(
+          path: ':id',
+          name: AppRoute.quizPlay.name,
+          builder: (context, state) =>
+              QuizPlayPage(quizId: state.pathParameters['id'] ?? ''),
+        ),
+      ],
     ),
     GoRoute(
       path: AppRoute.questions.path,
@@ -90,7 +111,9 @@ final appRouter = GoRouter(
         GoRoute(
           path: 'editor',
           name: AppRoute.activityEditor.name,
-          builder: (context, state) => const ActivityEditorPage(),
+          builder: (context, state) => ActivityEditorPage(
+            activityId: state.uri.queryParameters['activityId'],
+          ),
         ),
       ],
     ),
@@ -109,6 +132,9 @@ enum AppRoute {
   splash('/'),
   triage('/triage'),
   auth('/auth'),
+  dashboard('/dashboard'),
+  quiz('/quiz'),
+  quizPlay('/quiz/:id'),
   questions('/questions'),
   student('/student'),
   concepts('/concepts'),

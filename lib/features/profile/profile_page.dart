@@ -27,7 +27,7 @@ class ProfilePage extends StatelessWidget {
               child: AppButton(
                 label: 'Entrar',
                 icon: Icons.login,
-                onPressed: () => context.go(AppRoute.auth.path),
+                onPressed: () => context.push(AppRoute.auth.path),
               ),
             );
           }

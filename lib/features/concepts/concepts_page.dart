@@ -23,17 +23,40 @@ class ConceptsPage extends StatelessWidget {
               final concept = concepts[index];
               return InkWell(
                 borderRadius: BorderRadius.circular(8),
-                onTap: () => context.go('/concepts/${concept.id}'),
+                onTap: () => context.push('/concepts/${concept.id}'),
                 child: AppCard(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        concept.title,
-                        style: Theme.of(context).textTheme.titleMedium,
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Text(
+                              concept.title,
+                              style: Theme.of(context).textTheme.titleMedium,
+                            ),
+                          ),
+                          Chip(label: Text(concept.difficulty)),
+                        ],
                       ),
                       const SizedBox(height: 8),
                       Text(concept.description),
+                      const SizedBox(height: 12),
+                      Row(
+                        children: [
+                          const Icon(Icons.schedule, size: 18),
+                          const SizedBox(width: 6),
+                          Text('${concept.estimatedMinutes} min'),
+                          const Spacer(),
+                          Text(
+                            'Estudar assunto',
+                            style: TextStyle(
+                              color: Theme.of(context).colorScheme.primary,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                        ],
+                      ),
                     ],
                   ),
                 ),

@@ -69,7 +69,7 @@ class _AuthPageState extends State<AuthPage> {
             context,
           ).showSnackBar(SnackBar(content: Text(state.message!)));
         }
-        if (state.user != null) context.go(AppRoute.profile.path);
+        if (state.user != null) context.push(AppRoute.dashboard.path);
       },
       builder: (context, state) {
         final isRegister = state.mode == AuthMode.register;

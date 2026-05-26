@@ -64,7 +64,7 @@ class QuestionsPage extends StatelessWidget {
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(content: Text('Respostas salvas.')),
                           );
-                          context.go(AppRoute.auth.path);
+                          context.push(AppRoute.auth.path);
                         }
                       : null,
                 ),
