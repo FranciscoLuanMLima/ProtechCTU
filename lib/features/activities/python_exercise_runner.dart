@@ -77,6 +77,38 @@ class _PythonRuntime {
       }
       _countOperation();
 
+      if (text == 'try:') {
+        final bodyIndent = _bodyIndent(index, end, indent);
+        final blockEnd = _blockEnd(index + 1, end, indent);
+        final exceptIndex = _nextMeaningfulLine(blockEnd, end);
+        if (exceptIndex >= end ||
+            _indentOf(_lines[exceptIndex], exceptIndex) != indent ||
+            _lines[exceptIndex].trim() != 'except ValueError:') {
+          throw _lineError(index, 'Use `except ValueError:` apos `try`.');
+        }
+        final exceptIndent = _bodyIndent(exceptIndex, end, indent);
+        final exceptEnd = _blockEnd(exceptIndex + 1, end, indent);
+        try {
+          _executeBlock(
+            index + 1,
+            blockEnd,
+            bodyIndent,
+            variables,
+            canReturn: canReturn,
+          );
+        } on _ExecutionError {
+          _executeBlock(
+            exceptIndex + 1,
+            exceptEnd,
+            exceptIndent,
+            variables,
+            canReturn: canReturn,
+          );
+        }
+        index = exceptEnd;
+        continue;
+      }
+
       if (text.startsWith('def ')) {
         final match = RegExp(
           r'^def\s+([A-Za-z_]\w*)\s*\(([^)]*)\)\s*:$',
@@ -163,6 +195,19 @@ class _PythonRuntime {
         continue;
       }
 
+      final append = RegExp(
+        r'^([A-Za-z_]\w*)\.append\((.+)\)$',
+      ).firstMatch(text);
+      if (append != null) {
+        final collection = variables[append.group(1)!];
+        if (collection is! List<Object?>) {
+          throw _lineError(index, '`append()` requer uma lista.');
+        }
+        collection.add(_evaluate(append.group(2)!, variables));
+        index++;
+        continue;
+      }
+
       final assignment = RegExp(
         r'^([A-Za-z_]\w*)\s*(\+=|=)\s*(.+)$',
       ).firstMatch(text);
@@ -237,7 +282,14 @@ class _PythonRuntime {
     final value = expression.trim();
     if (value.isEmpty) return '';
     if (_isWrapped(value, '(', ')')) {
-      return _evaluate(value.substring(1, value.length - 1), variables);
+      final inner = value.substring(1, value.length - 1);
+      final parts = _splitArguments(inner);
+      if (parts.length > 1) {
+        return _TupleValue(
+          parts.map((item) => _evaluate(item, variables)).toList(),
+        );
+      }
+      return _evaluate(inner, variables);
     }
     if (value.startsWith('f"') || value.startsWith("f'")) {
       return _interpolate(value.substring(1), variables);
@@ -254,6 +306,18 @@ class _PythonRuntime {
       return _splitArguments(
         content,
       ).map((item) => _evaluate(item, variables)).toList();
+    }
+    final indexed = RegExp(r'^([A-Za-z_]\w*)\[(\d+)\]$').firstMatch(value);
+    if (indexed != null) {
+      final collection = variables[indexed.group(1)!];
+      final itemIndex = int.parse(indexed.group(2)!);
+      if (collection is List<Object?> && itemIndex < collection.length) {
+        return collection[itemIndex];
+      }
+      if (collection is _TupleValue && itemIndex < collection.values.length) {
+        return collection.values[itemIndex];
+      }
+      throw const _ExecutionError('Indice invalido para a colecao.');
     }
 
     for (final operator in const ['>=', '<=', '==', '!=', '>', '<']) {
@@ -338,6 +402,47 @@ class _PythonRuntime {
           );
         }
         return parsed;
+      case 'len':
+        if (arguments.length != 1) {
+          throw const _ExecutionError('`len()` recebe uma colecao.');
+        }
+        final value = arguments.first;
+        if (value is List<Object?>) return value.length;
+        if (value is _TupleValue) return value.values.length;
+        throw const _ExecutionError('`len()` requer lista ou tupla.');
+      case 'sum':
+      case 'min':
+      case 'max':
+        if (arguments.length != 1 || arguments.first is! List<Object?>) {
+          throw _ExecutionError('`$name()` requer uma lista numerica.');
+        }
+        final values = (arguments.first as List<Object?>);
+        if (values.isEmpty || values.any((item) => item is! num)) {
+          throw _ExecutionError('`$name()` requer numeros.');
+        }
+        final numbers = values.cast<num>();
+        if (name == 'sum') {
+          return numbers.fold<num>(0, (total, item) => total + item);
+        }
+        return name == 'min'
+            ? numbers.reduce((a, b) => a < b ? a : b)
+            : numbers.reduce((a, b) => a > b ? a : b);
+      case 'type':
+        if (arguments.length != 1) {
+          throw const _ExecutionError('`type()` recebe um valor.');
+        }
+        final value = arguments.first;
+        return value is String
+            ? 'str'
+            : value is int
+            ? 'int'
+            : value is double
+            ? 'float'
+            : value is List<Object?>
+            ? 'list'
+            : value is _TupleValue
+            ? 'tuple'
+            : 'object';
     }
     final function = _functions[name];
     if (function == null) {
@@ -424,6 +529,9 @@ class _PythonRuntime {
     if (value == null) return 'None';
     if (value is double && value == value.roundToDouble()) {
       return value.toInt().toString();
+    }
+    if (value is _TupleValue) {
+      return '(${value.values.map(_stringValue).join(', ')})';
     }
     return value.toString();
   }
@@ -606,6 +714,12 @@ class _PythonRuntime {
     }
     return result;
   }
+}
+
+final class _TupleValue {
+  const _TupleValue(this.values);
+
+  final List<Object?> values;
 }
 
 class _UserFunction {

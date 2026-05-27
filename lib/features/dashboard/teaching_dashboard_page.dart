@@ -85,6 +85,15 @@ class TeachingDashboardPage extends StatelessWidget {
             actionLabel: 'Ver estudante',
             onPressed: () => context.push(AppRoute.student.path),
           ),
+          const SizedBox(height: 12),
+          _DashboardActionCard(
+            icon: Icons.groups_outlined,
+            title: 'Minha turma',
+            description:
+                'Veja colegas, medias coletivas e sua posicao no ranking.',
+            actionLabel: 'Abrir turma',
+            onPressed: () => context.push(AppRoute.classes.path),
+          ),
         ],
       ),
     );

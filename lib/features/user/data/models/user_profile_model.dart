@@ -109,6 +109,8 @@ class UserProfileModel {
   DateTime birthDate = DateTime.fromMillisecondsSinceEpoch(0, isUtc: true);
 
   String course = '';
+  String classId = '';
+  String className = '';
   int startYear = 0;
   int currentPeriod = 0;
   String shift = 'morning';
@@ -185,6 +187,8 @@ class UserProfileModel {
     'sex': sex,
     'birthDate': birthDate.toIso8601String(),
     'course': course,
+    'classId': classId,
+    'className': className,
     'startYear': startYear,
     'currentPeriod': currentPeriod,
     'shift': shift,
@@ -256,6 +260,8 @@ class UserProfileModel {
       ..sex = map['sex'] as String
       ..birthDate = DateTime.parse(map['birthDate'] as String).toUtc()
       ..course = map['course'] as String
+      ..classId = map['classId'] as String? ?? ''
+      ..className = map['className'] as String? ?? ''
       ..startYear = map['startYear'] as int
       ..currentPeriod = map['currentPeriod'] as int
       ..shift = map['shift'] as String

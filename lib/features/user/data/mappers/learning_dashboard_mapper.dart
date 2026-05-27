@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import '../../domain/entities/learning_dashboard.dart';
 import '../models/learning_dashboard_model.dart';
 
@@ -7,6 +9,7 @@ abstract final class LearningDashboardMapper {
       topicId: model.topicId,
       name: model.name,
       description: model.description,
+      category: model.category,
       parentTopicId: model.parentTopicId,
       prerequisiteTopicIds: List<String>.unmodifiable(
         model.prerequisiteTopicIds,
@@ -19,6 +22,51 @@ abstract final class LearningDashboardMapper {
       totalExercises: model.totalExercises,
       xpReward: model.xpReward,
       coinReward: model.coinReward,
+      theory: _decodeList(model.theoryJson)
+          .map(
+            (item) => TopicTheorySection(
+              title: item['title'] as String,
+              explanation: item['explanation'] as String,
+              exampleCode: item['exampleCode'] as String,
+            ),
+          )
+          .toList(growable: false),
+      exercises: _decodeList(model.exercisesJson)
+          .map(
+            (item) => TopicExercise(
+              exerciseId: item['exerciseId'] as String,
+              statement: item['statement'] as String,
+              difficulty: TopicDifficulty.values.byName(
+                item['difficulty'] as String,
+              ),
+              expectedAnswer: item['expectedAnswer'] as String,
+              explanation: item['explanation'] as String,
+            ),
+          )
+          .toList(growable: false),
+      challenges: _decodeList(model.challengesJson)
+          .map(
+            (item) => TopicChallenge(
+              challengeId: item['challengeId'] as String,
+              title: item['title'] as String,
+              requirement: item['requirement'] as String,
+              difficulty: TopicDifficulty.values.byName(
+                item['difficulty'] as String,
+              ),
+              xpBonus: item['xpBonus'] as int,
+            ),
+          )
+          .toList(growable: false),
+      badges: _decodeList(model.badgesJson)
+          .map(
+            (item) => TopicBadge(
+              badgeId: item['badgeId'] as String,
+              name: item['name'] as String,
+              requiredMasteryRate: (item['requiredMasteryRate'] as num)
+                  .toDouble(),
+            ),
+          )
+          .toList(growable: false),
       isActive: model.isActive,
     );
   }
@@ -28,6 +76,7 @@ abstract final class LearningDashboardMapper {
       ..topicId = entity.topicId
       ..name = entity.name
       ..description = entity.description
+      ..category = entity.category
       ..parentTopicId = entity.parentTopicId
       ..prerequisiteTopicIds = List<String>.from(entity.prerequisiteTopicIds)
       ..contentTypes = entity.contentTypes.map((item) => item.name).toList()
@@ -36,6 +85,54 @@ abstract final class LearningDashboardMapper {
       ..totalExercises = entity.totalExercises
       ..xpReward = entity.xpReward
       ..coinReward = entity.coinReward
+      ..theoryJson = jsonEncode(
+        entity.theory
+            .map(
+              (item) => <String, Object>{
+                'title': item.title,
+                'explanation': item.explanation,
+                'exampleCode': item.exampleCode,
+              },
+            )
+            .toList(growable: false),
+      )
+      ..exercisesJson = jsonEncode(
+        entity.exercises
+            .map(
+              (item) => <String, Object>{
+                'exerciseId': item.exerciseId,
+                'statement': item.statement,
+                'difficulty': item.difficulty.name,
+                'expectedAnswer': item.expectedAnswer,
+                'explanation': item.explanation,
+              },
+            )
+            .toList(growable: false),
+      )
+      ..challengesJson = jsonEncode(
+        entity.challenges
+            .map(
+              (item) => <String, Object>{
+                'challengeId': item.challengeId,
+                'title': item.title,
+                'requirement': item.requirement,
+                'difficulty': item.difficulty.name,
+                'xpBonus': item.xpBonus,
+              },
+            )
+            .toList(growable: false),
+      )
+      ..badgesJson = jsonEncode(
+        entity.badges
+            .map(
+              (item) => <String, Object>{
+                'badgeId': item.badgeId,
+                'name': item.name,
+                'requiredMasteryRate': item.requiredMasteryRate,
+              },
+            )
+            .toList(growable: false),
+      )
       ..isActive = entity.isActive;
   }
 
@@ -175,4 +272,8 @@ abstract final class LearningDashboardMapper {
 
   static String progressKey(String userId, String topicId) =>
       '$userId::$topicId';
+
+  static List<Map<String, dynamic>> _decodeList(String value) {
+    return (jsonDecode(value) as List<Object?>).cast<Map<String, dynamic>>();
+  }
 }

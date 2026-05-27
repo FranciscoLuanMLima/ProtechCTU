@@ -42,6 +42,8 @@ final class UserIdentification {
 
 final class InstitutionalData {
   const InstitutionalData({
+    required this.classId,
+    required this.className,
     required this.course,
     required this.startYear,
     required this.currentPeriod,
@@ -49,6 +51,8 @@ final class InstitutionalData {
     required this.campus,
   });
 
+  final String classId;
+  final String className;
   final String course;
   final int startYear;
   final int currentPeriod;

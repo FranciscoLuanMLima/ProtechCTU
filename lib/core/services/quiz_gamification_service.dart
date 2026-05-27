@@ -31,6 +31,8 @@ final class QuizGamificationService {
         birthDate: DateTime.fromMillisecondsSinceEpoch(0, isUtc: true),
       ),
       institutional: InstitutionalData(
+        classId: '',
+        className: '',
         course: 'Não informado',
         startYear: learner.entryYear,
         currentPeriod: 1,

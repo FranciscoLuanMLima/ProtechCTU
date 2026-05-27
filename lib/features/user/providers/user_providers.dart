@@ -9,6 +9,7 @@ import '../../../core/services/dashboard_analytics_service.dart';
 import '../../../core/services/migration_service.dart';
 import '../../../core/services/sync_service.dart';
 import '../data/datasources/learning_dashboard_local_datasource.dart';
+import '../data/datasources/learning_topic_catalog_datasource.dart';
 import '../data/datasources/user_local_datasource.dart';
 import '../data/datasources/user_remote_datasource.dart';
 import '../data/repositories/learning_dashboard_repository_impl.dart';
@@ -86,6 +87,11 @@ final dashboardAnalyticsServiceProvider = Provider<DashboardAnalyticsService>(
   (ref) => const DashboardAnalyticsService(),
 );
 
+final learningTopicCatalogDataSourceProvider =
+    Provider<LearningTopicCatalogDataSource>(
+      (ref) => const LearningTopicCatalogDataSource(),
+    );
+
 final learningDashboardLocalDataSourceProvider =
     FutureProvider<LearningDashboardLocalDataSource>((ref) async {
       await ref.watch(databaseMigrationProvider.future);
@@ -99,6 +105,7 @@ final learningDashboardRepositoryProvider =
         localDataSource: await ref.watch(
           learningDashboardLocalDataSourceProvider.future,
         ),
+        catalogDataSource: ref.watch(learningTopicCatalogDataSourceProvider),
         userRepository: await ref.watch(userRepositoryProvider.future),
         adaptiveLearningService: ref.watch(adaptiveLearningServiceProvider),
         analyticsService: ref.watch(dashboardAnalyticsServiceProvider),

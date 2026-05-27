@@ -11,6 +11,7 @@ import '../features/concepts/concept_detail_page.dart';
 import '../features/concepts/concepts_cubit.dart';
 import '../features/concepts/concepts_page.dart';
 import '../features/concepts/concepts_repository.dart';
+import '../features/classes/class_page.dart';
 import '../features/dashboard/teaching_dashboard_page.dart';
 import '../features/profile/profile_cubit.dart';
 import '../features/profile/profile_page.dart';
@@ -38,6 +39,7 @@ final appRouter = GoRouter(
       AppRoute.concepts.path,
       AppRoute.activities.path,
       AppRoute.profile.path,
+      AppRoute.classes.path,
     ];
     final needsAuthentication = privateLocations.any(
       (location) => state.matchedLocation.startsWith(location),
@@ -144,6 +146,11 @@ final appRouter = GoRouter(
         child: const ProfilePage(),
       ),
     ),
+    GoRoute(
+      path: AppRoute.classes.path,
+      name: AppRoute.classes.name,
+      builder: (context, state) => const ClassPage(),
+    ),
   ],
 );
 
@@ -160,7 +167,8 @@ enum AppRoute {
   conceptDetail('/concepts/:id'),
   activities('/activities'),
   activityEditor('/activities/editor'),
-  profile('/profile');
+  profile('/profile'),
+  classes('/classes');
 
   const AppRoute(this.path);
 

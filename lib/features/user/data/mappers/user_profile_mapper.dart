@@ -16,6 +16,8 @@ abstract final class UserProfileMapper {
         birthDate: model.birthDate,
       ),
       institutional: InstitutionalData(
+        classId: model.classId,
+        className: model.className,
         course: model.course,
         startYear: model.startYear,
         currentPeriod: model.currentPeriod,
@@ -137,6 +139,8 @@ abstract final class UserProfileMapper {
       ..sex = entity.identification.sex.name
       ..birthDate = entity.identification.birthDate.toUtc()
       ..course = entity.institutional.course
+      ..classId = entity.institutional.classId
+      ..className = entity.institutional.className
       ..startYear = entity.institutional.startYear
       ..currentPeriod = entity.institutional.currentPeriod
       ..shift = entity.institutional.shift.name

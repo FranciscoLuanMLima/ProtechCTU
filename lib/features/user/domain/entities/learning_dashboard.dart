@@ -47,11 +47,68 @@ enum TopicSort {
   difficulty,
 }
 
+final class TopicTheorySection {
+  const TopicTheorySection({
+    required this.title,
+    required this.explanation,
+    required this.exampleCode,
+  });
+
+  final String title;
+  final String explanation;
+  final String exampleCode;
+}
+
+final class TopicExercise {
+  const TopicExercise({
+    required this.exerciseId,
+    required this.statement,
+    required this.difficulty,
+    required this.expectedAnswer,
+    required this.explanation,
+  });
+
+  final String exerciseId;
+  final String statement;
+  final TopicDifficulty difficulty;
+  final String expectedAnswer;
+  final String explanation;
+}
+
+final class TopicChallenge {
+  const TopicChallenge({
+    required this.challengeId,
+    required this.title,
+    required this.requirement,
+    required this.difficulty,
+    required this.xpBonus,
+  });
+
+  final String challengeId;
+  final String title;
+  final String requirement;
+  final TopicDifficulty difficulty;
+  final int xpBonus;
+}
+
+final class TopicBadge {
+  const TopicBadge({
+    required this.badgeId,
+    required this.name,
+    required this.requiredMasteryRate,
+  });
+
+  final String badgeId;
+  final String name;
+  final double requiredMasteryRate;
+}
+
 final class LearningTopic {
   const LearningTopic({
     required this.topicId,
     required this.name,
     required this.description,
+    required this.category,
     required this.parentTopicId,
     required this.prerequisiteTopicIds,
     required this.contentTypes,
@@ -60,12 +117,17 @@ final class LearningTopic {
     required this.totalExercises,
     required this.xpReward,
     required this.coinReward,
+    required this.theory,
+    required this.exercises,
+    required this.challenges,
+    required this.badges,
     required this.isActive,
   });
 
   final String topicId;
   final String name;
   final String description;
+  final String category;
   final String? parentTopicId;
   final List<String> prerequisiteTopicIds;
   final List<LearningContentType> contentTypes;
@@ -74,6 +136,10 @@ final class LearningTopic {
   final int totalExercises;
   final int xpReward;
   final int coinReward;
+  final List<TopicTheorySection> theory;
+  final List<TopicExercise> exercises;
+  final List<TopicChallenge> challenges;
+  final List<TopicBadge> badges;
   final bool isActive;
 }
 

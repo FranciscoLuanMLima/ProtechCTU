@@ -1,6 +1,6 @@
 abstract final class StorageKeys {
   static const String databaseName = 'protech_user_data';
-  static const int schemaVersion = 2;
+  static const int schemaVersion = 3;
 
   static const String activeUserId = 'user.active_id';
   static const String profileCachePrefix = 'user.profile_cache.';

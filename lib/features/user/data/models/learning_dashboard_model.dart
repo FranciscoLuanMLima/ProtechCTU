@@ -13,6 +13,7 @@ class LearningTopicModel {
   String name = '';
 
   String description = '';
+  String category = 'python';
   String? parentTopicId;
   List<String> prerequisiteTopicIds = <String>[];
   List<String> contentTypes = <String>[];
@@ -21,6 +22,10 @@ class LearningTopicModel {
   int totalExercises = 0;
   int xpReward = 0;
   int coinReward = 0;
+  String theoryJson = '[]';
+  String exercisesJson = '[]';
+  String challengesJson = '[]';
+  String badgesJson = '[]';
   bool isActive = true;
 }
 

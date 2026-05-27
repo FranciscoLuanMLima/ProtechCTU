@@ -165,6 +165,114 @@ print(classificar_maestria(0.72))''',
         'A chamada de exemplo produz `Em progresso`.',
       ],
     ),
+    ActivityModel(
+      id: 'collections-summary',
+      title: 'Resumo de notas',
+      language: 'Python',
+      description: 'Manipule uma lista e produza uma tupla de extremos.',
+      concept: 'Listas e Tuplas',
+      difficulty: 'Medio',
+      estimatedMinutes: 18,
+      objective: 'Usar mutabilidade e agregacoes de colecoes corretamente.',
+      problemStatement:
+          'Adicione 9.0 a lista [7.0, 8.0] e mostre a tupla formada pela menor e maior nota.',
+      steps: [
+        'Crie a lista e use append.',
+        'Monte a tupla com min e max.',
+        'Imprima a tupla final.',
+      ],
+      exampleInput: 'Sem entrada.',
+      exampleOutput: '(7.0, 9.0)',
+      starterCode: '''notas = [7.0, 8.0]
+# Adicione e apresente os extremos''',
+      hints: ['Use `notas.append(9.0)`.', 'Use `(min(notas), max(notas))`.'],
+      successCriteria: ['A lista foi atualizada.', 'A saida e uma tupla.'],
+    ),
+    ActivityModel(
+      id: 'safe-input',
+      title: 'Entrada de nota segura',
+      language: 'Python',
+      description: 'Trate entradas que nao podem ser convertidas.',
+      concept: 'Tratamento de Excecoes',
+      difficulty: 'Medio',
+      estimatedMinutes: 20,
+      objective: 'Capturar ValueError de maneira especifica.',
+      problemStatement:
+          'Leia uma nota inteira. Para texto invalido, mostre `Nota invalida`; para valor valido, mostre `Nota: X`.',
+      steps: [
+        'Coloque int(input()) dentro de try.',
+        'Imprima a nota no fluxo valido.',
+        'Capture apenas ValueError.',
+      ],
+      exampleInput: 'oito',
+      exampleOutput: 'Nota invalida',
+      starterCode: '''try:
+    nota = int(input())
+    # Mostre a nota
+except ValueError:
+    # Informe o erro
+    pass''',
+      hints: ['O bloco except executa quando int falha.'],
+      successCriteria: [
+        'Tratou ValueError.',
+        'Nao interrompe em texto invalido.',
+      ],
+    ),
+    ActivityModel(
+      id: 'local-scope',
+      title: 'Bonus sem estado global',
+      language: 'Python',
+      description: 'Refatore uma regra para usar parametros e retorno.',
+      concept: 'Escopo de Variaveis',
+      difficulty: 'Medio',
+      estimatedMinutes: 20,
+      objective: 'Evitar alteracao acidental de uma variavel global.',
+      problemStatement:
+          'Implemente `somar_bonus(pontos, bonus)` e mostre o retorno para 10 e 5.',
+      steps: [
+        'Defina dois parametros.',
+        'Retorne a soma.',
+        'Imprima a chamada da funcao.',
+      ],
+      exampleInput: 'Sem entrada.',
+      exampleOutput: '15',
+      starterCode: '''def somar_bonus(pontos, bonus):
+    # Retorne sem depender de globais
+    pass
+
+print(somar_bonus(10, 5))''',
+      hints: ['Use `return pontos + bonus`.'],
+      successCriteria: ['Nao usou global.', 'Retornou 15.'],
+    ),
+    ActivityModel(
+      id: 'debug-accumulator',
+      title: 'Investigue o acumulador',
+      language: 'Python',
+      description: 'Corrija um total reiniciado no lugar errado.',
+      concept: 'Depuracao e Investigacao',
+      difficulty: 'Desafio',
+      estimatedMinutes: 25,
+      objective: 'Rastrear estado intermediario e corrigir a causa do erro.',
+      problemStatement:
+          'O total deve ser 6 para [1, 2, 3]. Posicione a inicializacao corretamente e mostre `Total: 6`.',
+      steps: [
+        'Observe onde total e reiniciado.',
+        'Inicialize antes do for.',
+        'Use print para confirmar o total final.',
+      ],
+      exampleInput: 'valores = [1, 2, 3]',
+      exampleOutput: 'Total: 6',
+      starterCode: '''valores = [1, 2, 3]
+for valor in valores:
+    total = 0
+    total += valor
+print(f"Total: {total}")''',
+      hints: ['A linha `total = 0` deve executar uma unica vez.'],
+      successCriteria: [
+        'O acumulador nao reinicia no loop.',
+        'Mostrou Total: 6.',
+      ],
+    ),
   ];
 
   Future<List<ActivityModel>> load() async => _activities;

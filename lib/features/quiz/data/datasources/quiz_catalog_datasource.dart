@@ -120,6 +120,188 @@ final class QuizCatalogDataSource {
         ),
       ],
     ),
+    ProgrammingQuiz(
+      quizId: 'quiz-lists-tuples',
+      topicId: 'lists-tuples',
+      title: 'Listas e Tuplas',
+      description: 'Mutabilidade, indices e escolha da colecao correta.',
+      difficulty: QuizDifficulty.intermediate,
+      xpRewardPerCorrectAnswer: 25,
+      coinRewardPerCorrectAnswer: 6,
+      perfectBonusXp: 40,
+      questions: <QuizQuestion>[
+        QuizQuestion(
+          questionId: 'lists-1',
+          prompt: 'Qual operacao adiciona um item ao fim de uma lista `dados`?',
+          options: <String>[
+            'dados.append(valor)',
+            'dados.fixed(valor)',
+            'dados = (valor)',
+            'tuple.add(valor)',
+          ],
+          correctOptionIndex: 0,
+          explanation: '`append()` altera a lista adicionando o item.',
+        ),
+        QuizQuestion(
+          questionId: 'tuples-1',
+          prompt: 'Qual estrutura comunica coordenadas que nao devem mudar?',
+          options: <String>['Lista', 'Tupla', 'Entrada', 'Condicional'],
+          correctOptionIndex: 1,
+          explanation: 'Tuplas representam sequencias imutaveis.',
+        ),
+        QuizQuestion(
+          questionId: 'lists-2',
+          prompt: 'Em `[10, 20, 30]`, qual e o valor do indice 1?',
+          options: <String>['10', '20', '30', 'Erro'],
+          correctOptionIndex: 1,
+          explanation: 'Indices comecam em zero; o indice 1 e o segundo item.',
+        ),
+      ],
+    ),
+    ProgrammingQuiz(
+      quizId: 'quiz-exceptions',
+      topicId: 'exceptions',
+      title: 'Tratamento de Excecoes',
+      description: 'Recuperacao segura de entradas e operacoes invalidas.',
+      difficulty: QuizDifficulty.intermediate,
+      xpRewardPerCorrectAnswer: 28,
+      coinRewardPerCorrectAnswer: 7,
+      perfectBonusXp: 45,
+      questions: <QuizQuestion>[
+        QuizQuestion(
+          questionId: 'exceptions-1',
+          prompt: 'Qual erro `int("abc")` deve ser capturado?',
+          options: <String>[
+            'ValueError',
+            'ZeroDivisionError',
+            'IndexError',
+            'ImportError',
+          ],
+          correctOptionIndex: 0,
+          explanation: 'O texto nao e uma representacao valida de inteiro.',
+        ),
+        QuizQuestion(
+          questionId: 'exceptions-2',
+          prompt: 'Por que usar `except ValueError` em vez de `except:`?',
+          options: <String>[
+            'Para capturar apenas a falha prevista',
+            'Para ignorar todos os bugs',
+            'Para repetir para sempre',
+            'Para declarar variavel global',
+          ],
+          correctOptionIndex: 0,
+          explanation: 'Captura especifica nao esconde falhas inesperadas.',
+        ),
+        QuizQuestion(
+          questionId: 'exceptions-3',
+          prompt: 'Qual erro corresponde a `10 / 0`?',
+          options: <String>[
+            'ValueError',
+            'ZeroDivisionError',
+            'NameError',
+            'TypeWarning',
+          ],
+          correctOptionIndex: 1,
+          explanation: 'Divisao por zero possui excecao especifica.',
+        ),
+      ],
+    ),
+    ProgrammingQuiz(
+      quizId: 'quiz-scope',
+      topicId: 'scope',
+      title: 'Escopo de Variaveis',
+      description: 'Valores locais, globais e funcoes previsiveis.',
+      difficulty: QuizDifficulty.intermediate,
+      xpRewardPerCorrectAnswer: 28,
+      coinRewardPerCorrectAnswer: 7,
+      perfectBonusXp: 45,
+      questions: <QuizQuestion>[
+        QuizQuestion(
+          questionId: 'scope-1',
+          prompt:
+              'Se `x = 10` fora da funcao e a funcao define `x = 5`, quanto vale o `x` externo?',
+          options: <String>['5', '10', '15', 'None'],
+          correctOptionIndex: 1,
+          explanation: 'A atribuicao interna cria um nome local.',
+        ),
+        QuizQuestion(
+          questionId: 'scope-2',
+          prompt: 'Qual desenho evita depender de uma global mutavel?',
+          options: <String>[
+            'Receber parametro e retornar resultado',
+            'Usar muitos prints',
+            'Ocultar a variavel',
+            'Remover a funcao',
+          ],
+          correctOptionIndex: 0,
+          explanation:
+              'Entradas e saidas explicitas reduzem efeitos colaterais.',
+        ),
+        QuizQuestion(
+          questionId: 'scope-3',
+          prompt: 'Ler uma local antes de atribui-la dentro da funcao causa:',
+          options: <String>[
+            'UnboundLocalError',
+            'Sucesso automatico',
+            'ZeroDivisionError',
+            'AppendError',
+          ],
+          correctOptionIndex: 0,
+          explanation:
+              'O nome local ainda nao possui valor no ponto de leitura.',
+        ),
+      ],
+    ),
+    ProgrammingQuiz(
+      quizId: 'quiz-debugging',
+      topicId: 'debugging',
+      title: 'Depuracao e Investigacao',
+      description: 'Rastreie tipos, valores e acumuladores.',
+      difficulty: QuizDifficulty.advanced,
+      xpRewardPerCorrectAnswer: 35,
+      coinRewardPerCorrectAnswer: 9,
+      perfectBonusXp: 55,
+      questions: <QuizQuestion>[
+        QuizQuestion(
+          questionId: 'debug-1',
+          prompt: 'Qual funcao revela o tipo efetivo de `entrada`?',
+          options: <String>[
+            'type(entrada)',
+            'sum(entrada)',
+            'range(entrada)',
+            'else(entrada)',
+          ],
+          correctOptionIndex: 0,
+          explanation: '`type()` confirma a representacao recebida.',
+        ),
+        QuizQuestion(
+          questionId: 'debug-2',
+          prompt:
+              'Um total reinicia em cada iteracao. O que inspecionar primeiro?',
+          options: <String>[
+            'Onde o acumulador e inicializado',
+            'A cor do editor',
+            'O nome do arquivo',
+            'A rede',
+          ],
+          correctOptionIndex: 0,
+          explanation:
+              'A inicializacao dentro do loop descarta o total anterior.',
+        ),
+        QuizQuestion(
+          questionId: 'debug-3',
+          prompt: 'Um log estrategico deve:',
+          options: <String>[
+            'Testar uma hipotese sobre estado ou fluxo',
+            'Ser mantido sem objetivo',
+            'Substituir todos os testes',
+            'Ocultar excecoes',
+          ],
+          correctOptionIndex: 0,
+          explanation: 'Observacao direcionada localiza a origem do desvio.',
+        ),
+      ],
+    ),
   ];
 
   Future<List<ProgrammingQuiz>> load() async => _catalog;

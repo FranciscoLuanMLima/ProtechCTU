@@ -29,6 +29,16 @@ dev_dependencies:
   flutter_lints: ^6.0.0
   build_runner: ^2.4.15
   isar_community_generator: ^3.3.2
+  flutter_launcher_icons: ^0.14.4
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: assets/logo_uespi.png
+  remove_alpha_ios: true
+  adaptive_icon_background: "#071D38"
+  adaptive_icon_foreground: assets/logo_uespi.png
+  min_sdk_android: 21
 
 flutter:
   uses-material-design: true

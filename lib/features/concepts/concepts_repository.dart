@@ -188,6 +188,121 @@ print(f"Média: {media:.1f}")''',
           'Qual é a diferença entre `print()` e `return` dentro de uma função?',
       checkpointAnswer:
           '`print()` apenas exibe; `return` entrega o valor para ser usado em outras operações.',
+      nextTopic: 'Listas e Tuplas',
+    ),
+    ConceptModel(
+      id: 'lists-tuples',
+      title: 'Listas e Tuplas',
+      description: 'Colecoes mutaveis e imutaveis em Python.',
+      difficulty: 'Intermediario',
+      estimatedMinutes: 22,
+      objectives: [
+        'Escolher entre lista e tupla conforme a mutabilidade.',
+        'Consultar, adicionar e agregar elementos com seguranca.',
+      ],
+      explanation:
+          'Listas usam colchetes e aceitam mudancas com append, remocao ou atribuicao por indice. Tuplas usam parenteses e representam dados que nao devem mudar, como coordenadas.',
+      exampleCode: '''notas = [7.0, 8.5]
+notas.append(9.0)
+coordenada = (10, 20)
+print(sum(notas) / len(notas), coordenada[0])''',
+      exampleExplanation:
+          'A lista recebe uma nova nota; a tupla apenas disponibiliza suas coordenadas fixas.',
+      guidedSteps: [
+        'Monte uma lista com tres notas e inclua uma quarta.',
+        'Calcule media usando sum e len.',
+        'Use uma tupla para guardar a menor e a maior nota.',
+      ],
+      checkpointQuestion: 'Quando uma tupla e melhor que uma lista?',
+      checkpointAnswer:
+          'Quando a colecao representa dados fixos e nao deve ser modificada.',
+      nextTopic: 'Tratamento de Excecoes',
+    ),
+    ConceptModel(
+      id: 'exceptions',
+      title: 'Tratamento de Excecoes',
+      description: 'Previna falhas em entradas invalidas com try e except.',
+      difficulty: 'Intermediario',
+      estimatedMinutes: 24,
+      objectives: [
+        'Capturar ValueError em conversoes.',
+        'Exibir uma mensagem util sem esconder defeitos inesperados.',
+      ],
+      explanation:
+          'Entradas do usuario podem nao respeitar o formato esperado. Use try no trecho que pode falhar e except com o tipo exato de erro que seu programa sabe recuperar.',
+      exampleCode: '''try:
+    idade = int(input("Idade: "))
+    print(idade + 1)
+except ValueError:
+    print("Informe uma idade inteira.")''',
+      exampleExplanation:
+          'Texto nao numerico produz ValueError e recebe resposta orientadora em vez de encerrar o programa.',
+      guidedSteps: [
+        'Leia uma nota decimal dentro de try.',
+        'Capture ValueError e informe o formato correto.',
+        'Valide tambem se a nota esta entre 0 e 10.',
+      ],
+      checkpointQuestion: 'Por que evitar um except sem tipo?',
+      checkpointAnswer:
+          'Porque ele pode ocultar erros de programacao que nao sao recuperaveis.',
+      nextTopic: 'Escopo de Variaveis',
+    ),
+    ConceptModel(
+      id: 'scope',
+      title: 'Escopo de Variaveis',
+      description: 'Diferencie dados locais e globais em funcoes.',
+      difficulty: 'Intermediario',
+      estimatedMinutes: 20,
+      objectives: [
+        'Prever o valor visivel dentro e fora de uma funcao.',
+        'Preferir parametros e retorno a alteracoes globais.',
+      ],
+      explanation:
+          'Atribuir um nome dentro de uma funcao cria um valor local. O valor global com o mesmo nome permanece separado, salvo quando a alteracao e declarada explicitamente.',
+      exampleCode: '''pontos = 10
+def calcular_bonus():
+    pontos = 5
+    return pontos
+print(calcular_bonus(), pontos)''',
+      exampleExplanation:
+          'A funcao retorna 5, enquanto a variavel global continua com valor 10.',
+      guidedSteps: [
+        'Execute mentalmente o exemplo e registre os dois valores.',
+        'Reescreva a funcao recebendo pontos como parametro.',
+        'Identifique um caso que causaria UnboundLocalError.',
+      ],
+      checkpointQuestion:
+          'Qual estrategia reduz erros causados por estado global?',
+      checkpointAnswer:
+          'Passar valores como parametros e retornar o resultado calculado.',
+      nextTopic: 'Depuracao e Investigacao',
+    ),
+    ConceptModel(
+      id: 'debugging',
+      title: 'Depuracao e Investigacao',
+      description: 'Investigue bugs com observacoes controladas.',
+      difficulty: 'Desafio',
+      estimatedMinutes: 26,
+      objectives: [
+        'Usar print e type para confirmar hipoteses.',
+        'Localizar a primeira etapa em que o estado diverge.',
+      ],
+      explanation:
+          'Depurar e observar o fluxo ate encontrar onde um valor deixa de ser o esperado. Registre valor e tipo perto das entradas, conversoes e atualizacoes de acumuladores.',
+      exampleCode: '''valor = input("XP: ")
+print("recebido:", repr(valor), type(valor))
+xp = int(valor)
+print("convertido:", xp, type(xp))''',
+      exampleExplanation:
+          'Os logs mostram primeiro uma string e depois um inteiro, isolando erros de concatenacao.',
+      guidedSteps: [
+        'Insira logs antes e depois de uma conversao.',
+        'Rastreie um acumulador em cada iteracao de um for.',
+        'Remova os logs depois de validar a correcao.',
+      ],
+      checkpointQuestion: 'Qual pergunta um print de depuracao deve responder?',
+      checkpointAnswer:
+          'Se o valor e o tipo naquele ponto confirmam ou rejeitam uma hipotese.',
       nextTopic: null,
     ),
   ];

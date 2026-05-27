@@ -50,237 +50,243 @@ const UserProfileModelSchema = CollectionSchema(
       type: IsarType.stringList,
     ),
     r'campus': PropertySchema(id: 6, name: r'campus', type: IsarType.string),
-    r'coins': PropertySchema(id: 7, name: r'coins', type: IsarType.long),
-    r'colorVisionMode': PropertySchema(
+    r'classId': PropertySchema(id: 7, name: r'classId', type: IsarType.string),
+    r'className': PropertySchema(
       id: 8,
+      name: r'className',
+      type: IsarType.string,
+    ),
+    r'coins': PropertySchema(id: 9, name: r'coins', type: IsarType.long),
+    r'colorVisionMode': PropertySchema(
+      id: 10,
       name: r'colorVisionMode',
       type: IsarType.string,
     ),
     r'competitionMode': PropertySchema(
-      id: 9,
+      id: 11,
       name: r'competitionMode',
       type: IsarType.bool,
     ),
-    r'course': PropertySchema(id: 10, name: r'course', type: IsarType.string),
+    r'course': PropertySchema(id: 12, name: r'course', type: IsarType.string),
     r'createdAt': PropertySchema(
-      id: 11,
+      id: 13,
       name: r'createdAt',
       type: IsarType.dateTime,
     ),
     r'currentOffenseDays': PropertySchema(
-      id: 12,
+      id: 14,
       name: r'currentOffenseDays',
       type: IsarType.long,
     ),
     r'currentPeriod': PropertySchema(
-      id: 13,
+      id: 15,
       name: r'currentPeriod',
       type: IsarType.long,
     ),
     r'currentXp': PropertySchema(
-      id: 14,
+      id: 16,
       name: r'currentXp',
       type: IsarType.long,
     ),
     r'dailyMissions': PropertySchema(
-      id: 15,
+      id: 17,
       name: r'dailyMissions',
       type: IsarType.objectList,
 
       target: r'MissionModel',
     ),
     r'dashboardViewMode': PropertySchema(
-      id: 16,
+      id: 18,
       name: r'dashboardViewMode',
       type: IsarType.string,
     ),
     r'dashboardWidgetOrder': PropertySchema(
-      id: 17,
+      id: 19,
       name: r'dashboardWidgetOrder',
       type: IsarType.stringList,
     ),
-    r'email': PropertySchema(id: 18, name: r'email', type: IsarType.string),
+    r'email': PropertySchema(id: 20, name: r'email', type: IsarType.string),
     r'focusMode': PropertySchema(
-      id: 19,
+      id: 21,
       name: r'focusMode',
       type: IsarType.bool,
     ),
     r'fontScale': PropertySchema(
-      id: 20,
+      id: 22,
       name: r'fontScale',
       type: IsarType.string,
     ),
-    r'gems': PropertySchema(id: 21, name: r'gems', type: IsarType.long),
+    r'gems': PropertySchema(id: 23, name: r'gems', type: IsarType.long),
     r'hasPendingData': PropertySchema(
-      id: 22,
+      id: 24,
       name: r'hasPendingData',
       type: IsarType.bool,
     ),
     r'highContrast': PropertySchema(
-      id: 23,
+      id: 25,
       name: r'highContrast',
       type: IsarType.bool,
     ),
     r'lastAccess': PropertySchema(
-      id: 24,
+      id: 26,
       name: r'lastAccess',
       type: IsarType.dateTime,
     ),
     r'lastDailyReward': PropertySchema(
-      id: 25,
+      id: 27,
       name: r'lastDailyReward',
       type: IsarType.dateTime,
     ),
     r'lastSynchronization': PropertySchema(
-      id: 26,
+      id: 28,
       name: r'lastSynchronization',
       type: IsarType.dateTime,
     ),
-    r'level': PropertySchema(id: 27, name: r'level', type: IsarType.long),
+    r'level': PropertySchema(id: 29, name: r'level', type: IsarType.long),
     r'localBackupEnabled': PropertySchema(
-      id: 28,
+      id: 30,
       name: r'localBackupEnabled',
       type: IsarType.bool,
     ),
     r'localDataVersion': PropertySchema(
-      id: 29,
+      id: 31,
       name: r'localDataVersion',
       type: IsarType.long,
     ),
     r'longestOffenseDays': PropertySchema(
-      id: 30,
+      id: 32,
       name: r'longestOffenseDays',
       type: IsarType.long,
     ),
     r'masteryLevel': PropertySchema(
-      id: 31,
+      id: 33,
       name: r'masteryLevel',
       type: IsarType.string,
     ),
-    r'name': PropertySchema(id: 32, name: r'name', type: IsarType.string),
+    r'name': PropertySchema(id: 34, name: r'name', type: IsarType.string),
     r'nextLevelXp': PropertySchema(
-      id: 33,
+      id: 35,
       name: r'nextLevelXp',
       type: IsarType.long,
     ),
     r'nickname': PropertySchema(
-      id: 34,
+      id: 36,
       name: r'nickname',
       type: IsarType.string,
     ),
     r'notifications': PropertySchema(
-      id: 35,
+      id: 37,
       name: r'notifications',
       type: IsarType.bool,
     ),
     r'offenseFrozen': PropertySchema(
-      id: 36,
+      id: 38,
       name: r'offenseFrozen',
       type: IsarType.bool,
     ),
     r'purchasedItemIds': PropertySchema(
-      id: 37,
+      id: 39,
       name: r'purchasedItemIds',
       type: IsarType.stringList,
     ),
     r'rarestUnlockedRarity': PropertySchema(
-      id: 38,
+      id: 40,
       name: r'rarestUnlockedRarity',
       type: IsarType.string,
     ),
     r'registration': PropertySchema(
-      id: 39,
+      id: 41,
       name: r'registration',
       type: IsarType.string,
     ),
     r'remainingHints': PropertySchema(
-      id: 40,
+      id: 42,
       name: r'remainingHints',
       type: IsarType.long,
     ),
     r'rewardSequence': PropertySchema(
-      id: 41,
+      id: 43,
       name: r'rewardSequence',
       type: IsarType.long,
     ),
-    r'sex': PropertySchema(id: 42, name: r'sex', type: IsarType.string),
-    r'shift': PropertySchema(id: 43, name: r'shift', type: IsarType.string),
-    r'sounds': PropertySchema(id: 44, name: r'sounds', type: IsarType.bool),
+    r'sex': PropertySchema(id: 44, name: r'sex', type: IsarType.string),
+    r'shift': PropertySchema(id: 45, name: r'shift', type: IsarType.string),
+    r'sounds': PropertySchema(id: 46, name: r'sounds', type: IsarType.bool),
     r'specialMissions': PropertySchema(
-      id: 45,
+      id: 47,
       name: r'specialMissions',
       type: IsarType.objectList,
 
       target: r'MissionModel',
     ),
     r'startYear': PropertySchema(
-      id: 46,
+      id: 48,
       name: r'startYear',
       type: IsarType.long,
     ),
-    r'theme': PropertySchema(id: 47, name: r'theme', type: IsarType.string),
-    r'title': PropertySchema(id: 48, name: r'title', type: IsarType.string),
+    r'theme': PropertySchema(id: 49, name: r'theme', type: IsarType.string),
+    r'title': PropertySchema(id: 50, name: r'title', type: IsarType.string),
     r'topicProgress': PropertySchema(
-      id: 49,
+      id: 51,
       name: r'topicProgress',
       type: IsarType.objectList,
 
       target: r'TopicProgressModel',
     ),
     r'totalAchievements': PropertySchema(
-      id: 50,
+      id: 52,
       name: r'totalAchievements',
       type: IsarType.long,
     ),
     r'totalCoinsEarned': PropertySchema(
-      id: 51,
+      id: 53,
       name: r'totalCoinsEarned',
       type: IsarType.long,
     ),
     r'totalCorrectAnswers': PropertySchema(
-      id: 52,
+      id: 54,
       name: r'totalCorrectAnswers',
       type: IsarType.long,
     ),
     r'totalDurationMilliseconds': PropertySchema(
-      id: 53,
+      id: 55,
       name: r'totalDurationMilliseconds',
       type: IsarType.long,
     ),
     r'totalErrors': PropertySchema(
-      id: 54,
+      id: 56,
       name: r'totalErrors',
       type: IsarType.long,
     ),
     r'totalExercises': PropertySchema(
-      id: 55,
+      id: 57,
       name: r'totalExercises',
       type: IsarType.long,
     ),
     r'totalSessions': PropertySchema(
-      id: 56,
+      id: 58,
       name: r'totalSessions',
       type: IsarType.long,
     ),
-    r'totalXp': PropertySchema(id: 57, name: r'totalXp', type: IsarType.long),
+    r'totalXp': PropertySchema(id: 59, name: r'totalXp', type: IsarType.long),
     r'unlockedAchievementIds': PropertySchema(
-      id: 58,
+      id: 60,
       name: r'unlockedAchievementIds',
       type: IsarType.stringList,
     ),
     r'unlockedTopicIds': PropertySchema(
-      id: 59,
+      id: 61,
       name: r'unlockedTopicIds',
       type: IsarType.stringList,
     ),
     r'updatedAt': PropertySchema(
-      id: 60,
+      id: 62,
       name: r'updatedAt',
       type: IsarType.dateTime,
     ),
-    r'userId': PropertySchema(id: 61, name: r'userId', type: IsarType.string),
+    r'userId': PropertySchema(id: 63, name: r'userId', type: IsarType.string),
     r'vibration': PropertySchema(
-      id: 62,
+      id: 64,
       name: r'vibration',
       type: IsarType.bool,
     ),
@@ -345,6 +351,8 @@ int _userProfileModelEstimateSize(
     }
   }
   bytesCount += 3 + object.campus.length * 3;
+  bytesCount += 3 + object.classId.length * 3;
+  bytesCount += 3 + object.className.length * 3;
   bytesCount += 3 + object.colorVisionMode.length * 3;
   bytesCount += 3 + object.course.length * 3;
   bytesCount += 3 + object.dailyMissions.length * 3;
@@ -437,77 +445,79 @@ void _userProfileModelSerialize(
   writer.writeDateTime(offsets[4], object.birthDate);
   writer.writeStringList(offsets[5], object.blockedTopicIds);
   writer.writeString(offsets[6], object.campus);
-  writer.writeLong(offsets[7], object.coins);
-  writer.writeString(offsets[8], object.colorVisionMode);
-  writer.writeBool(offsets[9], object.competitionMode);
-  writer.writeString(offsets[10], object.course);
-  writer.writeDateTime(offsets[11], object.createdAt);
-  writer.writeLong(offsets[12], object.currentOffenseDays);
-  writer.writeLong(offsets[13], object.currentPeriod);
-  writer.writeLong(offsets[14], object.currentXp);
+  writer.writeString(offsets[7], object.classId);
+  writer.writeString(offsets[8], object.className);
+  writer.writeLong(offsets[9], object.coins);
+  writer.writeString(offsets[10], object.colorVisionMode);
+  writer.writeBool(offsets[11], object.competitionMode);
+  writer.writeString(offsets[12], object.course);
+  writer.writeDateTime(offsets[13], object.createdAt);
+  writer.writeLong(offsets[14], object.currentOffenseDays);
+  writer.writeLong(offsets[15], object.currentPeriod);
+  writer.writeLong(offsets[16], object.currentXp);
   writer.writeObjectList<MissionModel>(
-    offsets[15],
+    offsets[17],
     allOffsets,
     MissionModelSchema.serialize,
     object.dailyMissions,
   );
-  writer.writeString(offsets[16], object.dashboardViewMode);
-  writer.writeStringList(offsets[17], object.dashboardWidgetOrder);
-  writer.writeString(offsets[18], object.email);
-  writer.writeBool(offsets[19], object.focusMode);
-  writer.writeString(offsets[20], object.fontScale);
-  writer.writeLong(offsets[21], object.gems);
-  writer.writeBool(offsets[22], object.hasPendingData);
-  writer.writeBool(offsets[23], object.highContrast);
-  writer.writeDateTime(offsets[24], object.lastAccess);
-  writer.writeDateTime(offsets[25], object.lastDailyReward);
-  writer.writeDateTime(offsets[26], object.lastSynchronization);
-  writer.writeLong(offsets[27], object.level);
-  writer.writeBool(offsets[28], object.localBackupEnabled);
-  writer.writeLong(offsets[29], object.localDataVersion);
-  writer.writeLong(offsets[30], object.longestOffenseDays);
-  writer.writeString(offsets[31], object.masteryLevel);
-  writer.writeString(offsets[32], object.name);
-  writer.writeLong(offsets[33], object.nextLevelXp);
-  writer.writeString(offsets[34], object.nickname);
-  writer.writeBool(offsets[35], object.notifications);
-  writer.writeBool(offsets[36], object.offenseFrozen);
-  writer.writeStringList(offsets[37], object.purchasedItemIds);
-  writer.writeString(offsets[38], object.rarestUnlockedRarity);
-  writer.writeString(offsets[39], object.registration);
-  writer.writeLong(offsets[40], object.remainingHints);
-  writer.writeLong(offsets[41], object.rewardSequence);
-  writer.writeString(offsets[42], object.sex);
-  writer.writeString(offsets[43], object.shift);
-  writer.writeBool(offsets[44], object.sounds);
+  writer.writeString(offsets[18], object.dashboardViewMode);
+  writer.writeStringList(offsets[19], object.dashboardWidgetOrder);
+  writer.writeString(offsets[20], object.email);
+  writer.writeBool(offsets[21], object.focusMode);
+  writer.writeString(offsets[22], object.fontScale);
+  writer.writeLong(offsets[23], object.gems);
+  writer.writeBool(offsets[24], object.hasPendingData);
+  writer.writeBool(offsets[25], object.highContrast);
+  writer.writeDateTime(offsets[26], object.lastAccess);
+  writer.writeDateTime(offsets[27], object.lastDailyReward);
+  writer.writeDateTime(offsets[28], object.lastSynchronization);
+  writer.writeLong(offsets[29], object.level);
+  writer.writeBool(offsets[30], object.localBackupEnabled);
+  writer.writeLong(offsets[31], object.localDataVersion);
+  writer.writeLong(offsets[32], object.longestOffenseDays);
+  writer.writeString(offsets[33], object.masteryLevel);
+  writer.writeString(offsets[34], object.name);
+  writer.writeLong(offsets[35], object.nextLevelXp);
+  writer.writeString(offsets[36], object.nickname);
+  writer.writeBool(offsets[37], object.notifications);
+  writer.writeBool(offsets[38], object.offenseFrozen);
+  writer.writeStringList(offsets[39], object.purchasedItemIds);
+  writer.writeString(offsets[40], object.rarestUnlockedRarity);
+  writer.writeString(offsets[41], object.registration);
+  writer.writeLong(offsets[42], object.remainingHints);
+  writer.writeLong(offsets[43], object.rewardSequence);
+  writer.writeString(offsets[44], object.sex);
+  writer.writeString(offsets[45], object.shift);
+  writer.writeBool(offsets[46], object.sounds);
   writer.writeObjectList<MissionModel>(
-    offsets[45],
+    offsets[47],
     allOffsets,
     MissionModelSchema.serialize,
     object.specialMissions,
   );
-  writer.writeLong(offsets[46], object.startYear);
-  writer.writeString(offsets[47], object.theme);
-  writer.writeString(offsets[48], object.title);
+  writer.writeLong(offsets[48], object.startYear);
+  writer.writeString(offsets[49], object.theme);
+  writer.writeString(offsets[50], object.title);
   writer.writeObjectList<TopicProgressModel>(
-    offsets[49],
+    offsets[51],
     allOffsets,
     TopicProgressModelSchema.serialize,
     object.topicProgress,
   );
-  writer.writeLong(offsets[50], object.totalAchievements);
-  writer.writeLong(offsets[51], object.totalCoinsEarned);
-  writer.writeLong(offsets[52], object.totalCorrectAnswers);
-  writer.writeLong(offsets[53], object.totalDurationMilliseconds);
-  writer.writeLong(offsets[54], object.totalErrors);
-  writer.writeLong(offsets[55], object.totalExercises);
-  writer.writeLong(offsets[56], object.totalSessions);
-  writer.writeLong(offsets[57], object.totalXp);
-  writer.writeStringList(offsets[58], object.unlockedAchievementIds);
-  writer.writeStringList(offsets[59], object.unlockedTopicIds);
-  writer.writeDateTime(offsets[60], object.updatedAt);
-  writer.writeString(offsets[61], object.userId);
-  writer.writeBool(offsets[62], object.vibration);
+  writer.writeLong(offsets[52], object.totalAchievements);
+  writer.writeLong(offsets[53], object.totalCoinsEarned);
+  writer.writeLong(offsets[54], object.totalCorrectAnswers);
+  writer.writeLong(offsets[55], object.totalDurationMilliseconds);
+  writer.writeLong(offsets[56], object.totalErrors);
+  writer.writeLong(offsets[57], object.totalExercises);
+  writer.writeLong(offsets[58], object.totalSessions);
+  writer.writeLong(offsets[59], object.totalXp);
+  writer.writeStringList(offsets[60], object.unlockedAchievementIds);
+  writer.writeStringList(offsets[61], object.unlockedTopicIds);
+  writer.writeDateTime(offsets[62], object.updatedAt);
+  writer.writeString(offsets[63], object.userId);
+  writer.writeBool(offsets[64], object.vibration);
 }
 
 UserProfileModel _userProfileModelDeserialize(
@@ -531,84 +541,86 @@ UserProfileModel _userProfileModelDeserialize(
   object.birthDate = reader.readDateTime(offsets[4]);
   object.blockedTopicIds = reader.readStringList(offsets[5]) ?? [];
   object.campus = reader.readString(offsets[6]);
-  object.coins = reader.readLong(offsets[7]);
-  object.colorVisionMode = reader.readString(offsets[8]);
-  object.competitionMode = reader.readBool(offsets[9]);
-  object.course = reader.readString(offsets[10]);
-  object.createdAt = reader.readDateTime(offsets[11]);
-  object.currentOffenseDays = reader.readLong(offsets[12]);
-  object.currentPeriod = reader.readLong(offsets[13]);
-  object.currentXp = reader.readLong(offsets[14]);
+  object.classId = reader.readString(offsets[7]);
+  object.className = reader.readString(offsets[8]);
+  object.coins = reader.readLong(offsets[9]);
+  object.colorVisionMode = reader.readString(offsets[10]);
+  object.competitionMode = reader.readBool(offsets[11]);
+  object.course = reader.readString(offsets[12]);
+  object.createdAt = reader.readDateTime(offsets[13]);
+  object.currentOffenseDays = reader.readLong(offsets[14]);
+  object.currentPeriod = reader.readLong(offsets[15]);
+  object.currentXp = reader.readLong(offsets[16]);
   object.dailyMissions =
       reader.readObjectList<MissionModel>(
-        offsets[15],
+        offsets[17],
         MissionModelSchema.deserialize,
         allOffsets,
         MissionModel(),
       ) ??
       [];
-  object.dashboardViewMode = reader.readString(offsets[16]);
-  object.dashboardWidgetOrder = reader.readStringList(offsets[17]) ?? [];
-  object.email = reader.readString(offsets[18]);
-  object.focusMode = reader.readBool(offsets[19]);
-  object.fontScale = reader.readString(offsets[20]);
-  object.gems = reader.readLong(offsets[21]);
-  object.hasPendingData = reader.readBool(offsets[22]);
-  object.highContrast = reader.readBool(offsets[23]);
+  object.dashboardViewMode = reader.readString(offsets[18]);
+  object.dashboardWidgetOrder = reader.readStringList(offsets[19]) ?? [];
+  object.email = reader.readString(offsets[20]);
+  object.focusMode = reader.readBool(offsets[21]);
+  object.fontScale = reader.readString(offsets[22]);
+  object.gems = reader.readLong(offsets[23]);
+  object.hasPendingData = reader.readBool(offsets[24]);
+  object.highContrast = reader.readBool(offsets[25]);
   object.id = id;
-  object.lastAccess = reader.readDateTimeOrNull(offsets[24]);
-  object.lastDailyReward = reader.readDateTimeOrNull(offsets[25]);
-  object.lastSynchronization = reader.readDateTimeOrNull(offsets[26]);
-  object.level = reader.readLong(offsets[27]);
-  object.localBackupEnabled = reader.readBool(offsets[28]);
-  object.localDataVersion = reader.readLong(offsets[29]);
-  object.longestOffenseDays = reader.readLong(offsets[30]);
-  object.masteryLevel = reader.readString(offsets[31]);
-  object.name = reader.readString(offsets[32]);
-  object.nextLevelXp = reader.readLong(offsets[33]);
-  object.nickname = reader.readString(offsets[34]);
-  object.notifications = reader.readBool(offsets[35]);
-  object.offenseFrozen = reader.readBool(offsets[36]);
-  object.purchasedItemIds = reader.readStringList(offsets[37]) ?? [];
-  object.rarestUnlockedRarity = reader.readString(offsets[38]);
-  object.registration = reader.readString(offsets[39]);
-  object.remainingHints = reader.readLong(offsets[40]);
-  object.rewardSequence = reader.readLong(offsets[41]);
-  object.sex = reader.readString(offsets[42]);
-  object.shift = reader.readString(offsets[43]);
-  object.sounds = reader.readBool(offsets[44]);
+  object.lastAccess = reader.readDateTimeOrNull(offsets[26]);
+  object.lastDailyReward = reader.readDateTimeOrNull(offsets[27]);
+  object.lastSynchronization = reader.readDateTimeOrNull(offsets[28]);
+  object.level = reader.readLong(offsets[29]);
+  object.localBackupEnabled = reader.readBool(offsets[30]);
+  object.localDataVersion = reader.readLong(offsets[31]);
+  object.longestOffenseDays = reader.readLong(offsets[32]);
+  object.masteryLevel = reader.readString(offsets[33]);
+  object.name = reader.readString(offsets[34]);
+  object.nextLevelXp = reader.readLong(offsets[35]);
+  object.nickname = reader.readString(offsets[36]);
+  object.notifications = reader.readBool(offsets[37]);
+  object.offenseFrozen = reader.readBool(offsets[38]);
+  object.purchasedItemIds = reader.readStringList(offsets[39]) ?? [];
+  object.rarestUnlockedRarity = reader.readString(offsets[40]);
+  object.registration = reader.readString(offsets[41]);
+  object.remainingHints = reader.readLong(offsets[42]);
+  object.rewardSequence = reader.readLong(offsets[43]);
+  object.sex = reader.readString(offsets[44]);
+  object.shift = reader.readString(offsets[45]);
+  object.sounds = reader.readBool(offsets[46]);
   object.specialMissions =
       reader.readObjectList<MissionModel>(
-        offsets[45],
+        offsets[47],
         MissionModelSchema.deserialize,
         allOffsets,
         MissionModel(),
       ) ??
       [];
-  object.startYear = reader.readLong(offsets[46]);
-  object.theme = reader.readString(offsets[47]);
-  object.title = reader.readString(offsets[48]);
+  object.startYear = reader.readLong(offsets[48]);
+  object.theme = reader.readString(offsets[49]);
+  object.title = reader.readString(offsets[50]);
   object.topicProgress =
       reader.readObjectList<TopicProgressModel>(
-        offsets[49],
+        offsets[51],
         TopicProgressModelSchema.deserialize,
         allOffsets,
         TopicProgressModel(),
       ) ??
       [];
-  object.totalAchievements = reader.readLong(offsets[50]);
-  object.totalCoinsEarned = reader.readLong(offsets[51]);
-  object.totalCorrectAnswers = reader.readLong(offsets[52]);
-  object.totalDurationMilliseconds = reader.readLong(offsets[53]);
-  object.totalErrors = reader.readLong(offsets[54]);
-  object.totalExercises = reader.readLong(offsets[55]);
-  object.totalSessions = reader.readLong(offsets[56]);
-  object.totalXp = reader.readLong(offsets[57]);
-  object.unlockedAchievementIds = reader.readStringList(offsets[58]) ?? [];
-  object.unlockedTopicIds = reader.readStringList(offsets[59]) ?? [];
-  object.updatedAt = reader.readDateTime(offsets[60]);
-  object.userId = reader.readString(offsets[61]);
-  object.vibration = reader.readBool(offsets[62]);
+  object.totalAchievements = reader.readLong(offsets[52]);
+  object.totalCoinsEarned = reader.readLong(offsets[53]);
+  object.totalCorrectAnswers = reader.readLong(offsets[54]);
+  object.totalDurationMilliseconds = reader.readLong(offsets[55]);
+  object.totalErrors = reader.readLong(offsets[56]);
+  object.totalExercises = reader.readLong(offsets[57]);
+  object.totalSessions = reader.readLong(offsets[58]);
+  object.totalXp = reader.readLong(offsets[59]);
+  object.unlockedAchievementIds = reader.readStringList(offsets[60]) ?? [];
+  object.unlockedTopicIds = reader.readStringList(offsets[61]) ?? [];
+  object.updatedAt = reader.readDateTime(offsets[62]);
+  object.userId = reader.readString(offsets[63]);
+  object.vibration = reader.readBool(offsets[64]);
   return object;
 }
 
@@ -641,22 +653,26 @@ P _userProfileModelDeserializeProp<P>(
     case 6:
       return (reader.readString(offset)) as P;
     case 7:
-      return (reader.readLong(offset)) as P;
+      return (reader.readString(offset)) as P;
     case 8:
       return (reader.readString(offset)) as P;
     case 9:
-      return (reader.readBool(offset)) as P;
+      return (reader.readLong(offset)) as P;
     case 10:
       return (reader.readString(offset)) as P;
     case 11:
-      return (reader.readDateTime(offset)) as P;
+      return (reader.readBool(offset)) as P;
     case 12:
-      return (reader.readLong(offset)) as P;
+      return (reader.readString(offset)) as P;
     case 13:
-      return (reader.readLong(offset)) as P;
+      return (reader.readDateTime(offset)) as P;
     case 14:
       return (reader.readLong(offset)) as P;
     case 15:
+      return (reader.readLong(offset)) as P;
+    case 16:
+      return (reader.readLong(offset)) as P;
+    case 17:
       return (reader.readObjectList<MissionModel>(
                 offset,
                 MissionModelSchema.deserialize,
@@ -665,65 +681,65 @@ P _userProfileModelDeserializeProp<P>(
               ) ??
               [])
           as P;
-    case 16:
-      return (reader.readString(offset)) as P;
-    case 17:
-      return (reader.readStringList(offset) ?? []) as P;
     case 18:
       return (reader.readString(offset)) as P;
     case 19:
-      return (reader.readBool(offset)) as P;
+      return (reader.readStringList(offset) ?? []) as P;
     case 20:
       return (reader.readString(offset)) as P;
     case 21:
-      return (reader.readLong(offset)) as P;
+      return (reader.readBool(offset)) as P;
     case 22:
-      return (reader.readBool(offset)) as P;
+      return (reader.readString(offset)) as P;
     case 23:
-      return (reader.readBool(offset)) as P;
+      return (reader.readLong(offset)) as P;
     case 24:
-      return (reader.readDateTimeOrNull(offset)) as P;
+      return (reader.readBool(offset)) as P;
     case 25:
-      return (reader.readDateTimeOrNull(offset)) as P;
+      return (reader.readBool(offset)) as P;
     case 26:
       return (reader.readDateTimeOrNull(offset)) as P;
     case 27:
-      return (reader.readLong(offset)) as P;
+      return (reader.readDateTimeOrNull(offset)) as P;
     case 28:
-      return (reader.readBool(offset)) as P;
+      return (reader.readDateTimeOrNull(offset)) as P;
     case 29:
       return (reader.readLong(offset)) as P;
     case 30:
-      return (reader.readLong(offset)) as P;
+      return (reader.readBool(offset)) as P;
     case 31:
-      return (reader.readString(offset)) as P;
-    case 32:
-      return (reader.readString(offset)) as P;
-    case 33:
       return (reader.readLong(offset)) as P;
+    case 32:
+      return (reader.readLong(offset)) as P;
+    case 33:
+      return (reader.readString(offset)) as P;
     case 34:
       return (reader.readString(offset)) as P;
     case 35:
-      return (reader.readBool(offset)) as P;
+      return (reader.readLong(offset)) as P;
     case 36:
-      return (reader.readBool(offset)) as P;
+      return (reader.readString(offset)) as P;
     case 37:
-      return (reader.readStringList(offset) ?? []) as P;
-    case 38:
-      return (reader.readString(offset)) as P;
-    case 39:
-      return (reader.readString(offset)) as P;
-    case 40:
-      return (reader.readLong(offset)) as P;
-    case 41:
-      return (reader.readLong(offset)) as P;
-    case 42:
-      return (reader.readString(offset)) as P;
-    case 43:
-      return (reader.readString(offset)) as P;
-    case 44:
       return (reader.readBool(offset)) as P;
+    case 38:
+      return (reader.readBool(offset)) as P;
+    case 39:
+      return (reader.readStringList(offset) ?? []) as P;
+    case 40:
+      return (reader.readString(offset)) as P;
+    case 41:
+      return (reader.readString(offset)) as P;
+    case 42:
+      return (reader.readLong(offset)) as P;
+    case 43:
+      return (reader.readLong(offset)) as P;
+    case 44:
+      return (reader.readString(offset)) as P;
     case 45:
+      return (reader.readString(offset)) as P;
+    case 46:
+      return (reader.readBool(offset)) as P;
+    case 47:
       return (reader.readObjectList<MissionModel>(
                 offset,
                 MissionModelSchema.deserialize,
@@ -732,13 +748,13 @@ P _userProfileModelDeserializeProp<P>(
               ) ??
               [])
           as P;
-    case 46:
-      return (reader.readLong(offset)) as P;
-    case 47:
-      return (reader.readString(offset)) as P;
     case 48:
-      return (reader.readString(offset)) as P;
+      return (reader.readLong(offset)) as P;
     case 49:
+      return (reader.readString(offset)) as P;
+    case 50:
+      return (reader.readString(offset)) as P;
+    case 51:
       return (reader.readObjectList<TopicProgressModel>(
                 offset,
                 TopicProgressModelSchema.deserialize,
@@ -747,10 +763,6 @@ P _userProfileModelDeserializeProp<P>(
               ) ??
               [])
           as P;
-    case 50:
-      return (reader.readLong(offset)) as P;
-    case 51:
-      return (reader.readLong(offset)) as P;
     case 52:
       return (reader.readLong(offset)) as P;
     case 53:
@@ -764,14 +776,18 @@ P _userProfileModelDeserializeProp<P>(
     case 57:
       return (reader.readLong(offset)) as P;
     case 58:
-      return (reader.readStringList(offset) ?? []) as P;
+      return (reader.readLong(offset)) as P;
     case 59:
-      return (reader.readStringList(offset) ?? []) as P;
+      return (reader.readLong(offset)) as P;
     case 60:
-      return (reader.readDateTime(offset)) as P;
+      return (reader.readStringList(offset) ?? []) as P;
     case 61:
-      return (reader.readString(offset)) as P;
+      return (reader.readStringList(offset) ?? []) as P;
     case 62:
+      return (reader.readDateTime(offset)) as P;
+    case 63:
+      return (reader.readString(offset)) as P;
+    case 64:
       return (reader.readBool(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -1598,6 +1614,288 @@ extension UserProfileModelQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         FilterCondition.greaterThan(property: r'campus', value: ''),
+      );
+    });
+  }
+
+  QueryBuilder<UserProfileModel, UserProfileModel, QAfterFilterCondition>
+  classIdEqualTo(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.equalTo(
+          property: r'classId',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<UserProfileModel, UserProfileModel, QAfterFilterCondition>
+  classIdGreaterThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'classId',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<UserProfileModel, UserProfileModel, QAfterFilterCondition>
+  classIdLessThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'classId',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<UserProfileModel, UserProfileModel, QAfterFilterCondition>
+  classIdBetween(
+    String lower,
+    String upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'classId',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<UserProfileModel, UserProfileModel, QAfterFilterCondition>
+  classIdStartsWith(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.startsWith(
+          property: r'classId',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<UserProfileModel, UserProfileModel, QAfterFilterCondition>
+  classIdEndsWith(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.endsWith(
+          property: r'classId',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<UserProfileModel, UserProfileModel, QAfterFilterCondition>
+  classIdContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.contains(
+          property: r'classId',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<UserProfileModel, UserProfileModel, QAfterFilterCondition>
+  classIdMatches(String pattern, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.matches(
+          property: r'classId',
+          wildcard: pattern,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<UserProfileModel, UserProfileModel, QAfterFilterCondition>
+  classIdIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'classId', value: ''),
+      );
+    });
+  }
+
+  QueryBuilder<UserProfileModel, UserProfileModel, QAfterFilterCondition>
+  classIdIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(property: r'classId', value: ''),
+      );
+    });
+  }
+
+  QueryBuilder<UserProfileModel, UserProfileModel, QAfterFilterCondition>
+  classNameEqualTo(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.equalTo(
+          property: r'className',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<UserProfileModel, UserProfileModel, QAfterFilterCondition>
+  classNameGreaterThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'className',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<UserProfileModel, UserProfileModel, QAfterFilterCondition>
+  classNameLessThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'className',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<UserProfileModel, UserProfileModel, QAfterFilterCondition>
+  classNameBetween(
+    String lower,
+    String upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'className',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<UserProfileModel, UserProfileModel, QAfterFilterCondition>
+  classNameStartsWith(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.startsWith(
+          property: r'className',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<UserProfileModel, UserProfileModel, QAfterFilterCondition>
+  classNameEndsWith(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.endsWith(
+          property: r'className',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<UserProfileModel, UserProfileModel, QAfterFilterCondition>
+  classNameContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.contains(
+          property: r'className',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<UserProfileModel, UserProfileModel, QAfterFilterCondition>
+  classNameMatches(String pattern, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.matches(
+          property: r'className',
+          wildcard: pattern,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<UserProfileModel, UserProfileModel, QAfterFilterCondition>
+  classNameIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'className', value: ''),
+      );
+    });
+  }
+
+  QueryBuilder<UserProfileModel, UserProfileModel, QAfterFilterCondition>
+  classNameIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(property: r'className', value: ''),
       );
     });
   }
@@ -6422,6 +6720,34 @@ extension UserProfileModelQuerySortBy
     });
   }
 
+  QueryBuilder<UserProfileModel, UserProfileModel, QAfterSortBy>
+  sortByClassId() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'classId', Sort.asc);
+    });
+  }
+
+  QueryBuilder<UserProfileModel, UserProfileModel, QAfterSortBy>
+  sortByClassIdDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'classId', Sort.desc);
+    });
+  }
+
+  QueryBuilder<UserProfileModel, UserProfileModel, QAfterSortBy>
+  sortByClassName() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'className', Sort.asc);
+    });
+  }
+
+  QueryBuilder<UserProfileModel, UserProfileModel, QAfterSortBy>
+  sortByClassNameDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'className', Sort.desc);
+    });
+  }
+
   QueryBuilder<UserProfileModel, UserProfileModel, QAfterSortBy> sortByCoins() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'coins', Sort.asc);
@@ -7172,6 +7498,34 @@ extension UserProfileModelQuerySortThenBy
     });
   }
 
+  QueryBuilder<UserProfileModel, UserProfileModel, QAfterSortBy>
+  thenByClassId() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'classId', Sort.asc);
+    });
+  }
+
+  QueryBuilder<UserProfileModel, UserProfileModel, QAfterSortBy>
+  thenByClassIdDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'classId', Sort.desc);
+    });
+  }
+
+  QueryBuilder<UserProfileModel, UserProfileModel, QAfterSortBy>
+  thenByClassName() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'className', Sort.asc);
+    });
+  }
+
+  QueryBuilder<UserProfileModel, UserProfileModel, QAfterSortBy>
+  thenByClassNameDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'className', Sort.desc);
+    });
+  }
+
   QueryBuilder<UserProfileModel, UserProfileModel, QAfterSortBy> thenByCoins() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'coins', Sort.asc);
@@ -7909,6 +8263,20 @@ extension UserProfileModelQueryWhereDistinct
   }
 
   QueryBuilder<UserProfileModel, UserProfileModel, QDistinct>
+  distinctByClassId({bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'classId', caseSensitive: caseSensitive);
+    });
+  }
+
+  QueryBuilder<UserProfileModel, UserProfileModel, QDistinct>
+  distinctByClassName({bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'className', caseSensitive: caseSensitive);
+    });
+  }
+
+  QueryBuilder<UserProfileModel, UserProfileModel, QDistinct>
   distinctByCoins() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'coins');
@@ -8352,6 +8720,18 @@ extension UserProfileModelQueryProperty
   QueryBuilder<UserProfileModel, String, QQueryOperations> campusProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'campus');
+    });
+  }
+
+  QueryBuilder<UserProfileModel, String, QQueryOperations> classIdProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'classId');
+    });
+  }
+
+  QueryBuilder<UserProfileModel, String, QQueryOperations> classNameProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'className');
     });
   }
 

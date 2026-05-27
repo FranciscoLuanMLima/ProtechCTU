@@ -15,8 +15,11 @@ import 'package:protechctu/features/concepts/concept_detail_page.dart';
 import 'package:protechctu/features/concepts/concepts_cubit.dart';
 import 'package:protechctu/features/concepts/concepts_page.dart';
 import 'package:protechctu/features/concepts/concepts_repository.dart';
+import 'package:protechctu/features/classes/domain/entities/class_entities.dart';
+import 'package:protechctu/features/classes/domain/services/class_analytics_service.dart';
 import 'package:protechctu/features/quiz/data/datasources/quiz_catalog_datasource.dart';
 import 'package:protechctu/features/quiz/domain/entities/programming_quiz.dart';
+import 'package:protechctu/features/user/data/datasources/learning_topic_catalog_datasource.dart';
 
 void main() {
   test('credencial persistida não contém senha em texto puro', () {
@@ -103,6 +106,104 @@ print("Resultado:", dias)''';
 
     expect(result.succeeded, isFalse);
     expect(result.error, contains('Comando não suportado'));
+  });
+
+  test('catalogo adaptativo inclui novos assuntos e pre-requisitos', () {
+    final topics = const LearningTopicCatalogDataSource().load();
+    final ids = topics.map((topic) => topic.topicId).toSet();
+
+    expect(
+      ids,
+      containsAll(<String>['lists-tuples', 'exceptions', 'scope', 'debugging']),
+    );
+    final debugging = topics.firstWhere(
+      (topic) => topic.topicId == 'debugging',
+    );
+    expect(
+      debugging.prerequisiteTopicIds,
+      containsAll(<String>['exceptions', 'scope']),
+    );
+    expect(debugging.challenges, isNotEmpty);
+    expect(debugging.badges, isNotEmpty);
+  });
+
+  test('executor Python suporta colecoes e tratamento de entrada invalida', () {
+    const runner = PythonExerciseRunner();
+    const code = '''
+notas = [7, 8]
+notas.append(9)
+extremos = (min(notas), max(notas))
+print(extremos)
+try:
+    valor = int(input())
+    print(valor)
+except ValueError:
+    print("Nota invalida")''';
+
+    final result = runner.run(code: code, input: 'abc');
+
+    expect(result.succeeded, isTrue);
+    expect(result.output, '(7, 9)\nNota invalida');
+  });
+
+  test('analytics de turma calcula medias e ranking', () {
+    final students = <StudentPublicProfileEntity>[
+      StudentPublicProfileEntity(
+        studentId: '1',
+        classId: 't1',
+        name: 'Ana',
+        level: 3,
+        totalXp: 300,
+        streakDays: 4,
+        overallProgress: 0.8,
+        accuracyRate: 0.9,
+        masteryRate: 0.85,
+        completedExercises: 20,
+        totalStudyTime: const Duration(minutes: 100),
+        primaryBadgeIds: const <String>['b1'],
+        topicMetrics: const <StudentTopicMetric>[
+          StudentTopicMetric(
+            topicId: 'scope',
+            masteryRate: 0.8,
+            accuracyRate: 0.9,
+          ),
+        ],
+        updatedAt: DateTime.utc(2026, 5, 27),
+      ),
+      StudentPublicProfileEntity(
+        studentId: '2',
+        classId: 't1',
+        name: 'Bia',
+        level: 2,
+        totalXp: 100,
+        streakDays: 2,
+        overallProgress: 0.4,
+        accuracyRate: 0.5,
+        masteryRate: 0.45,
+        completedExercises: 10,
+        totalStudyTime: const Duration(minutes: 40),
+        primaryBadgeIds: const <String>[],
+        topicMetrics: const <StudentTopicMetric>[
+          StudentTopicMetric(
+            topicId: 'scope',
+            masteryRate: 0.4,
+            accuracyRate: 0.5,
+          ),
+        ],
+        updatedAt: DateTime.utc(2026, 5, 27),
+      ),
+    ];
+
+    final result = const ClassAnalyticsService().calculate(
+      't1',
+      students,
+      DateTime.utc(2026, 5, 27),
+    );
+
+    expect(result.statistics.averageXp, 200);
+    expect(result.statistics.averageAccuracy, closeTo(0.7, 0.001));
+    expect(result.statistics.totalCompletedExercises, 30);
+    expect(result.ranking.entries.first.student.studentId, '1');
   });
 
   testWidgets('exibe formulario de login', (tester) async {
