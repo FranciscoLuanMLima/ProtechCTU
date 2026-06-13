@@ -1,21 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../core/services/learning_catalog_seed.dart';
 import '../../core/widgets/app_card.dart';
+import '../user/domain/entities/learning_dashboard.dart';
+import '../user/providers/user_providers.dart';
 import 'activities_repository.dart';
 import 'activity_model.dart';
 import 'python_exercise_runner.dart';
 import 'widgets/code_editor.dart';
 
-class ActivityEditorPage extends StatefulWidget {
+class ActivityEditorPage extends ConsumerStatefulWidget {
   const ActivityEditorPage({this.activityId, super.key});
 
   final String? activityId;
 
   @override
-  State<ActivityEditorPage> createState() => _ActivityEditorPageState();
+  ConsumerState<ActivityEditorPage> createState() => _ActivityEditorPageState();
 }
 
-class _ActivityEditorPageState extends State<ActivityEditorPage> {
+class _ActivityEditorPageState extends ConsumerState<ActivityEditorPage> {
   final _repository = const ActivitiesRepository();
   final _runner = const PythonExerciseRunner();
   final _checkedCriteria = <int>{};
@@ -35,7 +39,7 @@ class _ActivityEditorPageState extends State<ActivityEditorPage> {
     _input = _activity?.exampleInput == 'Sem entrada.'
         ? ''
         : _activity?.exampleInput ?? '';
-    _completed = _activity != null && _repository.isCompleted(_activity.id);
+    _completed = false;
   }
 
   void _executeCode() {
@@ -47,11 +51,81 @@ class _ActivityEditorPageState extends State<ActivityEditorPage> {
   Future<void> _completeActivity() async {
     final activity = _activity;
     if (activity == null) return;
-    await _repository.complete(activity.id);
+    final session = await ref.read(activeUserSessionProvider.future);
+    if (session == null) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Entre novamente para concluir.')),
+      );
+      return;
+    }
+    await _recordStudyActivity(
+      activity,
+      userId: session.learnerId,
+      wasFirstAttempt: !_isCompletedInCurrentDashboard(activity),
+    );
     if (!mounted) return;
     setState(() => _completed = true);
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text('Atividade concluída e registrada.')),
+    );
+  }
+
+  Future<void> _recordStudyActivity(
+    ActivityModel activity, {
+    required String userId,
+    required bool wasFirstAttempt,
+  }) async {
+    final topicId = LearningCatalogSeed.topicIdForActivity(activity.id);
+    if (topicId == null) {
+      return;
+    }
+    final execution = _execution;
+    final outputMatches = execution == null
+        ? null
+        : execution.succeeded &&
+              execution.output.trim() == activity.exampleOutput.trim();
+    final recorder = await ref.read(recordStudyActivityProvider.future);
+    await recorder(
+      StudyActivity(
+        activityId: 'activity:$userId:${activity.id}',
+        userId: userId,
+        topicId: topicId,
+        type: activity.difficulty.toLowerCase().contains('desafio')
+            ? StudyEventType.challengeCompleted
+            : StudyEventType.exerciseCompleted,
+        occurredAt: DateTime.now().toUtc(),
+        duration: Duration(minutes: activity.estimatedMinutes),
+        responseTime: null,
+        wasCorrect: outputMatches,
+        wasFirstAttempt: wasFirstAttempt,
+        masteryAfterEvent: 0,
+      ),
+    );
+  }
+
+  bool _isCompletedInCurrentDashboard(ActivityModel activity) {
+    if (_completed) {
+      return true;
+    }
+    final session = ref.read(activeUserSessionProvider).asData?.value;
+    if (session == null) {
+      return _repository.isCompleted(activity.id);
+    }
+    final dashboard = ref
+        .read(
+          learningDashboardProvider(DashboardQuery(userId: session.learnerId)),
+        )
+        .asData
+        ?.value;
+    final topicId = LearningCatalogSeed.topicIdForActivity(activity.id);
+    if (topicId == null || dashboard == null) {
+      return _repository.isCompleted(activity.id);
+    }
+    return dashboard.topics.any(
+      (item) =>
+          item.topic.topicId == topicId &&
+          item.progress.status == TopicStatus.completed,
     );
   }
 
@@ -66,6 +140,14 @@ class _ActivityEditorPageState extends State<ActivityEditorPage> {
         ),
       );
     }
+
+    final session = ref.watch(activeUserSessionProvider).asData?.value;
+    if (session != null) {
+      ref.watch(
+        learningDashboardProvider(DashboardQuery(userId: session.learnerId)),
+      );
+    }
+    final completed = _isCompletedInCurrentDashboard(activity);
 
     return Scaffold(
       appBar: AppBar(title: Text(activity.title)),
@@ -174,7 +256,7 @@ class _ActivityEditorPageState extends State<ActivityEditorPage> {
             const SizedBox(height: 12),
             _HintsAndCriteria(
               activity: activity,
-              completed: _completed,
+              completed: completed,
               checkedCriteria: _checkedCriteria,
               codeWritten: _code.trim().isNotEmpty,
               onCriterionChanged: (index, checked) {

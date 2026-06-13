@@ -7,7 +7,9 @@ import '../../../../core/services/backup_service.dart';
 import '../../../../core/services/quiz_gamification_service.dart';
 import '../../../user/data/mappers/user_profile_mapper.dart';
 import '../../../user/data/models/user_profile_model.dart';
+import '../../../user/domain/entities/learning_dashboard.dart';
 import '../../../user/domain/entities/user_profile.dart';
+import '../../../user/domain/repositories/learning_dashboard_repository.dart';
 import '../../../user/domain/repositories/user_repository.dart';
 import '../../domain/entities/programming_quiz.dart';
 import '../../domain/repositories/quiz_repository.dart';
@@ -20,12 +22,14 @@ final class QuizRepositoryImpl implements QuizRepository {
     required QuizCatalogDataSource catalog,
     required QuizLocalDataSource localDataSource,
     required UserRepository userRepository,
+    required LearningDashboardRepository learningDashboardRepository,
     required UserBackupService backupService,
     required QuizGamificationService gamification,
     Uuid uuid = const Uuid(),
   }) : _catalog = catalog,
        _localDataSource = localDataSource,
        _userRepository = userRepository,
+       _learningDashboardRepository = learningDashboardRepository,
        _backupService = backupService,
        _gamification = gamification,
        _uuid = uuid;
@@ -33,6 +37,7 @@ final class QuizRepositoryImpl implements QuizRepository {
   final QuizCatalogDataSource _catalog;
   final QuizLocalDataSource _localDataSource;
   final UserRepository _userRepository;
+  final LearningDashboardRepository _learningDashboardRepository;
   final UserBackupService _backupService;
   final QuizGamificationService _gamification;
   final Uuid _uuid;
@@ -153,6 +158,20 @@ final class QuizRepositoryImpl implements QuizRepository {
         'profile',
         learner.userId,
         profileModel.toMap(),
+      ),
+    );
+    await _learningDashboardRepository.recordActivity(
+      StudyActivity(
+        activityId: 'quiz:${learner.userId}:${rewardedAttempt.attemptId}',
+        userId: learner.userId,
+        topicId: quiz.topicId,
+        type: StudyEventType.quizCompleted,
+        occurredAt: completedAt,
+        duration: completedAt.difference(startedAt.toUtc()),
+        responseTime: null,
+        wasCorrect: correctAnswers == quiz.questions.length,
+        wasFirstAttempt: true,
+        masteryAfterEvent: 0,
       ),
     );
     return QuizCompletion(

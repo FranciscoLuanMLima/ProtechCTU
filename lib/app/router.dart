@@ -124,7 +124,7 @@ final appRouter = GoRouter(
       name: AppRoute.activities.name,
       builder: (context, state) => BlocProvider(
         create: (_) => ActivitiesCubit()..load(),
-        child: const ActivitiesPage(),
+        child: ActivitiesPage(filter: state.uri.queryParameters['filter']),
       ),
       routes: [
         GoRoute(

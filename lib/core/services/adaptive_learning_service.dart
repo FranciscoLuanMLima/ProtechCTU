@@ -20,7 +20,7 @@ final class AdaptiveLearningService {
     final attempts = current.totalAttempts + (isAttempt ? 1 : 0);
     final correct =
         current.correctAttempts + (activity.wasCorrect == true ? 1 : 0);
-    final completedExercises = activity.type == StudyEventType.exerciseCompleted
+    final completedExercises = _countsAsCompletedUnit(activity.type)
         ? (current.completedExercises + 1).clamp(0, topic.totalExercises)
         : current.completedExercises;
     final completion = topic.totalExercises == 0
@@ -92,6 +92,17 @@ final class AdaptiveLearningService {
       return current;
     }
     return ((completion * 0.45) + (accuracy * 0.55)).clamp(0, 1);
+  }
+
+  bool _countsAsCompletedUnit(StudyEventType type) {
+    return switch (type) {
+      StudyEventType.exerciseCompleted ||
+      StudyEventType.quizCompleted ||
+      StudyEventType.challengeCompleted => true,
+      StudyEventType.contentViewed ||
+      StudyEventType.exerciseAttempted ||
+      StudyEventType.reviewCompleted => false,
+    };
   }
 
   TopicDifficulty _perceivedDifficulty(

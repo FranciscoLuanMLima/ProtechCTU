@@ -1,10 +1,18 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hive/hive.dart';
+import 'package:protechctu/app/constants.dart';
+import 'package:protechctu/core/services/adaptive_learning_service.dart';
+import 'package:protechctu/core/services/learning_catalog_seed.dart';
 import 'package:protechctu/core/services/quiz_gamification_service.dart';
 import 'package:protechctu/features/activities/activities_cubit.dart';
 import 'package:protechctu/features/activities/activities_page.dart';
+import 'package:protechctu/features/activities/activities_repository.dart';
 import 'package:protechctu/features/activities/activity_editor_page.dart';
 import 'package:protechctu/features/activities/python_exercise_runner.dart';
 import 'package:protechctu/features/auth/auth_cubit.dart';
@@ -15,10 +23,36 @@ import 'package:protechctu/features/concepts/concept_detail_page.dart';
 import 'package:protechctu/features/concepts/concepts_cubit.dart';
 import 'package:protechctu/features/concepts/concepts_page.dart';
 import 'package:protechctu/features/concepts/concepts_repository.dart';
+import 'package:protechctu/features/dashboard/teaching_dashboard_page.dart';
 import 'package:protechctu/features/quiz/data/datasources/quiz_catalog_datasource.dart';
 import 'package:protechctu/features/quiz/domain/entities/programming_quiz.dart';
+import 'package:protechctu/features/user/domain/entities/learning_dashboard.dart';
 
 void main() {
+  late Directory hiveDirectory;
+
+  setUpAll(() async {
+    hiveDirectory = await Directory.systemTemp.createTemp('protechctu_test_');
+    Hive.init(hiveDirectory.path);
+    for (final boxName in [
+      AppConstants.hiveAppBox,
+      AppConstants.hiveAuthBox,
+      AppConstants.hiveStudentBox,
+      AppConstants.hiveActivitiesBox,
+    ]) {
+      if (!Hive.isBoxOpen(boxName)) {
+        await Hive.openBox(boxName);
+      }
+    }
+  });
+
+  tearDownAll(() async {
+    await Hive.close();
+    if (await hiveDirectory.exists()) {
+      await hiveDirectory.delete(recursive: true);
+    }
+  });
+
   test('credencial persistida não contém senha em texto puro', () {
     final user = AuthModel.register(
       name: 'Ana Silva',
@@ -67,6 +101,42 @@ void main() {
       result.profile.achievements.unlockedAchievementIds,
       contains('quiz_perfeito_variables'),
     );
+  });
+
+  test('quiz e desafio concluido contam para progresso do assunto', () {
+    const service = AdaptiveLearningService();
+    final now = DateTime.utc(2026, 6, 13);
+    const topic = LearningCatalogSeed.topics;
+    final quizTopic = topic.firstWhere((item) => item.topicId == 'variables');
+    final challengeTopic = topic.firstWhere(
+      (item) => item.topicId == 'functions',
+    );
+    final initialQuizProgress = _progress('2026001', 'variables', now);
+    final quizResult = service.apply(
+      topic: quizTopic,
+      current: initialQuizProgress,
+      activity: _activity(
+        userId: '2026001',
+        topicId: 'variables',
+        type: StudyEventType.quizCompleted,
+        now: now,
+      ),
+    );
+    final challengeResult = service.apply(
+      topic: challengeTopic,
+      current: _progress('2026001', 'functions', now),
+      activity: _activity(
+        userId: '2026001',
+        topicId: 'functions',
+        type: StudyEventType.challengeCompleted,
+        now: now,
+      ),
+    );
+
+    expect(quizResult.progress.completedExercises, 1);
+    expect(quizResult.progress.completionRate, 0.5);
+    expect(challengeResult.progress.completedExercises, 1);
+    expect(challengeResult.progress.status, TopicStatus.completed);
   });
 
   test('executor Python processa entrada, condição, laço e função', () {
@@ -144,7 +214,9 @@ print("Resultado:", dias)''';
       ],
     );
 
-    await tester.pumpWidget(MaterialApp.router(routerConfig: router));
+    await tester.pumpWidget(
+      ProviderScope(child: MaterialApp.router(routerConfig: router)),
+    );
     await tester.pumpAndSettle();
 
     await tester.tap(find.text('Variáveis e tipos'));
@@ -186,7 +258,9 @@ print("Resultado:", dias)''';
       ],
     );
 
-    await tester.pumpWidget(MaterialApp.router(routerConfig: router));
+    await tester.pumpWidget(
+      ProviderScope(child: MaterialApp.router(routerConfig: router)),
+    );
     await tester.pumpAndSettle();
 
     await tester.tap(
@@ -204,7 +278,74 @@ print("Resultado:", dias)''';
     await tester.tap(find.byTooltip('Back'));
     await tester.pumpAndSettle();
 
-    expect(find.text('Prática orientada'), findsOneWidget);
+    expect(find.text('Pratica orientada'), findsOneWidget);
+  });
+
+  test('filtro de pendentes remove atividades concluidas', () async {
+    final activities = await const ActivitiesRepository().load();
+
+    final pending = filterPendingActivities(
+      activities,
+      completedTopicIds: const <String>{'variables'},
+      legacyCompletedActivityIds: const <String>{'hello-world'},
+    );
+
+    expect(
+      pending.map((activity) => activity.id),
+      isNot(contains('hello-world')),
+    );
+    expect(pending.map((activity) => activity.id), isNot(contains('sum')));
+    expect(pending.map((activity) => activity.id), contains('approval'));
+  });
+
+  testWidgets('dashboard separa navegacao de pendencias e revisoes', (
+    tester,
+  ) async {
+    await tester.binding.setSurfaceSize(const Size(1000, 2200));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+
+    final router = GoRouter(
+      initialLocation: '/dashboard',
+      routes: [
+        GoRoute(
+          path: '/dashboard',
+          builder: (_, _) => const TeachingDashboardPage(),
+        ),
+        GoRoute(
+          path: '/activities',
+          builder: (_, state) => BlocProvider(
+            create: (_) => ActivitiesCubit()..load(),
+            child: ActivitiesPage(filter: state.uri.queryParameters['filter']),
+          ),
+        ),
+      ],
+    );
+
+    await tester.pumpWidget(
+      ProviderScope(child: MaterialApp.router(routerConfig: router)),
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.text('Desempenho por assunto'), findsOneWidget);
+
+    await tester.tap(find.text('Atividades pendentes'));
+    await tester.pumpAndSettle();
+
+    expect(
+      find.text('Continue os desafios praticos ainda em aberto na sua trilha.'),
+      findsOneWidget,
+    );
+
+    router.go('/dashboard');
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Revisoes agendadas'));
+    await tester.pumpAndSettle();
+
+    expect(
+      find.text('Revise conteudos que precisam de reforco antes de avancar.'),
+      findsOneWidget,
+    );
   });
 
   testWidgets('atividade executa código e apresenta a saída no editor', (
@@ -213,7 +354,9 @@ print("Resultado:", dias)''';
     await tester.binding.setSurfaceSize(const Size(1000, 3000));
     addTearDown(() => tester.binding.setSurfaceSize(null));
     await tester.pumpWidget(
-      const MaterialApp(home: ActivityEditorPage(activityId: 'sum')),
+      const ProviderScope(
+        child: MaterialApp(home: ActivityEditorPage(activityId: 'sum')),
+      ),
     );
     await tester.pumpAndSettle();
 
@@ -232,4 +375,47 @@ print(f"XP total: {xp_total}")''',
     expect(find.text('Saída do programa'), findsOneWidget);
     expect(find.text('XP total: 65'), findsOneWidget);
   });
+}
+
+TopicLearningProgress _progress(String userId, String topicId, DateTime now) {
+  return TopicLearningProgress(
+    userId: userId,
+    topicId: topicId,
+    status: TopicStatus.notStarted,
+    completionRate: 0,
+    masteryRate: 0,
+    previousMasteryRate: 0,
+    completedExercises: 0,
+    totalAttempts: 0,
+    correctAttempts: 0,
+    totalResponseTime: Duration.zero,
+    totalStudyTime: Duration.zero,
+    userDifficulty: null,
+    unlockedBadgeIds: const <String>[],
+    firstTryPerfect: false,
+    lastAccess: null,
+    unlockedAt: null,
+    completedAt: null,
+    updatedAt: now,
+  );
+}
+
+StudyActivity _activity({
+  required String userId,
+  required String topicId,
+  required StudyEventType type,
+  required DateTime now,
+}) {
+  return StudyActivity(
+    activityId: '$userId:$topicId:${type.name}',
+    userId: userId,
+    topicId: topicId,
+    type: type,
+    occurredAt: now,
+    duration: const Duration(minutes: 5),
+    responseTime: const Duration(seconds: 30),
+    wasCorrect: true,
+    wasFirstAttempt: true,
+    masteryAfterEvent: 0,
+  );
 }

@@ -1,13 +1,20 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../app/constants.dart';
 import '../../../core/database/database_service.dart';
+import '../../../core/services/hive_service.dart';
+import '../../../core/services/learning_catalog_seed.dart';
 import '../../../core/services/backup_service.dart';
 import '../../../core/services/cache_service.dart';
 import '../../../core/services/adaptive_learning_service.dart';
 import '../../../core/services/dashboard_analytics_service.dart';
 import '../../../core/services/migration_service.dart';
+import '../../../core/services/quiz_gamification_service.dart';
 import '../../../core/services/sync_service.dart';
+import '../../auth/auth_model.dart';
+import '../../auth/auth_repository.dart';
+import '../../activities/activities_repository.dart';
 import '../data/datasources/learning_dashboard_local_datasource.dart';
 import '../data/datasources/user_local_datasource.dart';
 import '../data/datasources/user_remote_datasource.dart';
@@ -182,6 +189,78 @@ final userSyncServiceProvider = FutureProvider<UserSyncService?>((ref) async {
     remote,
   );
 });
+
+final activeUserSessionProvider = FutureProvider<ActiveUserSession?>((
+  ref,
+) async {
+  final authUser = AuthRepository.instance.currentUser;
+  if (authUser == null) {
+    return null;
+  }
+
+  final userRepository = await ref.watch(userRepositoryProvider.future);
+  var profile = await userRepository.getProfile(authUser.registration);
+  if (profile == null) {
+    profile = const QuizGamificationService().initialProfileFromIdentity(
+      userId: authUser.registration,
+      name: authUser.name,
+      gender: authUser.gender,
+      entryYear: authUser.entryYear,
+      now: DateTime.now().toUtc(),
+    );
+    await userRepository.saveProfile(profile);
+  }
+
+  await _migrateLegacyCompletedActivities(ref, authUser.registration);
+
+  return ActiveUserSession(
+    authUser: authUser,
+    profile: await userRepository.getProfile(authUser.registration) ?? profile,
+  );
+});
+
+final class ActiveUserSession {
+  const ActiveUserSession({required this.authUser, required this.profile});
+
+  final AuthModel authUser;
+  final UserProfile profile;
+
+  String get learnerId => authUser.registration;
+  bool get isInitialized => true;
+}
+
+Future<void> _migrateLegacyCompletedActivities(Ref ref, String userId) async {
+  final completed = const ActivitiesRepository().legacyCompletedIds();
+  if (completed.isEmpty) {
+    return;
+  }
+  final repository = await ref.watch(
+    learningDashboardRepositoryProvider.future,
+  );
+  for (final activityId in completed) {
+    final topicId = LearningCatalogSeed.topicIdForActivity(activityId);
+    if (topicId == null) {
+      continue;
+    }
+    await repository.recordActivity(
+      StudyActivity(
+        activityId: 'activity:$userId:$activityId',
+        userId: userId,
+        topicId: topicId,
+        type: StudyEventType.exerciseCompleted,
+        occurredAt: DateTime.now().toUtc(),
+        duration: const Duration(minutes: 1),
+        responseTime: null,
+        wasCorrect: null,
+        wasFirstAttempt: false,
+        masteryAfterEvent: 0,
+      ),
+    );
+  }
+  await HiveService.instance
+      .box(AppConstants.hiveActivitiesBox)
+      .delete('completedActivities');
+}
 
 final watchedUserProfileProvider = StreamProvider.family<UserProfile?, String>((
   ref,
