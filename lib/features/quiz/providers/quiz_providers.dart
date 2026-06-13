@@ -30,9 +30,6 @@ final quizRepositoryProvider = FutureProvider<QuizRepository>((ref) async {
     catalog: ref.watch(quizCatalogDataSourceProvider),
     localDataSource: await ref.watch(quizLocalDataSourceProvider.future),
     userRepository: await ref.watch(userRepositoryProvider.future),
-    learningDashboardRepository: await ref.watch(
-      learningDashboardRepositoryProvider.future,
-    ),
     backupService: await ref.watch(userBackupServiceProvider.future),
     gamification: ref.watch(quizGamificationServiceProvider),
   );

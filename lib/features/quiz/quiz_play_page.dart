@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/widgets/app_card.dart';
-import '../user/providers/user_providers.dart';
+import '../auth/auth_repository.dart';
 import 'domain/entities/programming_quiz.dart';
 import 'providers/quiz_providers.dart';
 
@@ -22,19 +22,25 @@ class _QuizPlayPageState extends ConsumerState<QuizPlayPage> {
   bool _submitting = false;
   String? _error;
 
-  Future<void> _finish(ProgrammingQuiz quiz) async {
-    final session = await ref.read(activeUserSessionProvider.future);
-    if (session == null) {
-      setState(() => _error = 'Entre novamente para concluir o quiz.');
-      return;
+  QuizLearner? get _learner {
+    final user = AuthRepository.instance.currentUser;
+    if (user == null) {
+      return null;
     }
-    final user = session.authUser;
-    final learner = QuizLearner(
-      userId: session.learnerId,
+    return QuizLearner(
+      userId: user.registration,
       name: user.name,
       gender: user.gender,
       entryYear: user.entryYear,
     );
+  }
+
+  Future<void> _finish(ProgrammingQuiz quiz) async {
+    final learner = _learner;
+    if (learner == null) {
+      setState(() => _error = 'Entre novamente para concluir o quiz.');
+      return;
+    }
     if (_answers.length != quiz.questions.length) {
       setState(() => _error = 'Responda todas as perguntas antes de concluir.');
       return;

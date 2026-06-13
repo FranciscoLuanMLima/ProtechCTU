@@ -6,7 +6,6 @@ import 'package:uuid/uuid.dart';
 import '../../../../core/database/database_exception.dart';
 import '../../../../core/services/adaptive_learning_service.dart';
 import '../../../../core/services/dashboard_analytics_service.dart';
-import '../../../../core/services/learning_catalog_seed.dart';
 import '../../domain/entities/learning_dashboard.dart';
 import '../../domain/entities/user_profile.dart';
 import '../../domain/repositories/learning_dashboard_repository.dart';
@@ -44,7 +43,6 @@ final class LearningDashboardRepositoryImpl
     final controller = StreamController<void>();
     final subscriptions = <StreamSubscription<Object?>>[];
     controller.onListen = () {
-      controller.add(null);
       subscriptions.add(
         _localDataSource
             .watchDashboardChanges(userId)
@@ -79,7 +77,7 @@ final class LearningDashboardRepositoryImpl
     }
     final results = await Future.wait<Object?>(<Future<Object?>>[
       _userRepository.getProfile(userId),
-      _seededTopics(),
+      _localDataSource.findTopics(),
       _localDataSource.findProgress(userId),
       _localDataSource.findActivities(
         userId,
@@ -121,7 +119,6 @@ final class LearningDashboardRepositoryImpl
   @override
   Future<void> recordActivity(StudyActivity activity) async {
     _validateActivity(activity);
-    await _ensureCatalogSeeded();
     if (await _localDataSource.findActivity(activity.activityId) != null) {
       return;
     }
@@ -199,19 +196,6 @@ final class LearningDashboardRepositoryImpl
         },
       ),
     );
-  }
-
-  Future<List<LearningTopicModel>> _seededTopics() async {
-    await _ensureCatalogSeeded();
-    return _localDataSource.findTopics();
-  }
-
-  Future<void> _ensureCatalogSeeded() async {
-    final currentTopics = await _localDataSource.findTopics();
-    if (currentTopics.isNotEmpty) {
-      return;
-    }
-    await saveTopicCatalog(LearningCatalogSeed.topics);
   }
 
   @override

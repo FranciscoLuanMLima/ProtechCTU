@@ -179,19 +179,25 @@ print(classificar_maestria(0.72))''',
   }
 
   bool isCompleted(String id) {
-    return legacyCompletedIds().contains(id);
-  }
-
-  Set<String> legacyCompletedIds() {
     try {
       final values =
           HiveService.instance
                   .box(AppConstants.hiveActivitiesBox)
                   .get(_completedKey, defaultValue: <String>[])
               as List;
-      return values.cast<String>().toSet();
+      return values.cast<String>().contains(id);
     } catch (_) {
-      return const <String>{};
+      return false;
     }
+  }
+
+  Future<void> complete(String id) async {
+    final box = HiveService.instance.box(AppConstants.hiveActivitiesBox);
+    final completed =
+        (box.get(_completedKey, defaultValue: <String>[]) as List)
+            .cast<String>()
+            .toSet()
+          ..add(id);
+    await box.put(_completedKey, completed.toList(growable: false));
   }
 }

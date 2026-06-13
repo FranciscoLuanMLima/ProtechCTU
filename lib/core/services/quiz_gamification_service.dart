@@ -19,36 +19,20 @@ final class QuizGamificationService {
   const QuizGamificationService();
 
   UserProfile initialProfile(QuizLearner learner, DateTime now) {
-    return initialProfileFromIdentity(
-      userId: learner.userId,
-      name: learner.name,
-      gender: learner.gender,
-      entryYear: learner.entryYear,
-      now: now,
-    );
-  }
-
-  UserProfile initialProfileFromIdentity({
-    required String userId,
-    required String name,
-    required String gender,
-    required int entryYear,
-    required DateTime now,
-  }) {
     return UserProfile(
       identification: UserIdentification(
-        userId: userId,
-        registration: userId,
-        name: name,
-        nickname: name.split(' ').first,
+        userId: learner.userId,
+        registration: learner.userId,
+        name: learner.name,
+        nickname: learner.name.split(' ').first,
         email: '',
-        sex: _sex(gender),
+        sex: _sex(learner.gender),
         // Data não coletada: mantém o valor sentinela esperado pelo modelo.
         birthDate: DateTime.fromMillisecondsSinceEpoch(0, isUtc: true),
       ),
       institutional: InstitutionalData(
         course: 'Não informado',
-        startYear: entryYear,
+        startYear: learner.entryYear,
         currentPeriod: 1,
         shift: StudyShift.notInformed,
         campus: 'Não informado',

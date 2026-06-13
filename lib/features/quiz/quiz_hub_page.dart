@@ -4,8 +4,8 @@ import 'package:go_router/go_router.dart';
 
 import '../../app/router.dart';
 import '../../core/widgets/app_card.dart';
+import '../auth/auth_repository.dart';
 import '../user/domain/entities/user_profile.dart';
-import '../user/providers/user_providers.dart';
 import 'domain/entities/programming_quiz.dart';
 import 'providers/quiz_providers.dart';
 
@@ -14,23 +14,15 @@ class QuizHubPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final activeUser = ref.watch(activeUserSessionProvider);
-    final session = activeUser.asData?.value;
-    if (activeUser.isLoading) {
+    final authUser = AuthRepository.instance.currentUser;
+    if (authUser == null) {
       return Scaffold(
-        appBar: AppBar(title: const Text('Quiz')),
-        body: const Center(child: CircularProgressIndicator()),
-      );
-    }
-    if (session == null) {
-      return Scaffold(
-        appBar: AppBar(title: const Text('Quiz')),
+        appBar: AppBar(title: Text('Quiz')),
         body: const Center(child: Text('Entre para acessar os quizzes.')),
       );
     }
-    final authUser = session.authUser;
     final learner = QuizLearner(
-      userId: session.learnerId,
+      userId: authUser.registration,
       name: authUser.name,
       gender: authUser.gender,
       entryYear: authUser.entryYear,
