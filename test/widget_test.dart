@@ -8,6 +8,7 @@ import 'package:go_router/go_router.dart';
 import 'package:hive/hive.dart';
 import 'package:protechctu/app/constants.dart';
 import 'package:protechctu/core/services/adaptive_learning_service.dart';
+import 'package:protechctu/core/services/dashboard_analytics_service.dart';
 import 'package:protechctu/core/services/learning_catalog_seed.dart';
 import 'package:protechctu/core/services/quiz_gamification_service.dart';
 import 'package:protechctu/features/activities/activities_cubit.dart';
@@ -24,9 +25,18 @@ import 'package:protechctu/features/concepts/concepts_cubit.dart';
 import 'package:protechctu/features/concepts/concepts_page.dart';
 import 'package:protechctu/features/concepts/concepts_repository.dart';
 import 'package:protechctu/features/dashboard/teaching_dashboard_page.dart';
+import 'package:protechctu/features/profile/profile_cubit.dart';
+import 'package:protechctu/features/profile/profile_page.dart';
+import 'package:protechctu/features/profile/profile_repository.dart';
 import 'package:protechctu/features/quiz/data/datasources/quiz_catalog_datasource.dart';
 import 'package:protechctu/features/quiz/domain/entities/programming_quiz.dart';
+import 'package:protechctu/features/user/data/datasources/learning_dashboard_local_datasource.dart';
+import 'package:protechctu/features/user/data/models/learning_dashboard_model.dart';
+import 'package:protechctu/features/user/data/models/user_profile_model.dart';
+import 'package:protechctu/features/user/data/repositories/learning_dashboard_repository_impl.dart';
 import 'package:protechctu/features/user/domain/entities/learning_dashboard.dart';
+import 'package:protechctu/features/user/domain/entities/user_profile.dart';
+import 'package:protechctu/features/user/domain/repositories/user_repository.dart';
 
 void main() {
   late Directory hiveDirectory;
@@ -318,6 +328,13 @@ print("Resultado:", dias)''';
             child: ActivitiesPage(filter: state.uri.queryParameters['filter']),
           ),
         ),
+        GoRoute(
+          path: '/profile',
+          builder: (_, _) => BlocProvider(
+            create: (_) => ProfileCubit(ProfileRepository.instance)..load(),
+            child: const ProfilePage(),
+          ),
+        ),
       ],
     );
 
@@ -346,7 +363,39 @@ print("Resultado:", dias)''';
       find.text('Revise conteudos que precisam de reforco antes de avancar.'),
       findsOneWidget,
     );
+
+    router.go('/dashboard');
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.byTooltip('Perfil'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Perfil'), findsOneWidget);
+
+    await tester.tap(find.byTooltip('Back'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Desempenho por assunto'), findsOneWidget);
   });
+
+  test(
+    'dashboard emite snapshot inicial mesmo sem evento do watcher',
+    () async {
+      final repository = LearningDashboardRepositoryImpl(
+        localDataSource: _DashboardLocalDataSourceWithoutWatchEvent(),
+        userRepository: _EmptyUserRepository(),
+        adaptiveLearningService: const AdaptiveLearningService(),
+        analyticsService: const DashboardAnalyticsService(),
+      );
+
+      final snapshot = await repository
+          .watchDashboard('2026001')
+          .first
+          .timeout(const Duration(seconds: 1));
+
+      expect(snapshot.topics, isNotEmpty);
+    },
+  );
 
   testWidgets('atividade executa código e apresenta a saída no editor', (
     tester,
@@ -418,4 +467,122 @@ StudyActivity _activity({
     wasFirstAttempt: true,
     masteryAfterEvent: 0,
   );
+}
+
+final class _DashboardLocalDataSourceWithoutWatchEvent
+    implements LearningDashboardLocalDataSource {
+  final _topics = <LearningTopicModel>[];
+
+  @override
+  Stream<void> watchDashboardChanges(String userId) => const Stream.empty();
+
+  @override
+  Future<List<LearningTopicModel>> findTopics() async => _topics;
+
+  @override
+  Future<LearningTopicModel?> findTopic(String topicId) async {
+    for (final topic in _topics) {
+      if (topic.topicId == topicId) return topic;
+    }
+    return null;
+  }
+
+  @override
+  Future<List<UserTopicProgressModel>> findProgress(String userId) async =>
+      const <UserTopicProgressModel>[];
+
+  @override
+  Future<UserTopicProgressModel?> findTopicProgress(
+    String userId,
+    String topicId,
+  ) async => null;
+
+  @override
+  Future<List<StudyActivityModel>> findActivities(
+    String userId, {
+    required DateTime from,
+  }) async => const <StudyActivityModel>[];
+
+  @override
+  Future<List<ReviewScheduleModel>> findReviews(String userId) async =>
+      const <ReviewScheduleModel>[];
+
+  @override
+  Future<ReviewScheduleModel?> findReview(
+    String userId,
+    String topicId,
+  ) async => null;
+
+  @override
+  Future<List<LearningGoalModel>> findGoals(String userId) async =>
+      const <LearningGoalModel>[];
+
+  @override
+  Future<void> putTopics(List<LearningTopicModel> topics) async {
+    _topics
+      ..clear()
+      ..addAll(topics);
+  }
+
+  @override
+  Future<void> putActivityState({
+    required UserTopicProgressModel progress,
+    required StudyActivityModel activity,
+    required ReviewScheduleModel review,
+    required UserSyncOperationModel operation,
+  }) async {}
+
+  @override
+  Future<void> putGoal(
+    LearningGoalModel goal,
+    UserSyncOperationModel operation,
+  ) async {}
+
+  @override
+  Future<StudyActivityModel?> findActivity(String activityId) async => null;
+}
+
+final class _EmptyUserRepository implements UserRepository {
+  @override
+  Stream<UserProfile?> watchProfile(String userId) => const Stream.empty();
+
+  @override
+  Future<UserProfile?> getProfile(String userId) async => null;
+
+  @override
+  Future<UserProfile?> getCachedProfile(
+    String userId, {
+    Duration maxAge = const Duration(minutes: 5),
+  }) async => null;
+
+  @override
+  Future<void> saveProfile(UserProfile profile) async {}
+
+  @override
+  Future<void> deleteProfile(String userId) async {}
+
+  @override
+  Future<List<UserProfile>> listBackups(String userId) async =>
+      const <UserProfile>[];
+
+  @override
+  Future<void> restoreBackup(UserProfile backup) async {}
+
+  @override
+  Future<List<UserSyncOperation>> pendingSynchronizationOperations({
+    int limit = 50,
+  }) async => const <UserSyncOperation>[];
+
+  @override
+  Future<void> completeSynchronization(
+    String operationId,
+    String userId,
+  ) async {}
+
+  @override
+  Future<void> failSynchronization(
+    String operationId, {
+    required String errorMessage,
+    required DateTime retryAt,
+  }) async {}
 }

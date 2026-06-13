@@ -44,6 +44,7 @@ final class LearningDashboardRepositoryImpl
     final controller = StreamController<void>();
     final subscriptions = <StreamSubscription<Object?>>[];
     controller.onListen = () {
+      controller.add(null);
       subscriptions.add(
         _localDataSource
             .watchDashboardChanges(userId)
