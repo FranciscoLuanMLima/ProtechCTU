@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Apresentação ProTech</title>
+<style>
+  @page { size: 16in 9in; margin: 0; }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: Arial, Helvetica, sans-serif; background: #071d38; color: #fff; }
+  .slide { width: 100vw; height: 100vh; page-break-after: always; padding: 62px 74px; position: relative; background: #071d38; overflow: hidden; }
+  .slide:before { content: ""; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(30,136,229,.25), transparent 45%), radial-gradient(circle at 88% 18%, rgba(46,229,157,.22), transparent 24%); }
+  .slide > * { position: relative; z-index: 1; }
+  .kicker { color: #8ecaff; font-size: 22px; font-weight: 700; margin-bottom: 26px; }
+  h1 { font-size: 64px; line-height: 1.05; margin: 0 0 20px; letter-spacing: 0; max-width: 980px; }
+  .subtitle { font-size: 30px; color: #d9e8f7; margin: 0 0 34px; }
+  ul { margin: 44px 0 0; padding: 34px 44px 34px 68px; width: 86%; background: #f7f9fc; color: #102136; border-left: 10px solid #2ee59d; border-radius: 8px; font-size: 29px; line-height: 1.35; }
+  li { margin: 14px 0; }
+</style>
+</head>
+<body>
+<section class='slide'><div class='kicker'>ProTech • 1</div><h1>ProTech</h1><p class='subtitle'>Aplicativo Flutter para aprendizagem de programação</p><ul><li>Autores: Sérgio Roberto de Oliveira Loyola e Luan</li><li>Documentação gerada a partir do código-fonte real</li><li>Foco: programação, gamificação, dashboard, revisão e recursos nativos Android</li></ul></section>
+<section class='slide'><div class='kicker'>ProTech • 2</div><h1>Problema e Relevância</h1><ul><li>Dificuldade recorrente na consolidação de lógica de programação</li><li>Necessidade de prática guiada, feedback e acompanhamento de progresso</li><li>Proposta alinhada ao ensino universitário de tecnologia</li></ul></section>
+<section class='slide'><div class='kicker'>ProTech • 3</div><h1>Objetivo do Projeto</h1><ul><li>Apoiar o aprendizado de programação com conceitos, atividades e quizzes</li><li>Registrar progresso, maestria, XP, moedas, níveis e streak</li><li>Oferecer revisão rápida e estudo diário por meio de widget Android</li></ul></section>
+<section class='slide'><div class='kicker'>ProTech • 4</div><h1>Tecnologias Utilizadas</h1><ul><li>Flutter, Dart, Material 3 e GoRouter</li><li>flutter_bloc e flutter_riverpod para estado</li><li>Hive, Isar Community, SharedPreferences e Path Provider</li><li>home_widget, Kotlin, AppWidgetProvider e Android XML</li></ul></section>
+<section class='slide'><div class='kicker'>ProTech • 5</div><h1>Arquitetura</h1><ul><li>Organização próxima de Clean Architecture em user, quiz e classes</li><li>Camadas de domínio, dados e apresentação</li><li>Repositories, datasources, mappers, use cases, providers e serviços</li><li>Features simples ainda usam repositórios locais em memória ou Hive</li></ul></section>
+<section class='slide'><div class='kicker'>ProTech • 6</div><h1>Funcionalidades Implementadas</h1><ul><li>Autenticação local com Hive e senha com hash</li><li>Catálogo de conceitos e atividades práticas</li><li>Executor didático de Python implementado em Dart</li><li>Quizzes gamificados, dashboard, turmas, ranking e testes</li></ul></section>
+<section class='slide'><div class='kicker'>ProTech • 7</div><h1>Gamificação</h1><ul><li>XP, moedas, nível, streak e conquistas</li><li>Recompensas aplicadas após tentativas de quiz</li><li>Perfil do estudante com estatísticas e progressão</li><li>Maior engajamento por feedback contínuo</li></ul></section>
+<section class='slide'><div class='kicker'>ProTech • 8</div><h1>Sistema Adaptativo</h1><ul><li>Cálculo de completionRate e masteryRate por tópico</li><li>Registro de tentativas, acertos, dificuldade percebida e badges</li><li>Agenda de revisão espaçada com easeFactor, repetitions e lapses</li><li>Dashboard com recomendações, tópicos fortes/fracos e revisões do dia</li></ul></section>
+<section class='slide'><div class='kicker'>ProTech • 9</div><h1>Banco de Dados Local</h1><ul><li>Isar Community como banco local principal</li><li>14 coleções/modelos documentados no relatório</li><li>Hive para autenticação e conclusão de atividades</li><li>Fila de sincronização e backup local como base offline-first</li></ul></section>
+<section class='slide'><div class='kicker'>ProTech • 10</div><h1>Widget Android</h1><ul><li>Revisão rápida na tela inicial do celular</li><li>Perguntas reais do catálogo de quizzes</li><li>Priorização por revisão vencida, baixa maestria, tópico fraco e erro recente</li><li>Deep link para abrir diretamente a atividade no aplicativo</li></ul></section>
+<section class='slide'><div class='kicker'>ProTech • 11</div><h1>Dashboard e Turmas</h1><ul><li>Dashboard com nível, XP, moedas, streak, progresso e ações rápidas</li><li>Serviços analíticos para desempenho individual</li><li>Sistema de turmas com perfil público, ranking, estatísticas e comparação</li><li>Potencial de uso em disciplina real</li></ul></section>
+<section class='slide'><div class='kicker'>ProTech • 12</div><h1>Diferenciais Acadêmicos</h1><ul><li>Executor Python local seguro</li><li>Widget Android integrado a dados reais</li><li>Aprendizagem adaptativa e revisão espaçada</li><li>Offline-first, backup, fila de sincronização e modelagem rica de domínio</li></ul></section>
+<section class='slide'><div class='kicker'>ProTech • 13</div><h1>Participação dos Integrantes</h1><ul><li>Sérgio: arquitetura Flutter, dashboard, gamificação, sistema adaptativo, widget Android e integração visual</li><li>Luan: prototipação inicial, banco/modelagem, conteúdos, executor Python, autenticação, testes e integrações de base</li><li>Divisão baseada no histórico Git e na organização técnica observada</li></ul></section>
+<section class='slide'><div class='kicker'>ProTech • 14</div><h1>Limitações Identificadas</h1><ul><li>Textos com encoding quebrado em pontos do código-fonte</li><li>Firebase/backend remoto ainda não ativado</li><li>Notificações locais ainda não implementadas</li><li>Painel de turma pode evoluir para visão de professor</li></ul></section>
+<section class='slide'><div class='kicker'>ProTech • 15</div><h1>Conclusão</h1><ul><li>O ProTech supera um CRUD simples e apresenta proposta educacional consistente</li><li>Combina Flutter, banco local, gamificação, adaptação, ranking e recurso nativo Android</li><li>O projeto tem bom potencial para banca universitária e evolução acadêmica</li></ul></section>
+
+</body>
+</html>

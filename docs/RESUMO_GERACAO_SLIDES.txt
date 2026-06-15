@@ -1,0 +1,6 @@
+Apresentação gerada em: C:\ProtechCTU\docs\Apresentacao_ProTech_Banca.pptx
+Versão HTML gerada em: C:\ProtechCTU\docs\Apresentacao_ProTech_Banca.html
+Versão PDF gerada em: C:\ProtechCTU\docs\Apresentacao_ProTech_Banca.pdf
+Quantidade de slides: 15
+Páginas estimadas no PDF: 15
+Base: relatório acadêmico e análise do código-fonte real do ProTech

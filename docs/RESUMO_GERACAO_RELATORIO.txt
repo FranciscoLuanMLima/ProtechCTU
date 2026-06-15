@@ -1,0 +1,10 @@
+Relatório acadêmico gerado em: C:\ProtechCTU\docs\Relatorio_Academico_ProTech_ABNT.pdf
+Documento DOCX gerado em: C:\ProtechCTU\docs\Relatorio_Academico_ProTech_ABNT.docx
+HTML base gerado em: C:\ProtechCTU\docs\Relatorio_Academico_ProTech_ABNT.html
+Diagramas criados:
+- docs/diagramas/arquitetura_protech.svg
+- docs/diagramas/modelo_dados_protech.svg
+- docs/diagramas/fluxo_widget_android.svg
+Funcionalidades documentadas: 11
+Coleções/modelos de banco documentados: 14
+Páginas estimadas no PDF: 16

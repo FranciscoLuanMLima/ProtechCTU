@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="720" viewBox="0 0 1100 720">
+  <style>
+    .bg{fill:#f7f9fc}.title{font:700 26px Arial;fill:#071d38}.h{font:700 18px Arial;fill:#071d38}.t{font:14px Arial;fill:#172033}
+    .box{fill:#fff;stroke:#1e88e5;stroke-width:2;rx:12}.core{fill:#e8f3ff;stroke:#071d38;stroke-width:2;rx:12}
+    .arrow{stroke:#071d38;stroke-width:2;marker-end:url(#m)}
+  </style>
+  <defs><marker id="m" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#071d38"/></marker></defs>
+  <rect class="bg" x="0" y="0" width="1100" height="720"/>
+  <text class="title" x="40" y="48">Arquitetura geral do ProTech</text>
+  <rect class="box" x="60" y="90" width="280" height="145"/><text class="h" x="85" y="125">Apresentação Flutter</text><text class="t" x="85" y="158">Telas, Widgets, BLoC/Cubit</text><text class="t" x="85" y="184">Riverpod Providers</text><text class="t" x="85" y="210">GoRouter e tema Material 3</text>
+  <rect class="core" x="410" y="90" width="300" height="145"/><text class="h" x="435" y="125">Domínio</text><text class="t" x="435" y="158">Entidades: perfil, quiz, turma</text><text class="t" x="435" y="184">Casos de uso</text><text class="t" x="435" y="210">Regras de maestria e recompensas</text>
+  <rect class="box" x="780" y="90" width="260" height="145"/><text class="h" x="805" y="125">Dados</text><text class="t" x="805" y="158">Repositories</text><text class="t" x="805" y="184">Datasources Isar/Hive</text><text class="t" x="805" y="210">Mappers e modelos locais</text>
+  <rect class="box" x="60" y="315" width="280" height="150"/><text class="h" x="85" y="350">Serviços Centrais</text><text class="t" x="85" y="383">AdaptiveLearningService</text><text class="t" x="85" y="409">DashboardAnalyticsService</text><text class="t" x="85" y="435">QuizGamificationService</text>
+  <rect class="box" x="410" y="315" width="300" height="150"/><text class="h" x="435" y="350">Persistência Offline-first</text><text class="t" x="435" y="383">Isar: perfis, tópicos, turmas</text><text class="t" x="435" y="409">Hive: autenticação e atividades</text><text class="t" x="435" y="435">Fila de sincronização e backup</text>
+  <rect class="box" x="780" y="315" width="260" height="150"/><text class="h" x="805" y="350">Recursos Nativos</text><text class="t" x="805" y="383">Widget Android pequeno/médio</text><text class="t" x="805" y="409">Deep link para quiz</text><text class="t" x="805" y="435">HomeWidget + RemoteViews</text>
+  <rect class="core" x="255" y="540" width="590" height="105"/><text class="h" x="285" y="577">Experiência Educacional</text><text class="t" x="285" y="610">Conceitos, atividades Python, quizzes, dashboard adaptativo, ranking de turma e revisão rápida.</text>
+  <line class="arrow" x1="340" y1="162" x2="410" y2="162"/><line class="arrow" x1="710" y1="162" x2="780" y2="162"/>
+  <line class="arrow" x1="560" y1="235" x2="560" y2="315"/><line class="arrow" x1="340" y1="390" x2="410" y2="390"/><line class="arrow" x1="710" y1="390" x2="780" y2="390"/>
+  <line class="arrow" x1="200" y1="465" x2="390" y2="540"/><line class="arrow" x1="560" y1="465" x2="560" y2="540"/><line class="arrow" x1="910" y1="465" x2="710" y2="540"/>
+</svg>

@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760">
+  <style>
+    .bg{fill:#fff}.title{font:700 26px Arial;fill:#071d38}.entity{fill:#f6fbff;stroke:#1e88e5;stroke-width:2;rx:10}
+    .sync{fill:#fff8e6;stroke:#d28b00;stroke-width:2;rx:10}.class{fill:#eefbea;stroke:#3a9f5d;stroke-width:2;rx:10}
+    .h{font:700 16px Arial;fill:#071d38}.t{font:13px Arial;fill:#172033}.rel{stroke:#071d38;stroke-width:1.8;marker-end:url(#m)}
+  </style>
+  <defs><marker id="m" markerWidth="9" markerHeight="9" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#071d38"/></marker></defs>
+  <rect class="bg" width="1200" height="760"/><text class="title" x="40" y="45">Modelo persistente local documentado no DatabaseConfig</text>
+  <rect class="entity" x="60" y="90" width="245" height="120"/><text class="h" x="80" y="122">UserProfileModel</text><text class="t" x="80" y="150">Identificação, instituição</text><text class="t" x="80" y="172">progressão, economia</text><text class="t" x="80" y="194">settings e sync</text>
+  <rect class="entity" x="365" y="90" width="245" height="120"/><text class="h" x="385" y="122">LearningTopicModel</text><text class="t" x="385" y="150">Catálogo de assuntos</text><text class="t" x="385" y="172">teoria, exercícios</text><text class="t" x="385" y="194">desafios e badges</text>
+  <rect class="entity" x="670" y="90" width="245" height="120"/><text class="h" x="690" y="122">UserTopicProgressModel</text><text class="t" x="690" y="150">completionRate</text><text class="t" x="690" y="172">masteryRate</text><text class="t" x="690" y="194">attempts e status</text>
+  <rect class="entity" x="60" y="275" width="245" height="120"/><text class="h" x="80" y="307">StudyActivityModel</text><text class="t" x="80" y="335">evento de estudo</text><text class="t" x="80" y="357">duração, resposta</text><text class="t" x="80" y="379">acerto e maestria</text>
+  <rect class="entity" x="365" y="275" width="245" height="120"/><text class="h" x="385" y="307">ReviewScheduleModel</text><text class="t" x="385" y="335">dueAt, intervalDays</text><text class="t" x="385" y="357">easeFactor</text><text class="t" x="385" y="379">urgência e lapses</text>
+  <rect class="entity" x="670" y="275" width="245" height="120"/><text class="h" x="690" y="307">QuizAttemptModel</text><text class="t" x="690" y="335">quizId, topicId</text><text class="t" x="690" y="357">respostas, acertos</text><text class="t" x="690" y="379">XP e moedas</text>
+  <rect class="sync" x="955" y="90" width="210" height="120"/><text class="h" x="975" y="122">Sync/Backup</text><text class="t" x="975" y="150">UserSyncOperation</text><text class="t" x="975" y="172">UserBackup</text><text class="t" x="975" y="194">fila offline-first</text>
+  <rect class="class" x="60" y="500" width="245" height="125"/><text class="h" x="80" y="532">AcademicClassModel</text><text class="t" x="80" y="560">turma, curso</text><text class="t" x="80" y="582">período e campus</text>
+  <rect class="class" x="365" y="500" width="245" height="125"/><text class="h" x="385" y="532">StudentPublicProfile</text><text class="t" x="385" y="560">perfil público</text><text class="t" x="385" y="582">XP, streak, badges</text>
+  <rect class="class" x="670" y="500" width="245" height="125"/><text class="h" x="690" y="532">Ranking/Statistics</text><text class="t" x="690" y="560">ClassRanking</text><text class="t" x="690" y="582">ClassStatistics</text><text class="t" x="690" y="604">StudentComparison</text>
+  <line class="rel" x1="305" y1="150" x2="670" y2="150"/><line class="rel" x1="610" y1="150" x2="670" y2="150"/>
+  <line class="rel" x1="790" y1="210" x2="790" y2="275"/><line class="rel" x1="305" y1="335" x2="365" y2="335"/>
+  <line class="rel" x1="610" y1="335" x2="670" y2="335"/><line class="rel" x1="915" y1="150" x2="955" y2="150"/>
+  <line class="rel" x1="305" y1="562" x2="365" y2="562"/><line class="rel" x1="610" y1="562" x2="670" y2="562"/>
+</svg>

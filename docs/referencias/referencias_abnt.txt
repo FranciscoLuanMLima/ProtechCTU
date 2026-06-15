@@ -1,0 +1,8 @@
+ASSOCIAÇÃO BRASILEIRA DE NORMAS TÉCNICAS. NBR 14724: Informação e documentação: trabalhos acadêmicos: apresentação. Rio de Janeiro: ABNT, 2011.
+ASSOCIAÇÃO BRASILEIRA DE NORMAS TÉCNICAS. NBR 6023: Informação e documentação: referências: elaboração. Rio de Janeiro: ABNT, 2018.
+FLUTTER. Flutter documentation. Disponível em: https://docs.flutter.dev/. Acesso em: 11 jun. 2026.
+DART. Dart documentation. Disponível em: https://dart.dev/guides. Acesso em: 11 jun. 2026.
+GOOGLE. Android App Widgets overview. Disponível em: https://developer.android.com/develop/ui/views/appwidgets. Acesso em: 11 jun. 2026.
+ISAR COMMUNITY. Isar Community database documentation. Disponível em: https://pub.dev/packages/isar_community. Acesso em: 11 jun. 2026.
+RIVERPOD. Riverpod documentation. Disponível em: https://riverpod.dev/. Acesso em: 11 jun. 2026.
+BLOC LIBRARY. bloc state management documentation. Disponível em: https://bloclibrary.dev/. Acesso em: 11 jun. 2026.

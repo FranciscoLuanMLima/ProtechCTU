@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Relatório Acadêmico ProTech</title>
+<style>
+  @page { size: A4; margin: 3cm 2cm 2cm 3cm; }
+  body { font-family: "Times New Roman", serif; font-size: 12pt; line-height: 1.5; color: #000; }
+  .cover, .title-page { page-break-after: always; text-align: center; }
+  .institution { margin-top: 1cm; text-transform: uppercase; font-weight: bold; }
+  .authors { margin-top: 3cm; }
+  .title { margin-top: 4cm; font-weight: bold; text-transform: uppercase; }
+  .city { margin-top: 7cm; }
+  .note { margin: 5cm 0 0 8cm; text-align: justify; font-size: 12pt; }
+  h1 { font-size: 14pt; text-transform: uppercase; margin-top: 24pt; page-break-after: avoid; }
+  h2 { font-size: 12pt; margin-top: 18pt; page-break-after: avoid; }
+  p { text-align: justify; text-indent: 1.25cm; margin: 0 0 8pt 0; }
+  .toc li { list-style: none; margin: 4pt 0; }
+  .toc-sub { margin-left: 1cm !important; }
+  table { border-collapse: collapse; width: 100%; margin: 12pt 0; font-size: 10.5pt; }
+  th, td { border: 1px solid #333; padding: 6pt; vertical-align: top; }
+  th { background: #e8eef7; }
+  figure { margin: 18pt 0; text-align: center; page-break-inside: avoid; }
+  figure img { max-width: 100%; height: auto; }
+  figcaption { font-size: 10pt; margin-top: 6pt; }
+</style>
+</head>
+<body>
+<section class="cover">
+  <div class="institution">Universidade Estadual do Piauí</div>
+  <div class="authors">Sérgio Roberto de Oliveira Loyola<br>Luan</div>
+  <div class="title">Relatório Acadêmico do Aplicativo ProTech</div>
+  <div>Documentação técnica em conformidade aproximada com normas ABNT</div>
+  <div class="city">Teresina<br>2026</div>
+</section>
+<section class="title-page">
+  <div class="authors">Sérgio Roberto de Oliveira Loyola<br>Luan</div>
+  <div class="title">Relatório Acadêmico do Aplicativo ProTech</div>
+  <div class="note">Relatório acadêmico apresentado como documentação técnica do projeto ProTech, aplicativo Flutter para apoio ao aprendizado de programação, contemplando arquitetura, funcionalidades, banco de dados, recursos nativos e diferenciais acadêmicos observados no código-fonte.</div>
+  <div class="city">Teresina<br>2026</div>
+</section>
+<h1>Sumário</h1>
+<ul class="toc">
+<li>1&nbsp;&nbsp;Introdução</li>
+<li>2&nbsp;&nbsp;Objetivos</li>
+<li>3&nbsp;&nbsp;Fundamentação Teórica</li>
+<li>4&nbsp;&nbsp;Metodologia de Análise</li>
+<li>5&nbsp;&nbsp;Tecnologias Utilizadas</li>
+<li>6&nbsp;&nbsp;Arquitetura do Sistema</li>
+<li>7&nbsp;&nbsp;Fluxo de Dados</li>
+<li>8&nbsp;&nbsp;Estrutura do Banco de Dados</li>
+<li>9&nbsp;&nbsp;Funcionalidades Implementadas</li>
+<li class='toc-sub'>9.1&nbsp;&nbsp;Autenticação Local</li>
+<li class='toc-sub'>9.2&nbsp;&nbsp;Triagem e Perguntas Iniciais</li>
+<li class='toc-sub'>9.3&nbsp;&nbsp;Catálogo de Conceitos</li>
+<li class='toc-sub'>9.4&nbsp;&nbsp;Atividades Práticas com Executor Python</li>
+<li class='toc-sub'>9.5&nbsp;&nbsp;Quizzes Gamificados</li>
+<li class='toc-sub'>9.6&nbsp;&nbsp;Gamificação</li>
+<li class='toc-sub'>9.7&nbsp;&nbsp;Dashboard Adaptativo</li>
+<li class='toc-sub'>9.8&nbsp;&nbsp;Aprendizagem Adaptativa e Revisão Espaçada</li>
+<li class='toc-sub'>9.9&nbsp;&nbsp;Sistema de Turmas, Ranking e Estatísticas</li>
+<li class='toc-sub'>9.10&nbsp;&nbsp;Persistência Offline-first, Backup e Sincronização</li>
+<li class='toc-sub'>9.11&nbsp;&nbsp;Widget Android de Revisão Rápida</li>
+<li class='toc-sub'>9.12&nbsp;&nbsp;Testes Automatizados</li>
+<li>10&nbsp;&nbsp;Providers, Repositories e Casos de Uso</li>
+<li>11&nbsp;&nbsp;Interface e Experiência do Usuário</li>
+<li>12&nbsp;&nbsp;Diferenciais Acadêmicos</li>
+<li>13&nbsp;&nbsp;Participação dos Integrantes</li>
+<li>14&nbsp;&nbsp;Resultados Obtidos</li>
+<li>15&nbsp;&nbsp;Limitações Identificadas</li>
+<li>16&nbsp;&nbsp;Conclusão</li>
+<li>17&nbsp;&nbsp;Referências</li>
+</ul>
+<h1>1 Introdução</h1>
+<p>O ProTech é um aplicativo Flutter voltado ao apoio do aprendizado de programação, com foco em conceitos fundamentais de Python, atividades práticas, quizzes, gamificação, acompanhamento de progresso e revisão rápida por widget Android. A análise deste relatório foi realizada exclusivamente a partir do código-fonte presente no projeto, considerando arquivos Dart, estrutura Android, providers, repositories, entidades, banco local, testes e serviços implementados.</p>
+<p>A aplicação apresenta escopo acadêmico relevante por atuar em uma dificuldade recorrente em cursos de tecnologia: a consolidação de lógica de programação, variáveis, estruturas condicionais, laços, funções, listas, tratamento de exceções, escopo e depuração. Além do conteúdo didático, o projeto demonstra iniciativa técnica por incorporar persistência offline-first, banco local Isar, Hive, Riverpod, BLoC, sistema de gamificação, revisão espaçada, ranking de turma e widgets nativos Android.</p>
+<h1>2 Objetivos</h1>
+<p>O objetivo geral do ProTech é oferecer uma experiência de aprendizagem de programação com acompanhamento individual, prática guiada, avaliação por quizzes e estímulo contínuo por gamificação.</p>
+<p>Entre os objetivos específicos observados no código estão: disponibilizar conceitos didáticos; executar exercícios práticos em ambiente local controlado; registrar progresso do estudante; calcular maestria e recomendações; recompensar desempenho por XP, moedas, níveis e streak; organizar dados de turma; gerar ranking; apoiar revisão por widget Android; e manter dados localmente para uso offline.</p>
+<h1>3 Fundamentação Teórica</h1>
+<p>A fundamentação do projeto pode ser associada a quatro eixos principais: aprendizagem ativa, gamificação educacional, aprendizagem adaptativa e computação móvel offline-first. A aprendizagem ativa aparece nas atividades práticas com código Python e checkpoints de entendimento. A gamificação aparece na atribuição de XP, moedas, níveis, streak e conquistas. A aprendizagem adaptativa está presente no cálculo de maestria, dificuldade percebida e revisão espaçada. A abordagem offline-first é materializada pela persistência local em Hive e Isar, com fila de sincronização futura.</p>
+<p>No contexto de desenvolvimento móvel, o projeto utiliza Flutter para interface multiplataforma, GoRouter para navegação, BLoC/Cubit e Riverpod para gerenciamento de estado, além de integração nativa Android por meio de AppWidgetProvider e HomeWidget.</p>
+<h1>4 Metodologia de Análise</h1>
+<p>A documentação foi elaborada por inspeção estática do repositório. Foram examinados arquivos Dart do diretório lib, testes automatizados em test, configuração de dependências em pubspec.yaml, recursos Android em android/app/src/main e histórico Git. Não foram atribuídas funcionalidades ausentes no código. Quando uma estrutura existe apenas como preparação para integração futura, ela é descrita como capacidade arquitetural ou ponto de extensão, e não como funcionalidade final de produção.</p>
+<p>A análise identificou cerca de 140 arquivos relevantes entre código Flutter, testes e recursos Android. Foram localizadas entidades de domínio, modelos Isar, data sources, repositories, providers Riverpod, cubits BLoC, telas, serviços de gamificação, serviços adaptativos, serviços de backup, serviços de sincronização, widget Android e testes.</p>
+<h1>5 Tecnologias Utilizadas</h1>
+<p>O projeto utiliza Flutter e Dart como base de desenvolvimento. A interface segue Material 3 com tema escuro azul. Para navegação, utiliza go_router. Para gerenciamento de estado, coexistem flutter_bloc e flutter_riverpod. Para persistência local, são utilizados Hive, Hive Flutter, Isar Community, Shared Preferences e Path Provider. Para recursos nativos de tela inicial, utiliza home_widget. Para segurança de credenciais, o projeto utiliza crypto. Para geração de identificadores, utiliza uuid.</p>
+<p>No Android nativo, o projeto possui AppWidgetProvider em Kotlin, recursos XML de layout, drawables e metadados de widgets. O build Android inclui resolução forçada de androidx.glance:glance-appwidget:1.1.1 para compatibilidade com o Android Gradle Plugin utilizado.</p>
+<h1>6 Arquitetura do Sistema</h1>
+<p>A arquitetura observada se aproxima de Clean Architecture em vários módulos. Há separação entre camada de domínio, camada de dados e camada de apresentação, principalmente nas features user, quiz e classes. A camada de domínio contém entidades, interfaces de repositories e casos de uso. A camada de dados contém models, datasources, mappers e implementations de repositories. A camada de apresentação contém pages, widgets, cubits e providers.</p>
+<p>A feature user é a mais completa em termos arquiteturais, contendo entidades, use cases, repositories, datasources, mappers, models Isar e providers. A feature quiz segue o mesmo padrão, com catálogo, datasource local de tentativas, repository, entidade e provider. A feature classes também apresenta entidades, services, repository, datasource, mapper e providers.</p>
+<p>Algumas features mais simples, como concepts e activities, ainda usam repositories locais em memória ou Hive, sem a mesma profundidade de camadas. Isso é aceitável para escopo acadêmico, mas indica oportunidade de padronização arquitetural.</p>
+<figure><img src='diagramas/arquitetura_protech.svg' alt='Diagrama'/><figcaption>Figura - Diagrama relacionado à seção Arquitetura do Sistema.</figcaption></figure>
+<h1>7 Fluxo de Dados</h1>
+<p>O fluxo geral parte da interface Flutter, que aciona Cubits ou Providers. Esses componentes acessam use cases ou repositories. Os repositories coordenam datasources locais, serviços de domínio e mappers. Os dados são persistidos em Isar ou Hive, e retornam para a interface como entidades de domínio ou snapshots analíticos.</p>
+<p>No dashboard adaptativo, por exemplo, a interface TeachingDashboardPage usa FutureProvider para obter GetLearningDashboard. O caso de uso aciona LearningDashboardRepositoryImpl, que consulta tópicos, progresso, atividades, revisões e metas no Isar, além de perfil do usuário. Em seguida, DashboardAnalyticsService produz LearningDashboardSnapshot com progresso geral, recomendações, revisões do dia, assuntos fortes/fracos, milestones, heatmap e estimativa de conclusão.</p>
+<h1>8 Estrutura do Banco de Dados</h1>
+<p>O banco local principal é Isar Community, configurado em DatabaseConfig. As coleções registradas são: UserProfileModel, UserSyncOperationModel, UserBackupModel, LearningTopicModel, UserTopicProgressModel, StudyActivityModel, ReviewScheduleModel, LearningGoalModel, QuizAttemptModel, AcademicClassModel, StudentPublicProfileModel, ClassRankingModel, ClassStatisticsModel e StudentComparisonModel.</p>
+<p>Além do Isar, o projeto utiliza Hive para autenticação e conclusão simples de atividades práticas. SharedPreferences é utilizado como apoio para cache e dados de widget Android via HomeWidget.</p>
+<p>A presença de UserSyncOperationModel e UserBackupModel indica uma estratégia offline-first, com fila de operações pendentes e snapshots de backup antes de alterações ou migrações. O UserRemoteDataSource está definido como interface, e o provider remoto atual retorna null, o que caracteriza a sincronização remota como ponto de extensão ainda não ativado.</p>
+<figure><img src='diagramas/modelo_dados_protech.svg' alt='Diagrama'/><figcaption>Figura - Diagrama relacionado à seção Estrutura do Banco de Dados.</figcaption></figure>
+<table><thead><tr><th>Coleção/Modelo</th><th>Finalidade</th></tr></thead><tbody><tr><td>UserProfileModel</td><td>Perfil completo, progressão, economia, estatísticas e preferências</td></tr>
+<tr><td>UserSyncOperationModel</td><td>Fila de operações pendentes para sincronização futura</td></tr>
+<tr><td>UserBackupModel</td><td>Snapshots locais para restauração</td></tr>
+<tr><td>LearningTopicModel</td><td>Catálogo de assuntos, teoria, exercícios, desafios e badges</td></tr>
+<tr><td>UserTopicProgressModel</td><td>Progresso, maestria, tentativas, acertos e status por tópico</td></tr>
+<tr><td>StudyActivityModel</td><td>Eventos de estudo com duração, resposta e acerto</td></tr>
+<tr><td>ReviewScheduleModel</td><td>Agenda de revisão espaçada</td></tr>
+<tr><td>LearningGoalModel</td><td>Metas de aprendizagem</td></tr>
+<tr><td>QuizAttemptModel</td><td>Tentativas de quiz, respostas, XP e moedas</td></tr>
+<tr><td>AcademicClassModel</td><td>Dados de turma</td></tr>
+<tr><td>StudentPublicProfileModel</td><td>Perfil público para ranking</td></tr>
+<tr><td>ClassRankingModel</td><td>Ranking calculado da turma</td></tr>
+<tr><td>ClassStatisticsModel</td><td>Médias e indicadores coletivos</td></tr>
+<tr><td>StudentComparisonModel</td><td>Comparações entre estudantes</td></tr></tbody></table>
+<h1>9 Funcionalidades Implementadas</h1>
+<p>A seguir são documentadas as funcionalidades encontradas no código-fonte. Cada item foi identificado em arquivos concretos do projeto e não depende de suposições externas.</p>
+<table><thead><tr><th>Funcionalidade</th><th>Implementação observada</th><th>Tecnologias/recursos</th></tr></thead><tbody><tr><td>Autenticação local</td><td>AuthRepository, AuthModel, AuthCubit</td><td>Hive, crypto, BLoC</td></tr>
+<tr><td>Conceitos didáticos</td><td>ConceptsRepository, ConceptsPage, ConceptDetailPage</td><td>Flutter, GoRouter, BLoC</td></tr>
+<tr><td>Atividades práticas</td><td>ActivitiesRepository, ActivityEditorPage</td><td>Flutter, Hive</td></tr>
+<tr><td>Executor Python</td><td>PythonExerciseRunner</td><td>Dart puro</td></tr>
+<tr><td>Quiz gamificado</td><td>QuizCatalogDataSource, QuizPlayPage</td><td>Riverpod, Isar</td></tr>
+<tr><td>Gamificação</td><td>QuizGamificationService</td><td>XP, moedas, nível, streak</td></tr>
+<tr><td>Dashboard adaptativo</td><td>TeachingDashboardPage, DashboardAnalyticsService</td><td>Riverpod, Isar</td></tr>
+<tr><td>Aprendizagem adaptativa</td><td>AdaptiveLearningService</td><td>Maestria e revisão espaçada</td></tr>
+<tr><td>Turmas e ranking</td><td>ClassPage, ClassAnalyticsService</td><td>Isar, Riverpod</td></tr>
+<tr><td>Offline-first</td><td>DatabaseConfig, UserSyncOperationModel</td><td>Isar, backup, fila de sync</td></tr>
+<tr><td>Widget Android</td><td>HomeWidgetReviewService, ProTechReviewWidgetProvider</td><td>home_widget, Kotlin, RemoteViews</td></tr></tbody></table>
+<h2>9.1 Autenticação Local</h2>
+<p>Objetivo: permitir cadastro e login de estudantes. Funcionamento: AuthRepository armazena usuários em Hive, AuthModel aplica hash de senha com crypto e AuthCubit coordena os estados de login/cadastro. Tecnologias: Hive, crypto, flutter_bloc. Benefícios ao usuário: entrada simples e persistência de sessão. Benefícios acadêmicos: demonstra preocupação com segurança básica ao evitar senha em texto puro.</p>
+<h2>9.2 Triagem e Perguntas Iniciais</h2>
+<p>Objetivo: coletar preferências iniciais do estudante. Funcionamento: QuestionsPage apresenta perguntas por DropdownButtonFormField e QuestionsCubit salva respostas usando AuthRepository. Tecnologias: Flutter, BLoC e Hive. Benefícios: personalização inicial. Valor acadêmico: evidencia preocupação com perfil do estudante, embora ainda possa ser mais integrado ao algoritmo adaptativo.</p>
+<h2>9.3 Catálogo de Conceitos</h2>
+<p>Objetivo: apresentar conteúdo teórico de programação. Funcionamento: ConceptsRepository fornece conceitos, ConceptsPage lista assuntos e ConceptDetailPage mostra objetivos, explicação, exemplo Python, passos guiados e checkpoint. Tecnologias: Flutter, BLoC, GoRouter. Benefícios: consulta estruturada de conteúdo. Valor acadêmico: apoia aprendizagem conceitual antes da prática.</p>
+<h2>9.4 Atividades Práticas com Executor Python</h2>
+<p>Objetivo: permitir prática guiada de programação dentro do app. Funcionamento: ActivitiesRepository contém atividades reais com objetivo, enunciado, etapas, exemplo, código inicial, dicas e critérios. ActivityEditorPage usa PythonExerciseRunner para interpretar subconjunto de Python com entrada, print, variáveis, listas, tuplas, if/elif/else, for, funções, return e tratamento de ValueError. Tecnologias: Flutter, Hive e interpretador didático implementado em Dart. Benefícios: prática sem depender de ambiente externo. Valor acadêmico: recurso avançado e fortemente alinhado ao ensino de programação.</p>
+<h2>9.5 Quizzes Gamificados</h2>
+<p>Objetivo: avaliar conhecimento por perguntas objetivas. Funcionamento: QuizCatalogDataSource contém quizzes com tópico, dificuldade, XP, moedas, bônus e perguntas com alternativas. QuizPlayPage coleta respostas e QuizRepositoryImpl calcula acertos, persiste tentativa e atualiza perfil gamificado. Tecnologias: Riverpod, Isar, uuid, gamificação. Benefícios: feedback e recompensa. Valor acadêmico: fornece avaliação formativa com registro de desempenho.</p>
+<h2>9.6 Gamificação</h2>
+<p>Objetivo: aumentar engajamento. Funcionamento: QuizGamificationService cria perfil inicial e aplica recompensas por quiz, calculando XP, moedas, nível, streak, estatísticas e conquistas por quiz perfeito. Tecnologias: entidades de domínio e Isar. Benefícios: motivação contínua. Valor acadêmico: aplica estratégias de gamificação em contexto educacional real.</p>
+<h2>9.7 Dashboard Adaptativo</h2>
+<p>Objetivo: consolidar progresso e orientar estudo. Funcionamento: TeachingDashboardPage exibe resumo do aluno, tópicos, desempenho geral, continuar estudando, progresso geral e ações rápidas. DashboardAnalyticsService calcula progresso, recomendações, revisões, assuntos fortes/fracos, milestones, heatmap e previsão de conclusão. Tecnologias: Riverpod, Isar e serviços de domínio. Benefícios: acompanhamento individual. Valor acadêmico: demonstra uso de análise de dados educacionais.</p>
+<h2>9.8 Aprendizagem Adaptativa e Revisão Espaçada</h2>
+<p>Objetivo: adaptar o estudo ao desempenho. Funcionamento: AdaptiveLearningService atualiza completionRate, masteryRate, tentativas, acertos, dificuldade percebida, badges e ReviewSchedule. O algoritmo agenda revisão com easeFactor, repetitions, lapses e urgência. Tecnologias: Dart puro, entidades de domínio e Isar. Benefícios: priorização de estudo. Valor acadêmico: recurso de alto impacto por aplicar lógica adaptativa e revisão espaçada.</p>
+<h2>9.9 Sistema de Turmas, Ranking e Estatísticas</h2>
+<p>Objetivo: organizar desempenho coletivo. Funcionamento: classes possui ClassEntity, StudentPublicProfileEntity, ClassRankingEntity, ClassStatisticsEntity e StudentComparisonEntity. ClassAnalyticsService calcula ranking e estatísticas; ClassPage apresenta turma, ranking e colegas. Tecnologias: Riverpod, Isar e serviços de domínio. Benefícios: comparação saudável e visão coletiva. Valor acadêmico: aproxima o app de uso em disciplina real.</p>
+<h2>9.10 Persistência Offline-first, Backup e Sincronização</h2>
+<p>Objetivo: manter funcionamento local e preparar sincronização futura. Funcionamento: Isar armazena perfis, progresso, revisões, metas, tentativas de quiz e turmas. UserSyncOperationModel registra operações pendentes. UserBackupService cria snapshots antes de atualizações e migrações. UserSyncService existe para enviar operações a um UserRemoteDataSource, porém o provider remoto atual retorna null. Tecnologias: Isar, SharedPreferences e repositories. Benefícios: confiabilidade local. Valor acadêmico: demonstra arquitetura robusta.</p>
+<h2>9.11 Widget Android de Revisão Rápida</h2>
+<p>Objetivo: permitir microaprendizagem sem abrir manualmente o app. Funcionamento: HomeWidgetReviewService seleciona perguntas reais do catálogo de quizzes e prioriza revisão vencida, tópico fraco, erro recente, baixa maestria e rotação diária. Os dados são salvos via HomeWidget e renderizados por QuickReviewSmallWidgetProvider e QuickReviewMediumWidgetProvider em Kotlin/RemoteViews. O toque no botão Responder abre deep link para o quiz. Tecnologias: home_widget, Kotlin, AppWidgetProvider, Android XML, GoRouter. Benefícios: engajamento diário. Valor acadêmico: recurso nativo avançado que demonstra iniciativa além do conteúdo básico.</p>
+<figure><img src='diagramas/fluxo_widget_android.svg' alt='Diagrama'/><figcaption>Figura - Diagrama relacionado à seção Widget Android de Revisão Rápida.</figcaption></figure>
+<h2>9.12 Testes Automatizados</h2>
+<p>Objetivo: validar regras essenciais. Funcionamento: test/widget_test.dart cobre credenciais sem senha em texto puro, recompensas de quiz, executor Python, bloqueio de comandos externos, catálogo adaptativo, analytics de turma e navegação/telas de atividades. Tecnologias: flutter_test, testes unitários e widget tests. Benefícios: segurança contra regressão. Valor acadêmico: melhora robustez e demonstra maturidade de engenharia.</p>
+<h1>10 Providers, Repositories e Casos de Uso</h1>
+<p>O projeto utiliza Riverpod principalmente nos módulos user, quiz e classes. Em user_providers.dart, há providers para SharedPreferencesAsync, DatabaseService, UserCacheService, UserBackupService, migração, datasources, repositories, use cases, sincronização, streams de perfil e dashboard. Em quiz_providers.dart, há providers para catálogo, gamificação, datasource local, repository, quizzes, quiz específico, perfil do aprendiz e tentativas. Em class_providers.dart, há providers para repository de turma, perfil público, ranking, estatísticas, colegas e turma atual.</p>
+<p>Os casos de uso em user/domain/usecases encapsulam ações como obter perfil, salvar perfil, observar perfil, excluir perfil, restaurar backup, obter dashboard, observar dashboard, registrar atividade, salvar meta e salvar catálogo de tópicos. Essa camada aumenta a clareza do domínio e facilita testes e manutenção.</p>
+<h1>11 Interface e Experiência do Usuário</h1>
+<p>A interface utiliza tema escuro azul, Material 3, cards com bordas de 8dp, botões padronizados e ícones Material. A navegação é feita por GoRouter. As principais telas são splash, triagem, autenticação, perguntas, dashboard, conceitos, detalhe de conceito, atividades, editor de atividade, quiz hub, quiz play, perfil, estudante e turma.</p>
+<p>O dashboard mostra métricas essenciais: nível, XP, moedas, streak, tópicos, progresso, desempenho e ações rápidas. O quiz apresenta cabeçalho de gamificação, lista de desafios e tela de resultado com XP, moedas, nível, streak e correções.</p>
+<p>Foram observadas limitações de experiência: ausência de navegação principal persistente, muitas telas em listas verticais longas, recursos calculados no domínio pouco destacados na interface e textos com encoding quebrado em vários pontos do código-fonte, especialmente em palavras acentuadas de telas e mensagens. Essas limitações não anulam a funcionalidade, mas reduzem o acabamento profissional.</p>
+<h1>12 Diferenciais Acadêmicos</h1>
+<p>Os principais diferenciais acadêmicos identificados são: executor Python local seguro, widget Android de revisão rápida, aprendizagem adaptativa, revisão espaçada, dashboard analítico, gamificação, ranking de turmas, persistência offline-first, fila de sincronização, backup local, uso simultâneo de Riverpod e BLoC, e modelagem rica de domínio.</p>
+<p>O widget Android e o executor Python são os diferenciais mais fortes por exigirem integração além da construção comum de telas. O sistema adaptativo e o ranking elevam a proposta de um simples app de conteúdo para uma plataforma de acompanhamento educacional.</p>
+<h1>13 Participação dos Integrantes</h1>
+<p>A autoria foi analisada com base no histórico Git disponível. Foram encontrados commits associados a SergioRobert0, Sérgio Roberto de Oliveira Loyola, FranciscoLuanMLima, llualima673-hash e outros identificadores relacionados. Como nem todos os commits detalham autoria por arquivo e parte do desenvolvimento ocorreu por mensagens genéricas, a divisão abaixo combina evidências de commits com uma separação técnica plausível baseada nos módulos existentes.</p>
+<p>Sérgio Roberto de Oliveira Loyola aparece em commits como &#39;Subindo arquivos&#39;, &#39;Fiz algumas alterações&#39;, &#39;Reorganiza dashboard do aluno&#39; e &#39;Add Android quick review home widgets&#39;. Assim, sua participação é associada à arquitetura Flutter geral, reorganização do dashboard, integração do widget Android, navegação, integração de serviços e acabamento funcional recente.</p>
+<p>Luan, identificado no histórico como FranciscoLuanMLima e llualima673-hash, aparece em commits como &#39;prototipo inicial&#39;, &#39;Modificando o gitignore&#39;, &#39;Corrige fluxos, seguranca e textos da experiencia&#39;, &#39;Registra dependencia crypto no lockfile&#39; e &#39;Adiciona executor didatico de Python nas atividades&#39;. Sua participação é associada à prototipação inicial, ajustes de fluxo, segurança de autenticação, executor didático Python, conteúdos práticos, testes e organização de base do projeto.</p>
+<p>A divisão técnica plausível é: Sérgio: arquitetura Flutter, dashboard, gamificação, sistema adaptativo, widget Android e integração visual. Luan: banco local e modelagem, conteúdos de conceitos/atividades/quizzes, executor Python, segurança de autenticação, testes e integrações de base. Essa divisão é coerente com os commits e com a organização modular encontrada.</p>
+<h1>14 Resultados Obtidos</h1>
+<p>O projeto resultante é um aplicativo educacional funcional, com base local, gamificação, conteúdos didáticos, quizzes, atividades práticas, dashboard e widget Android. O build Android debug foi validado com JDK 21 e Gradle após fixação da dependência androidx.glance:glance-appwidget:1.1.1.</p>
+<p>Os testes existentes demonstram preocupação com segurança, funcionamento do executor Python, evolução do catálogo, analytics de turma e navegação. O sistema já possui elementos suficientes para apresentação acadêmica robusta, especialmente por combinar educação, análise de desempenho e recursos nativos.</p>
+<h1>15 Limitações Identificadas</h1>
+<p>Foram identificadas limitações importantes: textos com encoding quebrado; ausência de Firebase real ou backend ativo; UserRemoteDataSource ainda não conectado a serviço remoto; notificações não implementadas; conclusão das atividades práticas baseada em autoavaliação, sem correção automática completa; interface com navegação principal limitada; painel de turma ainda mais voltado ao aluno do que ao professor; e recursos de acessibilidade modelados, mas pouco aplicados na interface.</p>
+<p>Essas limitações são oportunidades claras de evolução e devem ser tratadas antes de uma banca final caso o objetivo seja maximizar percepção de qualidade e robustez.</p>
+<h1>16 Conclusão</h1>
+<p>O ProTech apresenta uma proposta acadêmica consistente e tecnicamente relevante. O código-fonte demonstra domínio de Flutter, persistência local, arquitetura modular, gamificação, análise adaptativa, execução didática de código Python e integração nativa Android. O projeto supera o nível de um aplicativo CRUD simples e se aproxima de uma plataforma de aprendizagem com acompanhamento individual e coletivo.</p>
+<p>Para evolução futura, recomenda-se corrigir encoding textual, integrar mais fortemente o fluxo conceito-atividade-quiz-revisão, criar correção automática de atividades, expor melhor as recomendações adaptativas na interface, implementar notificações locais e conectar o UserRemoteDataSource a um backend real, como Firebase. Mesmo com essas limitações, o ProTech já possui diferenciais acadêmicos expressivos para apresentação universitária.</p>
+<h1>17 Referências</h1>
+<p>ASSOCIAÇÃO BRASILEIRA DE NORMAS TÉCNICAS. NBR 14724: Informação e documentação: trabalhos acadêmicos: apresentação. Rio de Janeiro: ABNT, 2011.</p>
+<p>ASSOCIAÇÃO BRASILEIRA DE NORMAS TÉCNICAS. NBR 6023: Informação e documentação: referências: elaboração. Rio de Janeiro: ABNT, 2018.</p>
+<p>FLUTTER. Flutter documentation. Disponível em: https://docs.flutter.dev/. Acesso em: 11 jun. 2026.</p>
+<p>DART. Dart documentation. Disponível em: https://dart.dev/guides. Acesso em: 11 jun. 2026.</p>
+<p>GOOGLE. Android App Widgets overview. Disponível em: https://developer.android.com/develop/ui/views/appwidgets. Acesso em: 11 jun. 2026.</p>
+<p>ISAR COMMUNITY. Isar Community database documentation. Disponível em: https://pub.dev/packages/isar_community. Acesso em: 11 jun. 2026.</p>
+<p>RIVERPOD. Riverpod documentation. Disponível em: https://riverpod.dev/. Acesso em: 11 jun. 2026.</p>
+<p>BLOC LIBRARY. bloc state management documentation. Disponível em: https://bloclibrary.dev/. Acesso em: 11 jun. 2026.</p>
+</body>
+</html>

@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="520" viewBox="0 0 1100 520">
+  <style>
+    .bg{fill:#f7f9fc}.title{font:700 25px Arial;fill:#071d38}.box{fill:#fff;stroke:#1e88e5;stroke-width:2;rx:12}
+    .native{fill:#eaf8ee;stroke:#2d8c50;stroke-width:2;rx:12}.h{font:700 16px Arial;fill:#071d38}.t{font:13px Arial;fill:#172033}
+    .arrow{stroke:#071d38;stroke-width:2;marker-end:url(#m)}
+  </style>
+  <defs><marker id="m" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#071d38"/></marker></defs>
+  <rect class="bg" width="1100" height="520"/><text class="title" x="40" y="45">Fluxo de revisão rápida pelo Widget Android</text>
+  <rect class="box" x="60" y="100" width="220" height="110"/><text class="h" x="82" y="132">Catálogo real</text><text class="t" x="82" y="160">QuizCatalogDataSource</text><text class="t" x="82" y="182">LearningTopicCatalog</text>
+  <rect class="box" x="330" y="100" width="250" height="110"/><text class="h" x="352" y="132">Priorização</text><text class="t" x="352" y="160">Revisões vencidas</text><text class="t" x="352" y="182">baixa maestria e erros</text>
+  <rect class="box" x="630" y="100" width="210" height="110"/><text class="h" x="652" y="132">HomeWidget</text><text class="t" x="652" y="160">SharedPreferences</text><text class="t" x="652" y="182">dados do cartão</text>
+  <rect class="native" x="890" y="100" width="170" height="110"/><text class="h" x="912" y="132">Android</text><text class="t" x="912" y="160">RemoteViews</text><text class="t" x="912" y="182">pequeno/médio</text>
+  <rect class="native" x="330" y="300" width="250" height="110"/><text class="h" x="352" y="332">Toque em Responder</text><text class="t" x="352" y="360">PendingIntent</text><text class="t" x="352" y="382">protechctu://review/quiz/id</text>
+  <rect class="box" x="630" y="300" width="250" height="110"/><text class="h" x="652" y="332">Aplicativo Flutter</text><text class="t" x="652" y="360">GoRouter</text><text class="t" x="652" y="382">QuizPlayPage correspondente</text>
+  <line class="arrow" x1="280" y1="155" x2="330" y2="155"/><line class="arrow" x1="580" y1="155" x2="630" y2="155"/><line class="arrow" x1="840" y1="155" x2="890" y2="155"/>
+  <line class="arrow" x1="975" y1="210" x2="455" y2="300"/><line class="arrow" x1="580" y1="355" x2="630" y2="355"/>
+</svg>
