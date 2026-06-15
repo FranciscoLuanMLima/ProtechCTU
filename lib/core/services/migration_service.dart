@@ -28,6 +28,9 @@ final class DatabaseMigrationService {
     if (storedVersion < 2) {
       await _migrateToVersion2();
     }
+    if (storedVersion < 3) {
+      await _migrateToVersion3();
+    }
     await _preferences.setInt(
       StorageKeys.schemaVersionKey,
       StorageKeys.schemaVersion,
@@ -76,6 +79,16 @@ final class DatabaseMigrationService {
             ..updatedAt = topic.updatedAt.toUtc();
           await _isar.userTopicProgressModels.put(model);
         }
+        profile.localDataVersion = StorageKeys.schemaVersion;
+        await _isar.userProfileModels.put(profile);
+      }
+    });
+  }
+
+  Future<void> _migrateToVersion3() async {
+    final profiles = await _isar.userProfileModels.where().findAll();
+    await _isar.writeTxn(() async {
+      for (final profile in profiles) {
         profile.localDataVersion = StorageKeys.schemaVersion;
         await _isar.userProfileModels.put(profile);
       }
