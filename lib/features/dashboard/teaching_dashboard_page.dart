@@ -547,24 +547,50 @@ class _QuickActions extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
+    return Wrap(
+      spacing: 12,
+      runSpacing: 12,
       children: [
-        Expanded(
-          child: OutlinedButton.icon(
-            onPressed: () => context.push(AppRoute.activities.path),
-            icon: const Icon(Icons.code_outlined),
-            label: const Text('Atividades'),
-          ),
+        _QuickActionButton(
+          icon: Icons.code_outlined,
+          label: 'Atividades',
+          onPressed: () => context.push(AppRoute.activities.path),
         ),
-        const SizedBox(width: 12),
-        Expanded(
-          child: OutlinedButton.icon(
-            onPressed: () => context.push(AppRoute.quiz.path),
-            icon: const Icon(Icons.quiz_outlined),
-            label: const Text('Quiz'),
-          ),
+        _QuickActionButton(
+          icon: Icons.quiz_outlined,
+          label: 'Quiz',
+          onPressed: () => context.push(AppRoute.quiz.path),
+        ),
+        _QuickActionButton(
+          icon: Icons.groups_outlined,
+          label: 'Turmas',
+          onPressed: () => context.push(AppRoute.classes.path),
         ),
       ],
+    );
+  }
+}
+
+class _QuickActionButton extends StatelessWidget {
+  const _QuickActionButton({
+    required this.icon,
+    required this.label,
+    required this.onPressed,
+  });
+
+  final IconData icon;
+  final String label;
+  final VoidCallback onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: 180,
+      child: OutlinedButton.icon(
+        onPressed: onPressed,
+        icon: Icon(icon),
+        label: Text(label),
+      ),
     );
   }
 }

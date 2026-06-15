@@ -11,6 +11,7 @@ import '../../domain/entities/user_profile.dart';
 import '../../domain/repositories/learning_dashboard_repository.dart';
 import '../../domain/repositories/user_repository.dart';
 import '../datasources/learning_dashboard_local_datasource.dart';
+import '../datasources/learning_topic_catalog_datasource.dart';
 import '../mappers/learning_dashboard_mapper.dart';
 import '../models/learning_dashboard_model.dart';
 import '../models/user_profile_model.dart';
@@ -19,17 +20,20 @@ final class LearningDashboardRepositoryImpl
     implements LearningDashboardRepository {
   LearningDashboardRepositoryImpl({
     required LearningDashboardLocalDataSource localDataSource,
+    required LearningTopicCatalogDataSource catalogDataSource,
     required UserRepository userRepository,
     required AdaptiveLearningService adaptiveLearningService,
     required DashboardAnalyticsService analyticsService,
     Uuid uuid = const Uuid(),
   }) : _localDataSource = localDataSource,
+       _catalogDataSource = catalogDataSource,
        _userRepository = userRepository,
        _adaptiveLearningService = adaptiveLearningService,
        _analyticsService = analyticsService,
        _uuid = uuid;
 
   final LearningDashboardLocalDataSource _localDataSource;
+  final LearningTopicCatalogDataSource _catalogDataSource;
   final UserRepository _userRepository;
   final AdaptiveLearningService _adaptiveLearningService;
   final DashboardAnalyticsService _analyticsService;
@@ -75,9 +79,13 @@ final class LearningDashboardRepositoryImpl
         'O identificador do usuário é obrigatório.',
       );
     }
+    var topics = await _localDataSource.findTopics();
+    if (topics.isEmpty) {
+      await saveTopicCatalog(_catalogDataSource.load());
+      topics = await _localDataSource.findTopics();
+    }
     final results = await Future.wait<Object?>(<Future<Object?>>[
       _userRepository.getProfile(userId),
-      _localDataSource.findTopics(),
       _localDataSource.findProgress(userId),
       _localDataSource.findActivities(
         userId,
@@ -88,19 +96,19 @@ final class LearningDashboardRepositoryImpl
     ]);
     return _analyticsService.build(
       user: results[0] as UserProfile?,
-      topics: (results[1] as List<LearningTopicModel>)
+      topics: topics
           .map(LearningDashboardMapper.topicToEntity)
           .toList(growable: false),
-      progress: (results[2] as List<UserTopicProgressModel>)
+      progress: (results[1] as List<UserTopicProgressModel>)
           .map(LearningDashboardMapper.progressToEntity)
           .toList(growable: false),
-      activities: (results[3] as List<StudyActivityModel>)
+      activities: (results[2] as List<StudyActivityModel>)
           .map(LearningDashboardMapper.activityToEntity)
           .toList(growable: false),
-      reviews: (results[4] as List<ReviewScheduleModel>)
+      reviews: (results[3] as List<ReviewScheduleModel>)
           .map(LearningDashboardMapper.reviewToEntity)
           .toList(growable: false),
-      goals: (results[5] as List<LearningGoalModel>)
+      goals: (results[4] as List<LearningGoalModel>)
           .map(LearningDashboardMapper.goalToEntity)
           .toList(growable: false),
       filters: filters,
@@ -244,6 +252,8 @@ final class LearningDashboardRepositoryImpl
       if (topic.topicId.trim().isEmpty ||
           topic.name.trim().isEmpty ||
           topic.totalExercises < 0 ||
+          topic.xpReward < 0 ||
+          topic.coinReward < 0 ||
           !identifiers.add(topic.topicId)) {
         throw const DatabaseException('Catálogo de assuntos inválido.');
       }
