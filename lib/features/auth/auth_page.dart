@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../app/router.dart';
+import '../../core/services/logger.dart';
 import '../../core/utils/validators.dart';
 import '../../core/widgets/app_button.dart';
 import '../../core/widgets/loading.dart';
@@ -69,7 +70,10 @@ class _AuthPageState extends State<AuthPage> {
             context,
           ).showSnackBar(SnackBar(content: Text(state.message!)));
         }
-        if (state.user != null) context.go(AppRoute.dashboard.path);
+        if (state.user != null) {
+          AppLogger.info('[NAVIGATION] abrindo dashboard');
+          context.go(AppRoute.dashboard.path);
+        }
       },
       builder: (context, state) {
         final isRegister = state.mode == AuthMode.register;
