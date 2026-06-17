@@ -3,7 +3,6 @@ import 'package:isar_community/isar.dart';
 import '../../features/user/data/models/user_profile_model.dart';
 import '../../features/user/data/models/learning_dashboard_model.dart';
 import '../../features/quiz/data/models/quiz_attempt_model.dart';
-import '../../features/classes/data/models/class_models.dart';
 import '../constants/storage_keys.dart';
 
 abstract final class DatabaseConfig {
@@ -20,10 +19,5 @@ abstract final class DatabaseConfig {
         ReviewScheduleModelSchema,
         LearningGoalModelSchema,
         QuizAttemptModelSchema,
-        AcademicClassModelSchema,
-        StudentPublicProfileModelSchema,
-        ClassRankingModelSchema,
-        ClassStatisticsModelSchema,
-        StudentComparisonModelSchema,
       ];
 }

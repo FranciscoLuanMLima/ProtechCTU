@@ -11,8 +11,8 @@ import '../features/concepts/concept_detail_page.dart';
 import '../features/concepts/concepts_cubit.dart';
 import '../features/concepts/concepts_page.dart';
 import '../features/concepts/concepts_repository.dart';
-import '../features/classes/class_page.dart';
 import '../features/dashboard/teaching_dashboard_page.dart';
+import '../features/notifications/notification_settings_page.dart';
 import '../features/profile/profile_cubit.dart';
 import '../features/profile/profile_page.dart';
 import '../features/profile/profile_repository.dart';
@@ -39,7 +39,7 @@ final appRouter = GoRouter(
       AppRoute.concepts.path,
       AppRoute.activities.path,
       AppRoute.profile.path,
-      AppRoute.classes.path,
+      AppRoute.notificationSettings.path,
     ];
     final needsAuthentication = privateLocations.any(
       (location) => state.matchedLocation.startsWith(location),
@@ -147,9 +147,9 @@ final appRouter = GoRouter(
       ),
     ),
     GoRoute(
-      path: AppRoute.classes.path,
-      name: AppRoute.classes.name,
-      builder: (context, state) => const ClassPage(),
+      path: AppRoute.notificationSettings.path,
+      name: AppRoute.notificationSettings.name,
+      builder: (context, state) => const NotificationSettingsPage(),
     ),
   ],
 );
@@ -168,7 +168,7 @@ enum AppRoute {
   activities('/activities'),
   activityEditor('/activities/editor'),
   profile('/profile'),
-  classes('/classes');
+  notificationSettings('/settings/notifications');
 
   const AppRoute(this.path);
 

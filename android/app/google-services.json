@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "798060061562",
+    "project_id": "protech-uespi-sergio",
+    "storage_bucket": "protech-uespi-sergio.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:798060061562:android:a2f2ef6e5ff3c5cdf5acc3",
+        "android_client_info": {
+          "package_name": "com.example.protechctu"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBxz1zwsqToaEtNIG3fFi1ZoBJBbcePWrI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -3,34 +3,30 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../app/router.dart';
-import '../../core/services/logger.dart';
+import '../../core/services/motivational_notification_service.dart';
 import '../../core/widgets/app_card.dart';
 import '../../core/widgets/loading.dart';
 import '../auth/auth_repository.dart';
 import '../user/domain/entities/learning_dashboard.dart';
 import '../user/providers/user_providers.dart';
 
-final _dashboardSnapshotProvider =
-    FutureProvider.family<LearningDashboardSnapshot, DashboardQuery>((
-      ref,
-      query,
-    ) async {
-      AppLogger.info('[DASHBOARD] carregando use case');
-      final getDashboard = await ref.watch(getLearningDashboardProvider.future);
-      AppLogger.info('[DASHBOARD] carregando snapshot');
-      final snapshot = await getDashboard(query.userId, filters: query.filters);
-      AppLogger.info('[DASHBOARD] concluido');
-      return snapshot;
-    });
-
-class TeachingDashboardPage extends ConsumerWidget {
+class TeachingDashboardPage extends ConsumerStatefulWidget {
   const TeachingDashboardPage({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<TeachingDashboardPage> createState() =>
+      _TeachingDashboardPageState();
+}
+
+class _TeachingDashboardPageState extends ConsumerState<TeachingDashboardPage> {
+  final Set<String> _readNotificationIds = <String>{};
+  final MotivationalNotificationService _notificationService =
+      const MotivationalNotificationService();
+
+  @override
+  Widget build(BuildContext context) {
     final authUser = AuthRepository.instance.currentUser;
     if (authUser == null) {
-      AppLogger.info('[DASHBOARD] usuario ausente');
       return Scaffold(
         appBar: AppBar(title: const Text('ProTech')),
         body: const Center(child: Text('Entre para acessar o dashboard.')),
@@ -38,13 +34,26 @@ class TeachingDashboardPage extends ConsumerWidget {
     }
 
     final dashboard = ref.watch(
-      _dashboardSnapshotProvider(DashboardQuery(userId: authUser.registration)),
+      learningDashboardProvider(DashboardQuery(userId: authUser.registration)),
     );
+    final notifications = dashboard.maybeWhen(
+      data: _notificationService.buildForDashboard,
+      orElse: () => const <MotivationalNotification>[],
+    );
+    final unreadNotifications = notifications
+        .where((item) => !_readNotificationIds.contains(item.id))
+        .toList(growable: false);
 
     return Scaffold(
       appBar: AppBar(
         title: const Text('ProTech'),
         actions: [
+          _NotificationBell(
+            unreadCount: unreadNotifications.length,
+            onPressed: notifications.isEmpty
+                ? null
+                : () => _showNotifications(context, notifications),
+          ),
           IconButton(
             tooltip: 'Perfil',
             onPressed: () => context.push(AppRoute.profile.path),
@@ -53,8 +62,13 @@ class TeachingDashboardPage extends ConsumerWidget {
         ],
       ),
       body: dashboard.when(
-        data: (snapshot) =>
-            _DashboardContent(snapshot: snapshot, fallbackName: authUser.name),
+        data: (snapshot) => _DashboardContent(
+          snapshot: snapshot,
+          fallbackName: authUser.name,
+          notifications: notifications,
+          readNotificationIds: _readNotificationIds,
+          onMarkNotificationRead: _markNotificationRead,
+        ),
         loading: () => const Loading(),
         error: (error, _) => ListView(
           padding: const EdgeInsets.all(24),
@@ -67,13 +81,62 @@ class TeachingDashboardPage extends ConsumerWidget {
       ),
     );
   }
+
+  void _markNotificationRead(String id) {
+    setState(() => _readNotificationIds.add(id));
+  }
+
+  void _showNotifications(
+    BuildContext context,
+    List<MotivationalNotification> notifications,
+  ) {
+    showModalBottomSheet<void>(
+      context: context,
+      showDragHandle: true,
+      builder: (context) {
+        return SafeArea(
+          child: ListView(
+            padding: const EdgeInsets.fromLTRB(16, 8, 16, 24),
+            shrinkWrap: true,
+            children: [
+              Text(
+                'Notificações',
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
+              const SizedBox(height: 12),
+              for (final notification in notifications) ...[
+                _NotificationTile(
+                  notification: notification,
+                  isRead: _readNotificationIds.contains(notification.id),
+                  onMarkRead: () {
+                    _markNotificationRead(notification.id);
+                    Navigator.of(context).pop();
+                  },
+                ),
+                const SizedBox(height: 8),
+              ],
+            ],
+          ),
+        );
+      },
+    );
+  }
 }
 
 class _DashboardContent extends StatelessWidget {
-  const _DashboardContent({required this.snapshot, required this.fallbackName});
+  const _DashboardContent({
+    required this.snapshot,
+    required this.fallbackName,
+    required this.notifications,
+    required this.readNotificationIds,
+    required this.onMarkNotificationRead,
+  });
 
   final LearningDashboardSnapshot snapshot;
   final String fallbackName;
+  final List<MotivationalNotification> notifications;
+  final Set<String> readNotificationIds;
+  final ValueChanged<String> onMarkNotificationRead;
 
   @override
   Widget build(BuildContext context) {
@@ -112,6 +175,12 @@ class _DashboardContent extends StatelessWidget {
       children: [
         _Header(snapshot: snapshot, fallbackName: fallbackName),
         const SizedBox(height: 20),
+        _NotificationSummary(
+          notifications: notifications,
+          readNotificationIds: readNotificationIds,
+          onMarkRead: onMarkNotificationRead,
+        ),
+        const SizedBox(height: 24),
         const _SectionTitle(title: 'Resumo do aluno'),
         const SizedBox(height: 12),
         _SummaryGrid(
@@ -154,6 +223,26 @@ class _DashboardContent extends StatelessWidget {
           accuracy: accuracy,
           studyTime: totalStudyTime,
         ),
+        const SizedBox(height: 24),
+        const _SectionTitle(title: 'Analise de aprendizagem'),
+        const SizedBox(height: 12),
+        _LearningAnalysisCard(snapshot: snapshot),
+        const SizedBox(height: 24),
+        const _SectionTitle(title: 'Dificuldade por assunto'),
+        const SizedBox(height: 12),
+        _DifficultyHeatmapCard(entries: snapshot.difficultyHeatmap),
+        const SizedBox(height: 24),
+        const _SectionTitle(title: 'Curva de aprendizado'),
+        const SizedBox(height: 12),
+        _LearningCurveCard(points: snapshot.learningCurve),
+        const SizedBox(height: 24),
+        const _SectionTitle(title: 'Relatorios personalizados'),
+        const SizedBox(height: 12),
+        _ReportsCard(reports: snapshot.personalizedReports),
+        const SizedBox(height: 24),
+        const _SectionTitle(title: 'Recomendacoes inteligentes'),
+        const SizedBox(height: 12),
+        _RecommendationsCard(recommendations: snapshot.recommendations),
         const SizedBox(height: 24),
         const _SectionTitle(title: 'Continuar estudando'),
         const SizedBox(height: 12),
@@ -542,6 +631,219 @@ class _OverallProgressCard extends StatelessWidget {
   }
 }
 
+class _LearningAnalysisCard extends StatelessWidget {
+  const _LearningAnalysisCard({required this.snapshot});
+
+  final LearningDashboardSnapshot snapshot;
+
+  @override
+  Widget build(BuildContext context) {
+    final analysesByTopic = <String, TopicLearningAnalysis>{
+      for (final analysis in snapshot.topicAnalyses) analysis.topicId: analysis,
+    };
+    final visible = snapshot.topics.take(4).toList(growable: false);
+    if (visible.isEmpty) {
+      return const AppCard(child: Text('Nenhum assunto disponivel.'));
+    }
+
+    return AppCard(
+      child: Column(
+        children: [
+          for (var index = 0; index < visible.length; index++) ...[
+            _TopicAnalysisRow(
+              item: visible[index],
+              analysis: analysesByTopic[visible[index].topic.topicId],
+            ),
+            if (index < visible.length - 1) const Divider(height: 24),
+          ],
+        ],
+      ),
+    );
+  }
+}
+
+class _TopicAnalysisRow extends StatelessWidget {
+  const _TopicAnalysisRow({required this.item, required this.analysis});
+
+  final TopicDashboardItem item;
+  final TopicLearningAnalysis? analysis;
+
+  @override
+  Widget build(BuildContext context) {
+    final current = analysis;
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Icon(_indicatorIcon(current?.indicator)),
+        const SizedBox(width: 12),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                item.topic.name,
+                style: Theme.of(context).textTheme.titleSmall,
+              ),
+              const SizedBox(height: 4),
+              Text(_indicatorLabel(current?.indicator)),
+              const SizedBox(height: 6),
+              LinearProgressIndicator(value: item.progress.masteryRate),
+            ],
+          ),
+        ),
+        const SizedBox(width: 12),
+        Chip(label: Text(_trendLabel(current?.trend))),
+      ],
+    );
+  }
+}
+
+class _DifficultyHeatmapCard extends StatelessWidget {
+  const _DifficultyHeatmapCard({required this.entries});
+
+  final List<TopicDifficultyHeatmapEntry> entries;
+
+  @override
+  Widget build(BuildContext context) {
+    if (entries.isEmpty) {
+      return const AppCard(child: Text('Sem dados de dificuldade ainda.'));
+    }
+
+    return AppCard(
+      child: Wrap(
+        spacing: 8,
+        runSpacing: 8,
+        children: [
+          for (final entry in entries)
+            Chip(
+              avatar: CircleAvatar(
+                backgroundColor: _heatColor(context, entry.indicator),
+                radius: 6,
+              ),
+              label: Text(
+                '${entry.topicName} ${_formatPercent(entry.masteryRate)}',
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+}
+
+class _LearningCurveCard extends StatelessWidget {
+  const _LearningCurveCard({required this.points});
+
+  final List<LearningCurvePoint> points;
+
+  @override
+  Widget build(BuildContext context) {
+    if (points.isEmpty) {
+      return const AppCard(
+        child: Text('A curva sera exibida apos as primeiras atividades.'),
+      );
+    }
+    final recent = points.length > 5
+        ? points.sublist(points.length - 5)
+        : points;
+
+    return AppCard(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          for (final point in recent) ...[
+            Row(
+              children: [
+                SizedBox(width: 52, child: Text(_formatDay(point.day))),
+                Expanded(
+                  child: LinearProgressIndicator(value: point.masteryRate),
+                ),
+                const SizedBox(width: 12),
+                Text(_formatPercent(point.accuracyRate)),
+              ],
+            ),
+            const SizedBox(height: 10),
+          ],
+          Text(
+            'XP estimado recente: ${recent.fold<int>(0, (sum, item) => sum + item.estimatedXp)}',
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _ReportsCard extends StatelessWidget {
+  const _ReportsCard({required this.reports});
+
+  final List<PersonalizedLearningReport> reports;
+
+  @override
+  Widget build(BuildContext context) {
+    if (reports.isEmpty) {
+      return const AppCard(
+        child: Text('Continue estudando para gerar relatorios personalizados.'),
+      );
+    }
+
+    return AppCard(
+      child: Column(
+        children: [
+          for (var index = 0; index < reports.length; index++) ...[
+            _InfoRow(
+              icon: Icons.insights_outlined,
+              label: reports[index].message,
+              value: '',
+            ),
+            if (index < reports.length - 1) const Divider(height: 24),
+          ],
+        ],
+      ),
+    );
+  }
+}
+
+class _RecommendationsCard extends StatelessWidget {
+  const _RecommendationsCard({required this.recommendations});
+
+  final List<PersonalizedRecommendation> recommendations;
+
+  @override
+  Widget build(BuildContext context) {
+    if (recommendations.isEmpty) {
+      return const AppCard(
+        child: Text('Nenhuma recomendacao pendente no momento.'),
+      );
+    }
+
+    return AppCard(
+      child: Column(
+        children: [
+          for (
+            var index = 0;
+            index < recommendations.take(4).length;
+            index++
+          ) ...[
+            _InfoRow(
+              icon: _recommendationIcon(recommendations[index].type),
+              label: recommendations[index].title,
+              value: recommendations[index].priority >= 90 ? 'Alta' : '',
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 36, top: 4),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Text(recommendations[index].reason),
+              ),
+            ),
+            if (index < recommendations.take(4).length - 1)
+              const Divider(height: 24),
+          ],
+        ],
+      ),
+    );
+  }
+}
+
 class _QuickActions extends StatelessWidget {
   const _QuickActions();
 
@@ -561,13 +863,121 @@ class _QuickActions extends StatelessWidget {
           label: 'Quiz',
           onPressed: () => context.push(AppRoute.quiz.path),
         ),
-        _QuickActionButton(
-          icon: Icons.groups_outlined,
-          label: 'Turmas',
-          onPressed: () => context.push(AppRoute.classes.path),
-        ),
       ],
     );
+  }
+}
+
+class _NotificationBell extends StatelessWidget {
+  const _NotificationBell({required this.unreadCount, required this.onPressed});
+
+  final int unreadCount;
+  final VoidCallback? onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      tooltip: 'Notificações',
+      onPressed: onPressed,
+      icon: Badge.count(
+        count: unreadCount,
+        isLabelVisible: unreadCount > 0,
+        child: const Icon(Icons.notifications_outlined),
+      ),
+    );
+  }
+}
+
+class _NotificationSummary extends StatelessWidget {
+  const _NotificationSummary({
+    required this.notifications,
+    required this.readNotificationIds,
+    required this.onMarkRead,
+  });
+
+  final List<MotivationalNotification> notifications;
+  final Set<String> readNotificationIds;
+  final ValueChanged<String> onMarkRead;
+
+  @override
+  Widget build(BuildContext context) {
+    final unread = notifications
+        .where((item) => !readNotificationIds.contains(item.id))
+        .take(3)
+        .toList(growable: false);
+    if (unread.isEmpty) {
+      return const AppCard(child: Text('Nenhuma notificação pendente.'));
+    }
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const _SectionTitle(title: 'Notificações'),
+        const SizedBox(height: 12),
+        for (final notification in unread) ...[
+          _NotificationTile(
+            notification: notification,
+            isRead: false,
+            onMarkRead: () => onMarkRead(notification.id),
+          ),
+          const SizedBox(height: 8),
+        ],
+      ],
+    );
+  }
+}
+
+class _NotificationTile extends StatelessWidget {
+  const _NotificationTile({
+    required this.notification,
+    required this.isRead,
+    required this.onMarkRead,
+  });
+
+  final MotivationalNotification notification;
+  final bool isRead;
+  final VoidCallback onMarkRead;
+
+  @override
+  Widget build(BuildContext context) {
+    return AppCard(
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Icon(_icon(notification.type)),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  notification.title,
+                  style: Theme.of(context).textTheme.titleSmall,
+                ),
+                const SizedBox(height: 4),
+                Text(notification.message),
+              ],
+            ),
+          ),
+          const SizedBox(width: 8),
+          TextButton(
+            onPressed: isRead ? null : onMarkRead,
+            child: Text(isRead ? 'Lida' : 'Marcar'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  IconData _icon(MotivationalNotificationType type) {
+    return switch (type) {
+      MotivationalNotificationType.practice => Icons.code_outlined,
+      MotivationalNotificationType.streak =>
+        Icons.local_fire_department_outlined,
+      MotivationalNotificationType.progress => Icons.trending_up_outlined,
+      MotivationalNotificationType.challenge => Icons.emoji_events_outlined,
+      MotivationalNotificationType.review => Icons.refresh_outlined,
+    };
   }
 }
 
@@ -610,10 +1020,85 @@ String _statusLabel(TopicStatus status) {
   }
 }
 
+String _indicatorLabel(LearningIndicatorStatus? status) {
+  switch (status) {
+    case LearningIndicatorStatus.excellentMastery:
+      return 'Excelente dominio';
+    case LearningIndicatorStatus.goodProgress:
+      return 'Bom progresso';
+    case LearningIndicatorStatus.needsReview:
+      return 'Necessita revisao';
+    case LearningIndicatorStatus.criticalTopic:
+      return 'Topico critico';
+    case null:
+      return 'Sem dados suficientes';
+  }
+}
+
+String _trendLabel(LearningTrend? trend) {
+  switch (trend) {
+    case LearningTrend.improving:
+      return 'Melhorando';
+    case LearningTrend.stable:
+      return 'Estavel';
+    case LearningTrend.declining:
+      return 'Piorando';
+    case null:
+      return 'Inicial';
+  }
+}
+
+IconData _indicatorIcon(LearningIndicatorStatus? status) {
+  switch (status) {
+    case LearningIndicatorStatus.excellentMastery:
+      return Icons.verified_outlined;
+    case LearningIndicatorStatus.goodProgress:
+      return Icons.trending_up_outlined;
+    case LearningIndicatorStatus.needsReview:
+      return Icons.refresh_outlined;
+    case LearningIndicatorStatus.criticalTopic:
+      return Icons.priority_high_outlined;
+    case null:
+      return Icons.insights_outlined;
+  }
+}
+
+IconData _recommendationIcon(RecommendationType type) {
+  switch (type) {
+    case RecommendationType.nextTopic:
+      return Icons.arrow_forward_outlined;
+    case RecommendationType.requiredReview:
+      return Icons.refresh_outlined;
+    case RecommendationType.unlockChallenge:
+      return Icons.emoji_events_outlined;
+    case RecommendationType.placementTest:
+      return Icons.fact_check_outlined;
+    case RecommendationType.beginnerReinforcement:
+      return Icons.school_outlined;
+  }
+}
+
+Color _heatColor(BuildContext context, LearningIndicatorStatus status) {
+  final colorScheme = Theme.of(context).colorScheme;
+  switch (status) {
+    case LearningIndicatorStatus.excellentMastery:
+      return Colors.green;
+    case LearningIndicatorStatus.goodProgress:
+      return colorScheme.tertiary;
+    case LearningIndicatorStatus.needsReview:
+      return Colors.amber;
+    case LearningIndicatorStatus.criticalTopic:
+      return colorScheme.error;
+  }
+}
+
 String _formatPercent(double value) {
   final normalized = value.clamp(0, 1);
   return '${(normalized * 100).round()}%';
 }
+
+String _formatDay(DateTime day) =>
+    '${day.day.toString().padLeft(2, '0')}/${day.month.toString().padLeft(2, '0')}';
 
 String _formatDuration(Duration value) {
   if (value.inHours > 0) {

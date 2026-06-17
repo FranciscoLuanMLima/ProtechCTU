@@ -1,24 +1,32 @@
-import 'package:flutter/material.dart';
+import 'dart:async';
 
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../../core/services/push_notification_service.dart';
 import '../../core/widgets/app_card.dart';
+import '../auth/auth_repository.dart';
+import '../user/domain/entities/learning_dashboard.dart';
+import '../user/providers/user_providers.dart';
 import 'activities_repository.dart';
 import 'activity_model.dart';
 import 'python_exercise_runner.dart';
 import 'widgets/code_editor.dart';
 
-class ActivityEditorPage extends StatefulWidget {
+class ActivityEditorPage extends ConsumerStatefulWidget {
   const ActivityEditorPage({this.activityId, super.key});
 
   final String? activityId;
 
   @override
-  State<ActivityEditorPage> createState() => _ActivityEditorPageState();
+  ConsumerState<ActivityEditorPage> createState() => _ActivityEditorPageState();
 }
 
-class _ActivityEditorPageState extends State<ActivityEditorPage> {
+class _ActivityEditorPageState extends ConsumerState<ActivityEditorPage> {
   final _repository = const ActivitiesRepository();
   final _runner = const PythonExerciseRunner();
   final _checkedCriteria = <int>{};
+  final DateTime _startedAt = DateTime.now().toUtc();
   late final ActivityModel? _activity;
   late String _code;
   late String _input;
@@ -48,11 +56,60 @@ class _ActivityEditorPageState extends State<ActivityEditorPage> {
     final activity = _activity;
     if (activity == null) return;
     await _repository.complete(activity.id);
+    final user = AuthRepository.instance.currentUser;
+    if (user != null) {
+      try {
+        final completedAt = DateTime.now().toUtc();
+        final recordActivity = await ref.read(
+          recordStudyActivityProvider.future,
+        );
+        await recordActivity(
+          StudyActivity(
+            activityId:
+                'activity-${activity.id}-${completedAt.microsecondsSinceEpoch}',
+            userId: user.registration,
+            topicId: _topicIdForActivity(activity),
+            type: StudyEventType.exerciseCompleted,
+            occurredAt: completedAt,
+            duration: completedAt.difference(_startedAt),
+            responseTime: _execution == null
+                ? null
+                : completedAt.difference(_startedAt),
+            wasCorrect: _execution?.succeeded ?? true,
+            wasFirstAttempt: !_completed,
+            masteryAfterEvent: activity.successCriteria.isEmpty
+                ? 1
+                : _checkedCriteria.length / activity.successCriteria.length,
+          ),
+        );
+      } catch (_) {
+        // A conclusao local permanece valida mesmo se a trilha adaptativa
+        // estiver bloqueada por pre-requisito ou sincronizacao pendente.
+      }
+    }
+    unawaited(
+      PushNotificationService.recordNotification(
+        title: 'Atividade concluida',
+        body: 'Voce ganhou experiencia ao concluir ${activity.title}.',
+        source: 'achievement',
+      ),
+    );
     if (!mounted) return;
     setState(() => _completed = true);
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text('Atividade concluída e registrada.')),
     );
+  }
+
+  String _topicIdForActivity(ActivityModel activity) {
+    final concept = activity.concept.toLowerCase();
+    if (concept.contains('condicion')) return 'conditions';
+    if (concept.contains('laco') ||
+        concept.contains('laço') ||
+        concept.contains('func')) {
+      return 'loops';
+    }
+    return 'variables';
   }
 
   @override

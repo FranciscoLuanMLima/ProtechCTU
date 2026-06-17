@@ -68,7 +68,7 @@ final class DashboardAnalyticsService {
       user: user,
       overallProgress: _overallProgress(allItems),
       topics: items,
-      recommendations: _recommend(allItems, reviews, now),
+      recommendations: _recommend(allItems, reviews, activities, now),
       reviewsDueToday: dueToday,
       reviewsThisWeek: dueWeek,
       goals: goals,
@@ -81,6 +81,10 @@ final class DashboardAnalyticsService {
           .map((item) => item.topicId)
           .toList(growable: false),
       heatmap: _heatmap(activities),
+      topicAnalyses: _topicAnalyses(allItems, activities, now),
+      difficultyHeatmap: _difficultyHeatmap(allItems),
+      learningCurve: _learningCurve(allItems, activities),
+      personalizedReports: _reports(allItems, activities, now),
       milestones: _milestones(user, allItems, goals, now),
       estimatedCompletionDate: _estimateCompletion(allItems, activities, now),
     );
@@ -158,6 +162,7 @@ final class DashboardAnalyticsService {
   List<PersonalizedRecommendation> _recommend(
     List<TopicDashboardItem> items,
     List<ReviewSchedule> reviews,
+    List<StudyActivity> activities,
     DateTime now,
   ) {
     final recommendations = <PersonalizedRecommendation>[];
@@ -213,8 +218,302 @@ final class DashboardAnalyticsService {
         ),
       );
     }
+    final staleItems = items.where((item) {
+      final last = item.progress.lastAccess;
+      return item.isUnlocked &&
+          item.progress.status != TopicStatus.completed &&
+          last != null &&
+          now.difference(last).inDays >= 7;
+    });
+    for (final item in staleItems) {
+      recommendations.add(
+        PersonalizedRecommendation(
+          type: RecommendationType.requiredReview,
+          topicId: item.topic.topicId,
+          title: 'Retomar ${item.topic.name}',
+          reason:
+              'Voce nao pratica este assunto ha ${now.difference(item.progress.lastAccess!).inDays} dias.',
+          priority: 85,
+        ),
+      );
+    }
+    final attemptedTopicIds = activities.map((item) => item.topicId).toSet();
+    final prerequisiteNext = items.where((item) {
+      return item.isUnlocked &&
+          !attemptedTopicIds.contains(item.topic.topicId) &&
+          item.topic.prerequisiteTopicIds.isNotEmpty;
+    }).firstOrNull;
+    if (prerequisiteNext != null) {
+      recommendations.add(
+        PersonalizedRecommendation(
+          type: RecommendationType.nextTopic,
+          topicId: prerequisiteNext.topic.topicId,
+          title: 'Avancar para ${prerequisiteNext.topic.name}',
+          reason: 'Os pre-requisitos deste assunto ja estao liberados.',
+          priority: 65,
+        ),
+      );
+    }
     recommendations.sort((a, b) => b.priority.compareTo(a.priority));
     return List<PersonalizedRecommendation>.unmodifiable(recommendations);
+  }
+
+  List<TopicLearningAnalysis> _topicAnalyses(
+    List<TopicDashboardItem> items,
+    List<StudyActivity> activities,
+    DateTime now,
+  ) {
+    final byTopic = _activitiesByTopic(activities);
+    final analyses = <TopicLearningAnalysis>[];
+    for (final item in items) {
+      final topicActivities = byTopic[item.topic.topicId] ?? const [];
+      final activeDays = topicActivities
+          .where((activity) => now.difference(activity.occurredAt).inDays < 14)
+          .map(
+            (activity) => DateTime.utc(
+              activity.occurredAt.year,
+              activity.occurredAt.month,
+              activity.occurredAt.day,
+            ),
+          )
+          .toSet()
+          .length;
+      final recurringErrors = topicActivities
+          .where((activity) => activity.wasCorrect == false)
+          .length;
+      final abandoned =
+          item.progress.lastAccess != null &&
+          item.progress.status != TopicStatus.completed &&
+          now.difference(item.progress.lastAccess!).inDays >= 8;
+      analyses.add(
+        TopicLearningAnalysis(
+          topicId: item.topic.topicId,
+          indicator: _indicator(item.progress, recurringErrors, abandoned),
+          trend: _trend(topicActivities, item.progress),
+          accuracyRate: item.progress.accuracyRate,
+          averageResponseTime: item.progress.averageResponseTime,
+          attempts: item.progress.totalAttempts,
+          recurringErrors: recurringErrors,
+          abandoned: abandoned,
+          studyFrequencyDays: activeDays,
+        ),
+      );
+    }
+    return List<TopicLearningAnalysis>.unmodifiable(analyses);
+  }
+
+  List<TopicDifficultyHeatmapEntry> _difficultyHeatmap(
+    List<TopicDashboardItem> items,
+  ) {
+    final entries =
+        items
+            .map(
+              (item) => TopicDifficultyHeatmapEntry(
+                topicId: item.topic.topicId,
+                topicName: item.topic.name,
+                masteryRate: item.progress.masteryRate,
+                indicator: _indicator(item.progress, 0, false),
+              ),
+            )
+            .toList()
+          ..sort((a, b) => a.masteryRate.compareTo(b.masteryRate));
+    return List<TopicDifficultyHeatmapEntry>.unmodifiable(entries);
+  }
+
+  List<LearningCurvePoint> _learningCurve(
+    List<TopicDashboardItem> items,
+    List<StudyActivity> activities,
+  ) {
+    final topicReward = <String, int>{
+      for (final item in items) item.topic.topicId: item.topic.xpReward,
+    };
+    final sorted = activities.toList()
+      ..sort((a, b) => a.occurredAt.compareTo(b.occurredAt));
+    final totalsByDay =
+        <
+          DateTime,
+          ({double mastery, int count, int correct, int attempts, int xp})
+        >{};
+    for (final activity in sorted) {
+      final day = DateTime.utc(
+        activity.occurredAt.year,
+        activity.occurredAt.month,
+        activity.occurredAt.day,
+      );
+      final current =
+          totalsByDay[day] ??
+          (mastery: 0.0, count: 0, correct: 0, attempts: 0, xp: 0);
+      final hasAttempt = activity.wasCorrect != null;
+      totalsByDay[day] = (
+        mastery: current.mastery + activity.masteryAfterEvent,
+        count: current.count + 1,
+        correct: current.correct + (activity.wasCorrect == true ? 1 : 0),
+        attempts: current.attempts + (hasAttempt ? 1 : 0),
+        xp:
+            current.xp +
+            ((topicReward[activity.topicId] ?? 0) * activity.masteryAfterEvent)
+                .round(),
+      );
+    }
+    final points = totalsByDay.entries.map((entry) {
+      final value = entry.value;
+      return LearningCurvePoint(
+        day: entry.key,
+        masteryRate: value.count == 0 ? 0 : value.mastery / value.count,
+        accuracyRate: value.attempts == 0 ? 0 : value.correct / value.attempts,
+        estimatedXp: value.xp,
+      );
+    }).toList()..sort((a, b) => a.day.compareTo(b.day));
+    return List<LearningCurvePoint>.unmodifiable(points);
+  }
+
+  List<PersonalizedLearningReport> _reports(
+    List<TopicDashboardItem> items,
+    List<StudyActivity> activities,
+    DateTime now,
+  ) {
+    final reports = <PersonalizedLearningReport>[];
+    final improving = items.where((item) => item.progress.masteryVariation > 0);
+    for (final item in improving.take(3)) {
+      reports.add(
+        PersonalizedLearningReport(
+          message:
+              'Voce melhorou ${(item.progress.masteryVariation * 100).round()}% em ${item.topic.name}.',
+          topicId: item.topic.topicId,
+          priority: 70,
+        ),
+      );
+    }
+    final best = items.where((item) => item.progress.totalAttempts > 0).toList()
+      ..sort(
+        (a, b) => b.progress.masteryRate.compareTo(a.progress.masteryRate),
+      );
+    if (best.isNotEmpty) {
+      reports.add(
+        PersonalizedLearningReport(
+          message: '${best.first.topic.name} e atualmente seu melhor topico.',
+          topicId: best.first.topic.topicId,
+          priority: 60,
+        ),
+      );
+    }
+    for (final item
+        in items
+            .where((item) {
+              final last = item.progress.lastAccess;
+              return last != null &&
+                  item.progress.status != TopicStatus.completed &&
+                  now.difference(last).inDays >= 8;
+            })
+            .take(2)) {
+      reports.add(
+        PersonalizedLearningReport(
+          message:
+              'Voce nao pratica ${item.topic.name} ha ${now.difference(item.progress.lastAccess!).inDays} dias.',
+          topicId: item.topic.topicId,
+          priority: 85,
+        ),
+      );
+    }
+    final responseDrop = _responseTimeDrop(activities, now);
+    if (responseDrop > 0) {
+      reports.add(
+        PersonalizedLearningReport(
+          message:
+              'Seu tempo medio de resolucao caiu ${responseDrop.round()}%.',
+          topicId: null,
+          priority: 50,
+        ),
+      );
+    }
+    reports.sort((a, b) => b.priority.compareTo(a.priority));
+    return List<PersonalizedLearningReport>.unmodifiable(reports.take(6));
+  }
+
+  LearningIndicatorStatus _indicator(
+    TopicLearningProgress progress,
+    int recurringErrors,
+    bool abandoned,
+  ) {
+    if (abandoned ||
+        recurringErrors >= 3 ||
+        (progress.totalAttempts >= 3 && progress.accuracyRate < 0.4)) {
+      return LearningIndicatorStatus.criticalTopic;
+    }
+    if (progress.masteryRate < 0.5 ||
+        progress.status == TopicStatus.reviewRecommended) {
+      return LearningIndicatorStatus.needsReview;
+    }
+    if (progress.masteryRate >= 0.85 && progress.accuracyRate >= 0.8) {
+      return LearningIndicatorStatus.excellentMastery;
+    }
+    return LearningIndicatorStatus.goodProgress;
+  }
+
+  LearningTrend _trend(
+    List<StudyActivity> activities,
+    TopicLearningProgress progress,
+  ) {
+    final sorted = activities.toList()
+      ..sort((a, b) => a.occurredAt.compareTo(b.occurredAt));
+    if (sorted.length >= 4) {
+      final half = sorted.length ~/ 2;
+      final previous = sorted.take(half).map((item) => item.masteryAfterEvent);
+      final recent = sorted.skip(half).map((item) => item.masteryAfterEvent);
+      final previousAverage =
+          previous.fold<double>(0, (sum, item) => sum + item) / previous.length;
+      final recentAverage =
+          recent.fold<double>(0, (sum, item) => sum + item) / recent.length;
+      final diff = recentAverage - previousAverage;
+      if (diff > 0.05) return LearningTrend.improving;
+      if (diff < -0.05) return LearningTrend.declining;
+    }
+    if (progress.masteryVariation > 0.05) return LearningTrend.improving;
+    if (progress.masteryVariation < -0.05) return LearningTrend.declining;
+    return LearningTrend.stable;
+  }
+
+  Map<String, List<StudyActivity>> _activitiesByTopic(
+    List<StudyActivity> activities,
+  ) {
+    final map = <String, List<StudyActivity>>{};
+    for (final activity in activities) {
+      map.putIfAbsent(activity.topicId, () => <StudyActivity>[]).add(activity);
+    }
+    return map;
+  }
+
+  double _responseTimeDrop(List<StudyActivity> activities, DateTime now) {
+    final withResponse = activities
+        .where((item) => item.responseTime != null)
+        .toList(growable: false);
+    final recent = withResponse.where(
+      (item) => now.difference(item.occurredAt).inDays < 7,
+    );
+    final previous = withResponse.where((item) {
+      final days = now.difference(item.occurredAt).inDays;
+      return days >= 7 && days < 14;
+    });
+    final recentAverage = _averageResponse(recent);
+    final previousAverage = _averageResponse(previous);
+    if (recentAverage == Duration.zero || previousAverage == Duration.zero) {
+      return 0;
+    }
+    if (recentAverage >= previousAverage) return 0;
+    return (1 - recentAverage.inMilliseconds / previousAverage.inMilliseconds) *
+        100;
+  }
+
+  Duration _averageResponse(Iterable<StudyActivity> activities) {
+    var count = 0;
+    var total = 0;
+    for (final activity in activities) {
+      final response = activity.responseTime;
+      if (response == null) continue;
+      count++;
+      total += response.inMilliseconds;
+    }
+    return count == 0 ? Duration.zero : Duration(milliseconds: total ~/ count);
   }
 
   List<ActivityHeatmapEntry> _heatmap(List<StudyActivity> activities) {

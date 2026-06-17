@@ -47,6 +47,15 @@ enum TopicSort {
   difficulty,
 }
 
+enum LearningIndicatorStatus {
+  excellentMastery,
+  goodProgress,
+  needsReview,
+  criticalTopic,
+}
+
+enum LearningTrend { improving, stable, declining }
+
 final class LearningTopic {
   const LearningTopic({
     required this.topicId,
@@ -293,6 +302,70 @@ final class ActivityHeatmapEntry {
   final Duration studyTime;
 }
 
+final class TopicLearningAnalysis {
+  const TopicLearningAnalysis({
+    required this.topicId,
+    required this.indicator,
+    required this.trend,
+    required this.accuracyRate,
+    required this.averageResponseTime,
+    required this.attempts,
+    required this.recurringErrors,
+    required this.abandoned,
+    required this.studyFrequencyDays,
+  });
+
+  final String topicId;
+  final LearningIndicatorStatus indicator;
+  final LearningTrend trend;
+  final double accuracyRate;
+  final Duration averageResponseTime;
+  final int attempts;
+  final int recurringErrors;
+  final bool abandoned;
+  final int studyFrequencyDays;
+}
+
+final class TopicDifficultyHeatmapEntry {
+  const TopicDifficultyHeatmapEntry({
+    required this.topicId,
+    required this.topicName,
+    required this.masteryRate,
+    required this.indicator,
+  });
+
+  final String topicId;
+  final String topicName;
+  final double masteryRate;
+  final LearningIndicatorStatus indicator;
+}
+
+final class LearningCurvePoint {
+  const LearningCurvePoint({
+    required this.day,
+    required this.masteryRate,
+    required this.accuracyRate,
+    required this.estimatedXp,
+  });
+
+  final DateTime day;
+  final double masteryRate;
+  final double accuracyRate;
+  final int estimatedXp;
+}
+
+final class PersonalizedLearningReport {
+  const PersonalizedLearningReport({
+    required this.message,
+    required this.topicId,
+    required this.priority,
+  });
+
+  final String message;
+  final String? topicId;
+  final int priority;
+}
+
 final class DashboardFilters {
   const DashboardFilters({
     this.searchTerm,
@@ -321,6 +394,10 @@ final class LearningDashboardSnapshot {
     required this.strongTopicIds,
     required this.weakTopicIds,
     required this.heatmap,
+    required this.topicAnalyses,
+    required this.difficultyHeatmap,
+    required this.learningCurve,
+    required this.personalizedReports,
     required this.milestones,
     required this.estimatedCompletionDate,
   });
@@ -335,6 +412,10 @@ final class LearningDashboardSnapshot {
   final List<String> strongTopicIds;
   final List<String> weakTopicIds;
   final List<ActivityHeatmapEntry> heatmap;
+  final List<TopicLearningAnalysis> topicAnalyses;
+  final List<TopicDifficultyHeatmapEntry> difficultyHeatmap;
+  final List<LearningCurvePoint> learningCurve;
+  final List<PersonalizedLearningReport> personalizedReports;
   final List<LearningMilestone> milestones;
   final DateTime? estimatedCompletionDate;
 }

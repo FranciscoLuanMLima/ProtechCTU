@@ -20,9 +20,15 @@ final class AdaptiveLearningService {
     final attempts = current.totalAttempts + (isAttempt ? 1 : 0);
     final correct =
         current.correctAttempts + (activity.wasCorrect == true ? 1 : 0);
-    final completedExercises = activity.type == StudyEventType.exerciseCompleted
-        ? (current.completedExercises + 1).clamp(0, topic.totalExercises)
-        : current.completedExercises;
+    final completedExercises = switch (activity.type) {
+      StudyEventType.contentViewed when activity.wasCorrect == true =>
+        topic.totalExercises,
+      StudyEventType.exerciseCompleted ||
+      StudyEventType.quizCompleted ||
+      StudyEventType.challengeCompleted =>
+        (current.completedExercises + 1).clamp(0, topic.totalExercises),
+      _ => current.completedExercises,
+    };
     final completion = topic.totalExercises == 0
         ? current.completionRate
         : completedExercises / topic.totalExercises;
@@ -36,7 +42,9 @@ final class AdaptiveLearningService {
       current: current.masteryRate,
     );
     final now = activity.occurredAt.toUtc();
-    final status = completion >= 1 && mastery >= 0.7
+    final status = attempts >= 3 && accuracy < 0.35
+        ? TopicStatus.reviewRecommended
+        : completion >= 1 && mastery >= 0.7
         ? TopicStatus.completed
         : mastery < 0.5 && attempts >= 3
         ? TopicStatus.reviewRecommended

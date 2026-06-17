@@ -1,8 +1,13 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../core/services/push_notification_service.dart';
 import '../../core/widgets/app_card.dart';
 import '../auth/auth_repository.dart';
+import '../user/domain/entities/learning_dashboard.dart';
+import '../user/providers/user_providers.dart';
 import 'domain/entities/programming_quiz.dart';
 import 'providers/quiz_providers.dart';
 
@@ -60,7 +65,46 @@ class _QuizPlayPageState extends ConsumerState<QuizPlayPage> {
         ),
         startedAt: _startedAt,
       );
+      try {
+        final recordActivity = await ref.read(
+          recordStudyActivityProvider.future,
+        );
+        final duration = completion.attempt.completedAt.difference(
+          completion.attempt.startedAt,
+        );
+        await recordActivity(
+          StudyActivity(
+            activityId: '${completion.attempt.attemptId}-learning',
+            userId: learner.userId,
+            topicId: quiz.topicId,
+            type: StudyEventType.quizCompleted,
+            occurredAt: completion.attempt.completedAt,
+            duration: duration,
+            responseTime: completion.attempt.totalQuestions == 0
+                ? null
+                : Duration(
+                    milliseconds:
+                        duration.inMilliseconds ~/
+                        completion.attempt.totalQuestions,
+                  ),
+            wasCorrect: completion.attempt.accuracyRate >= 0.7,
+            wasFirstAttempt: true,
+            masteryAfterEvent: completion.attempt.accuracyRate,
+          ),
+        );
+      } catch (_) {
+        // A tentativa e a recompensa ja foram salvas; a analise sera atualizada
+        // na proxima atividade valida do mesmo assunto.
+      }
       ref.invalidate(quizAttemptsProvider(learner.userId));
+      unawaited(
+        PushNotificationService.recordNotification(
+          title: 'Quiz concluido',
+          body:
+              'Voce recebeu ${completion.attempt.xpEarned} XP em ${quiz.title}.',
+          source: 'achievement',
+        ),
+      );
       setState(() => _completion = completion);
     } catch (error) {
       setState(() => _error = error.toString());
